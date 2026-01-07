@@ -28,8 +28,4 @@
     <ProjectReference Include="..\GamingZoneApp.Services\GamingZoneApp.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
 </Project>
