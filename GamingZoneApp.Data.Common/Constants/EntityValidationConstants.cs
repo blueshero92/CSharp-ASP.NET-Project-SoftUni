@@ -4,31 +4,46 @@
     {
         public class GameConstants
         {
-            ///Maximum characters for a game title.
+            
+            /// <summary>
+            /// Title should be able to store text with length up to 184 characters.
+            /// </summary>
             public const int TitleMaxLength = 184;
 
-            ///Maximum characters for the game description/trivia.
+            /// <summary>
+            /// Game description should be able to store text with length up to 2048 characters.
+            /// </summary>
             public const int GameDescriptionMaxLength = 2048;
 
-            //Column type for the game rating.
+            /// <summary>
+            /// Column type of the rating should have 2 digits before and 1 digit after the decimal point.
+            /// </summary>
             public const string GameRatingType = "DECIMAL(3,1)";
         }
 
         public class DeveloperConstants
         {
-            ///Maximum characters for the developer name.
+            /// <summary>
+            /// Developer name should be able to store text with length up to 128 characters.
+            /// </summary>
             public const int DevNameMaxLength = 128;
 
-            ///Maximum characters for the developer description.
+            /// <summary>
+            /// Developer description should be able to store text with length up to 2048 characters.
+            /// </summary>
             public const int DevDescriptionMaxLength = 2048;
         }
 
         public class PublisherConstants
         {
-            //Maximum characters for the publisher name.
+            /// <summary>
+            /// Publisher name should be able to store text with length up to 128 characters.
+            /// </summary>
             public const int PublisherNameMaxLength = 128;
 
-            //Maximum characters for the publisher description.
+            /// <summary>
+            /// Publisher description should be able to store text with length up to 2048 characters.
+            /// </summary>
             public const int PublisherDescriptionMaxLength = 2048;
         }
     }
