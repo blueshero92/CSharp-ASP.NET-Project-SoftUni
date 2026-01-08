@@ -19,7 +19,7 @@ namespace GamingZoneApp
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = false)
                             .AddRoles<IdentityRole<Guid>>()
                             .AddEntityFrameworkStores<GamingZoneDbContext>();
             
