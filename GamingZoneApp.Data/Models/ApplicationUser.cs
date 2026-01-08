@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamingZoneApp.Data.Models
 {
@@ -13,5 +8,8 @@ namespace GamingZoneApp.Data.Models
         {
             Id = Guid.NewGuid();
         }
+
+        public virtual ICollection<ApplicationUserGame> UsersGames { get; set; }
+            = new HashSet<ApplicationUserGame>();
     }
 }

@@ -22,7 +22,7 @@ namespace GamingZoneApp.Data.Models
         [Comment("Brief information about the developer.")]
         public string Description { get; set; } = null!;
 
-        //HashSet<T> is used for extesibility
+        //HashSet<T> is used for extesibility.
         public virtual ICollection<Game> GamesDeveloped { get; set; }
             = new HashSet<Game>();
     }

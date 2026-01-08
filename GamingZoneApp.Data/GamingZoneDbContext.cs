@@ -10,7 +10,6 @@ namespace GamingZoneApp.Data
         //Empty constructor for debugging purposes.
         public GamingZoneDbContext()
         {
-
         }
 
         public GamingZoneDbContext(DbContextOptions<GamingZoneDbContext> options)

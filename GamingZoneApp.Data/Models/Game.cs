@@ -54,6 +54,9 @@ namespace GamingZoneApp.Data.Models
 
         public virtual Publisher Publisher { get; set; } = null!;
 
+        public virtual ICollection<ApplicationUserGame> GamesUsers { get; set; }
+            = new HashSet<ApplicationUserGame>();
+
 
     }
 }
