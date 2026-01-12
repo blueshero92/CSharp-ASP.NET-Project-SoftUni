@@ -9,7 +9,8 @@ namespace GamingZoneApp.Data.Models
             Id = Guid.NewGuid();
         }
 
-        public virtual ICollection<ApplicationUserGame> UsersGames { get; set; }
+        //HashSet<T> is used for future extesibility and speed for working with larger amounts of data and to avoid duplications.
+        public ICollection<ApplicationUserGame> UsersGames { get; set; }
             = new HashSet<ApplicationUserGame>();
     }
 }

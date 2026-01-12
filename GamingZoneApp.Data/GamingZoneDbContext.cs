@@ -17,14 +17,14 @@ namespace GamingZoneApp.Data
         {
         }
 
-        public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
 
-        public virtual DbSet<ApplicationUserGame> ApplicationUsersGames { get; set; } = null!;
+        public DbSet<ApplicationUserGame> ApplicationUsersGames { get; set; } = null!;
 
-        public virtual DbSet<Developer> Developers { get; set; } = null!;
+        public DbSet<Developer> Developers { get; set; } = null!;
 
-        public virtual DbSet<Game> Games { get; set; } = null!;
+        public DbSet<Game> Games { get; set; } = null!;
 
-        public virtual DbSet<Publisher> Publishers { get; set; } = null!;
+        public DbSet<Publisher> Publishers { get; set; } = null!;
     }
-}
+} 

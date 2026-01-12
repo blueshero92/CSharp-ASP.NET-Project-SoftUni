@@ -45,16 +45,17 @@ namespace GamingZoneApp.Data.Models
         [Comment("Foreign Key referencing the developer of the game.")]
         public Guid DeveloperId { get; set; }
 
-        public virtual Developer Developer { get; set; } = null!;
+        public Developer Developer { get; set; } = null!;
 
         [Required]
         [ForeignKey(nameof(Publisher))]
         [Comment("Foreign Key referencing the publisher of the game.")]
         public Guid PublisherId { get; set; }
 
-        public virtual Publisher Publisher { get; set; } = null!;
+        public  Publisher Publisher { get; set; } = null!;
 
-        public virtual ICollection<ApplicationUserGame> GamesUsers { get; set; }
+        //HashSet<T> is used for future extesibility and speed for working with larger amounts of data and to avoid duplications.
+        public ICollection<ApplicationUserGame> GamesUsers { get; set; }
             = new HashSet<ApplicationUserGame>();
 
 

@@ -22,8 +22,8 @@ namespace GamingZoneApp.Data.Models
         [Comment("Brief information about the publisher.")]
         public string Description { get; set; } = null!;
 
-        //HashSet<T> is used for extesibility.
-        public virtual ICollection<Game> GamesPublished { get; set; }
+        //HashSet<T> is used for future extesibility and speed for working with larger amounts of data and to avoid duplications.
+        public ICollection<Game> GamesPublished { get; set; }
             = new HashSet<Game>();
     }
 }

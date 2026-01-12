@@ -13,13 +13,13 @@ namespace GamingZoneApp.Data.Models
         [Comment("Foreign Key referencing the Id of the user.")]
         public Guid UserId { get; set; }
 
-        public virtual ApplicationUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         [Required]
         [ForeignKey(nameof(Game))]
         [Comment("Foreign Key referencing the Id of the game.")]
         public Guid GameId { get; set; }
      
-        public virtual Game Game { get; set; } = null!;
+        public Game Game { get; set; } = null!;
     }
 }
