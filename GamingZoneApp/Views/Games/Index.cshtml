@@ -1,5 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Games";
 }
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="https://cdn2.steamgriddb.com/thumb/23a8793d295f5804590d596981e50b26.jpg" class="card-img-top" alt="Silent Hill 2 Remake" style="height: 300px; object-fit: contain; padding: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Silent Hill 2 Remake</h5>
+                    <p class="card-text">
+                        <strong>Release Date:</strong> October 8, 2024<br>
+                        <strong>Genre:</strong> Survival Horror<br>
+                        <strong>Developer:</strong> Bloober Team<br>
+                        <strong>Publisher:</strong> Konami
+                    </p>
+                    <p class="card-text text-muted">A faithful remake of the classic psychological horror masterpiece. Players navigate the fog-shrouded town of Silent Hill as James Sunderland, uncovering dark secrets and confronting manifestations of guilt and despair.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="https://cdn2.steamgriddb.com/thumb/a0abf0396a718b8982fce0b80181d8cb.jpg" class="card-img-top" alt="Elden Ring" style="height: 300px; object-fit: contain; padding: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Elden Ring</h5>
+                    <p class="card-text">
+                        <strong>Release Date:</strong> February 25, 2022<br>
+                        <strong>Genre:</strong> Action RPG<br>
+                        <strong>Developer:</strong> FromSoftware<br>
+                        <strong>Publisher:</strong> Bandai Namco Entertainment
+                    </p>
+                    <p class="card-text text-muted">An open-world masterpiece combining challenging combat with expansive exploration. Players traverse the Lands Between to restore the Elden Ring, facing formidable bosses and discovering hidden dungeons.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="https://cdn2.steamgriddb.com/thumb/f39b781760a403dedaa05587e8889c1a.jpg" class="card-img-top" alt="Cyberpunk 2077" style="height: 300px; object-fit: contain; padding: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Cyberpunk 2077</h5>
+                    <p class="card-text">
+                        <strong>Release Date:</strong> December 10, 2020<br>
+                        <strong>Genre:</strong> Action RPG<br>
+                        <strong>Developer:</strong> CD Projekt Red<br>
+                        <strong>Publisher:</strong> CD Projekt Red
+                    </p>
+                    <p class="card-text text-muted">An ambitious dystopian RPG set in the megacity of Night City. Players take on the role of V, a customizable mercenary, navigating a world filled with corporate intrigue, high-tech augmentations, and morally complex choices.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

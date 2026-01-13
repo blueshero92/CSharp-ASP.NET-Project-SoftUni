@@ -6,7 +6,7 @@ namespace GamingZoneApp.Controllers
     {
         public IActionResult Index()
         {
-            return Ok("All games.");
+            return View();
         }
 
         [Route("Games/GameDetails/{id}")]
