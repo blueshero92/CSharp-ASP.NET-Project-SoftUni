@@ -41,6 +41,11 @@ namespace GamingZoneApp.Data.Models
         public bool IsDeleted { get; set; }
 
         [Required]
+        [MaxLength(ImageUrlMaxLength)]
+        [Comment("URL of the videogame image.")]
+        public string ImageUrl { get; set; } = null!;
+
+        [Required]
         [ForeignKey(nameof(Developer))]
         [Comment("Foreign Key referencing the developer of the game.")]
         public Guid DeveloperId { get; set; }

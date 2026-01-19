@@ -1,7 +1,11 @@
-﻿namespace GamingZoneApp.Data.Common.Constants
+﻿using System.Reflection.Metadata;
+
+namespace GamingZoneApp.Data.Common.Constants
 {
     public static class EntityValidationConstants
     {
+    
+
         public class GameConstants
         {
             
@@ -19,6 +23,11 @@
             /// Column type of the rating should have 2 digits before and 1 digit after the decimal point.
             /// </summary>
             public const string GameRatingType = "DECIMAL(3,1)";
+
+            /// <summary>
+            /// Image URL should be able to store text with length up to 2048 characters.
+            /// </summary>
+            public const int ImageUrlMaxLength = 2048;
         }
 
         public class DeveloperConstants
@@ -32,6 +41,11 @@
             /// Developer description should be able to store text with length up to 2048 characters.
             /// </summary>
             public const int DevDescriptionMaxLength = 2048;
+
+            /// <summary>
+            /// Image URL should be able to store text with length up to 2048 characters.
+            /// </summary>
+            public const int ImageUrlMaxLength = 2048;
         }
 
         public class PublisherConstants
@@ -45,6 +59,11 @@
             /// Publisher description should be able to store text with length up to 2048 characters.
             /// </summary>
             public const int PublisherDescriptionMaxLength = 2048;
+
+            /// <summary>
+            /// Image URL should be able to store text with length up to 2048 characters.
+            /// </summary>
+            public const int ImageUrlMaxLength = 2048;
         }
     }
 }
