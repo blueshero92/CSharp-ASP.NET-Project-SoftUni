@@ -102,7 +102,7 @@ namespace GamingZoneApp.Data.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("ApplicationUsersGames", t =>
+                    b.ToTable("ApplicationUsersGames", null, t =>
                         {
                             t.HasComment("Mapping table for users' games");
                         });
@@ -135,7 +135,7 @@ namespace GamingZoneApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Developers", t =>
+                    b.ToTable("Developers", null, t =>
                         {
                             t.HasComment("Developers in the system.");
                         });
@@ -196,7 +196,7 @@ namespace GamingZoneApp.Data.Migrations
 
                     b.HasIndex("PublisherId");
 
-                    b.ToTable("Games", t =>
+                    b.ToTable("Games", null, t =>
                         {
                             t.HasComment("Games in the system.");
                         });
@@ -229,7 +229,7 @@ namespace GamingZoneApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Publishers", t =>
+                    b.ToTable("Publishers", null, t =>
                         {
                             t.HasComment("Publishers in the system.");
                         });

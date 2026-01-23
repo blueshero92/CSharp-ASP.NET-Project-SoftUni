@@ -33,8 +33,8 @@ namespace GamingZoneApp.Data.Models
 
         [Required]
         [Column(TypeName = GameRatingType)]
-        [Comment("Videogame's average rating.")]
-        public decimal Rating { get; set; }
+        [Comment("Videogame's average rating. Default value used, because users will rate the game")]
+        public decimal Rating { get; set; } = 0.0m;
 
         [Required]
         [Comment("Shows if the videogame is deleted.")]
