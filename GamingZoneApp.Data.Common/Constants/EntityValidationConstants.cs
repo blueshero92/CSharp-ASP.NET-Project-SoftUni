@@ -8,11 +8,20 @@ namespace GamingZoneApp.Data.Common.Constants
 
         public class GameConstants
         {
-            
+            /// <summary>
+            /// Title should be able to store text with length of at least 2 characters.
+            /// </summary>
+            public const int TitleMinLength = 2;
+
             /// <summary>
             /// Title should be able to store text with length up to 184 characters.
             /// </summary>
             public const int TitleMaxLength = 184;
+
+            /// <summary>
+            /// Game description should be able to store text with length of at least to 256 characters.
+            /// </summary>
+            public const int GameDescriptionMinLength = 256;
 
             /// <summary>
             /// Game description should be able to store text with length up to 2048 characters.
@@ -25,6 +34,11 @@ namespace GamingZoneApp.Data.Common.Constants
             public const string GameRatingType = "DECIMAL(3,1)";
 
             /// <summary>
+            /// This is the maximum value for the game rating.
+            /// </summary>
+            public const decimal GameRatingMaxValue = 10.0m;
+
+            /// <summary>
             /// Image URL should be able to store text with length up to 2048 characters.
             /// </summary>
             public const int ImageUrlMaxLength = 2048;
@@ -33,9 +47,19 @@ namespace GamingZoneApp.Data.Common.Constants
         public class DeveloperConstants
         {
             /// <summary>
+            /// Developer Name should be able to store text with length of at least 2 characters.
+            /// </summary>
+            public const int DevNameMinLength = 2;
+
+            /// <summary>
             /// Developer name should be able to store text with length up to 128 characters.
             /// </summary>
             public const int DevNameMaxLength = 128;
+
+            /// <summary>
+            /// Developer description should be able to store text with length of at least to 256 characters.
+            /// </summary>
+            public const int DevDescriptionMinLength = 256;
 
             /// <summary>
             /// Developer description should be able to store text with length up to 2048 characters.
@@ -51,9 +75,19 @@ namespace GamingZoneApp.Data.Common.Constants
         public class PublisherConstants
         {
             /// <summary>
+            /// Publisher Name should be able to store text with length of at least 2 characters.
+            /// </summary>
+            public const int PublisherNameMinLength = 2;
+
+            /// <summary>
             /// Publisher name should be able to store text with length up to 128 characters.
             /// </summary>
             public const int PublisherNameMaxLength = 128;
+
+            /// <summary>
+            /// Publisher description should be able to store text with length of at least to 256 characters.
+            /// </summary>
+            public const int PublisherDescriptionMinLength = 256;
 
             /// <summary>
             /// Publisher description should be able to store text with length up to 2048 characters.
