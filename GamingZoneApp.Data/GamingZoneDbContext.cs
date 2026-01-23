@@ -7,11 +7,6 @@ namespace GamingZoneApp.Data
 {
     public class GamingZoneDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
-        //Empty constructor for debugging purposes.
-        public GamingZoneDbContext()
-        {
-        }
-
         public GamingZoneDbContext(DbContextOptions<GamingZoneDbContext> options)
             : base(options)
         {
@@ -26,5 +21,15 @@ namespace GamingZoneApp.Data
         public DbSet<Game> Games { get; set; } = null!;
 
         public DbSet<Publisher> Publishers { get; set; } = null!;
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Apply all configurations from the GamingZoneApp.Data to seed the database.
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(GamingZoneDbContext).Assembly);
+        }
     }
+
 } 
