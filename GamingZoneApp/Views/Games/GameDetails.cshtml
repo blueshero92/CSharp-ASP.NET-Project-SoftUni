@@ -1,0 +1,108 @@
+﻿@model Game
+
+@{
+    ViewData["Title"] = Model?.Title ?? "Game Details";
+}
+
+<div class="container mt-5">
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <!-- Game Header -->
+                <div class="mb-4">
+                    <a href="@Url.Action("Index", "Games")" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Back to Games
+                    </a>
+                </div>
+
+                <!-- Game Card -->
+                <div class="card shadow-lg mb-4">
+                    <!-- Game Image -->
+                    <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title" style="max-height: 400px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <!-- Title -->
+                        <h1 class="card-title mb-3">@Model.Title</h1>
+
+                        <!-- Genre and Rating -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Genre:</strong></p>
+                                <span class="badge bg-primary">@Model.Genre.ToString()</span>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Rating:</strong></p>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="h5 mb-0">@Model.Rating.ToString("F1")</span>
+                                    <span class="text-warning">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            @if (i < (int)Model.Rating)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Release Date -->
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Release Date:</strong></p>
+                            <p class="text-muted">@Model.ReleaseDate.ToString("dd/MM/yyyy")</p>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <h5 class="mb-2">About</h5>
+                            <p class="text-justify">@Model.Description</p>
+                        </div>
+
+                        <!-- Developer Info -->
+                        <div class="card mb-4 border-light bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title">Developer</h6>
+                                <div class="d-flex align-items-start gap-3">
+                                    <img src="@Model.Developer.ImageUrl" alt="@Model.Developer.Name" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
+                                    <div>
+                                        <h6 class="mb-2">@Model.Developer.Name</h6>
+                                        <p class="small text-muted mb-0">@Model.Developer.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Publisher Info -->
+                        <div class="card border-light bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title">Publisher</h6>
+                                <div class="d-flex align-items-start gap-3">
+                                    <img src="@Model.Publisher.ImageUrl" alt="@Model.Publisher.Name" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
+                                    <div>
+                                        <h6 class="mb-2">@Model.Publisher.Name</h6>
+                                        <p class="small text-muted mb-0">@Model.Publisher.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Game Not Found</h4>
+            <p>The requested game could not be found. Please try again.</p>
+            <hr>
+            <a href="@Url.Action("Index", "Games")" class="btn btn-primary btn-sm">Back to Games</a>
+        </div>
+    }
+</div>

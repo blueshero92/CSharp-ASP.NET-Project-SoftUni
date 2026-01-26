@@ -1,30 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using GamingZoneApp.Data;
+using GamingZoneApp.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
+using NuGet.Protocol;
+
 namespace GamingZoneApp.Controllers
 {
     public class GamesController : Controller
     {
-        public IActionResult Index()
+        private readonly GamingZoneDbContext dbContext;
+
+        public GamesController(GamingZoneDbContext dbContext)
         {
-            return View();
+            this.dbContext = dbContext;
         }
 
-        [Route("Games/GameDetails/{id}")]
-        public IActionResult GameDetails(int id)
+        [HttpGet]
+        public IActionResult Index()
         {
-            string errorMessage = string.Empty;
+            IEnumerable<Game> games = dbContext
+                                     .Games
+                                     .Include(g => g.Developer)
+                                     .OrderBy(g => g.Title)
+                                     .AsNoTracking()
+                                     .ToList();
 
-            if(id <= 0)
+            return View(games);
+        }
+
+
+        [HttpGet]
+        public IActionResult GameDetails(Guid id)
+        {
+            Game? selectedGame = dbContext
+                               .Games
+                               .Include(g => g.Developer)
+                               .Include(g => g.Publisher)
+                               .AsNoTracking()
+                               .AsSplitQuery()
+                               .SingleOrDefault(g => g.Id == id);
+
+
+            if (selectedGame == null)
             {
-                errorMessage = "Invalid game Id.";                
-            }
-            else
-            {
-                errorMessage = $"Game with Id: {id}";
+                return NotFound();
             }
 
-            return Ok(errorMessage);
-                
+            return View(selectedGame);
+
         }
     }
 }
