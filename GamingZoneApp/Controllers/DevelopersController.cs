@@ -13,6 +13,10 @@ namespace GamingZoneApp.Controllers
         {
             this.dbContext = dbContext;
         }
+
+        //Visualize all developers.
+
+        [HttpGet]
         public IActionResult Index()
         {
             IEnumerable<Developer> developers = dbContext
@@ -27,6 +31,8 @@ namespace GamingZoneApp.Controllers
 
         //Visualize all games by a specific developer.
         //Created buttons to be able to access this view from the Developers/Index view.
+
+        [HttpGet]
         public IActionResult DeveloperGames(Guid developerId)
         {
             IEnumerable<Game> gamesByDev = dbContext

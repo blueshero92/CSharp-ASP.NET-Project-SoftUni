@@ -17,6 +17,8 @@ namespace GamingZoneApp.Controllers
             this.dbContext = dbContext;
         }
 
+        //Visualize all games.
+
         [HttpGet]
         public IActionResult Index()
         {
