@@ -2,7 +2,7 @@
 
 namespace GamingZoneApp.Data.Common.Constants
 {
-    public static class EntityValidationConstants
+    public static class ValidationConstants
     {
     
 
@@ -32,6 +32,11 @@ namespace GamingZoneApp.Data.Common.Constants
             /// Column type of the rating should have 2 digits before and 1 digit after the decimal point.
             /// </summary>
             public const string GameRatingType = "DECIMAL(3,1)";
+
+            /// <summary>
+            /// Release date column type should be datetime2.
+            /// </summary>
+            public const string ReleaseDateType = "datetime2";
 
             /// <summary>
             /// This is the maximum value for the game rating.

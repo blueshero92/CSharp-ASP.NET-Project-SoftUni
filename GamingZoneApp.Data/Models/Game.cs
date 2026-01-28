@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static GamingZoneApp.Data.Common.Constants.EntityValidationConstants.GameConstants;
+using static GamingZoneApp.Data.Common.Constants.ValidationConstants.GameConstants;
 
 namespace GamingZoneApp.Data.Models
 {
@@ -19,6 +19,7 @@ namespace GamingZoneApp.Data.Models
         public string Title { get; set; } = null!;
 
         [Required]
+        [Column(TypeName = ReleaseDateType)]
         [Comment("Videogame Release Date.")]
         public DateTime ReleaseDate { get; set; } 
 

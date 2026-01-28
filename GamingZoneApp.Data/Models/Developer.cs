@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-using static GamingZoneApp.Data.Common.Constants.EntityValidationConstants.DeveloperConstants;
+using static GamingZoneApp.Data.Common.Constants.ValidationConstants.DeveloperConstants;
 
 namespace GamingZoneApp.Data.Models
 {

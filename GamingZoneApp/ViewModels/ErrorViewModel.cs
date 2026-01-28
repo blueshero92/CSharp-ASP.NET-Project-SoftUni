@@ -1,4 +1,4 @@
-namespace GamingZoneApp.Models
+namespace GamingZoneApp.ViewModels
 {
     public class ErrorViewModel
     {
