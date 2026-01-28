@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Publisher>
+
+@{
+    ViewData["Title"] = "Publishers";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="alert alert-info" role="alert">
+        <p>Explore our collection the most renowned game publishers. Click the "View Games" button to see all games published.</p>        
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (Publisher publisher in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img class="card-img-top" src="@publisher.ImageUrl" alt="@publisher.Name logo">
+                        <div class="card-body">
+                            <h5 class="card-title">@publisher.Name</h5>
+                            <p class="card-text text-muted">
+                                <small>Games Published: <strong>@publisher.GamesPublished.Count</strong></small>
+                            </p>
+                            <p class="card-text">
+                                @if (!string.IsNullOrEmpty(publisher.Description))
+                                {
+                                    <span>@publisher.Description</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted"><em>No description available.</em></span>
+                                }
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a asp-action="PublisherGames" asp-route-publisherId="@publisher.Id" class="btn btn-primary btn-sm w-100">
+                                <i class="bi bi-controller"></i> View Games
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            <p class="mb-0">No publishers found. Please check back later.</p>
+        </div>
+    }
+</div>

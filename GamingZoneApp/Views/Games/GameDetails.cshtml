@@ -11,8 +11,8 @@
             <div class="col-lg-8 offset-lg-2">
                 <!-- Game Header -->
                 <div class="mb-4">
-                    <a href="@Url.Action("Index", "Games")" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-arrow-left"></i> Back to Games
+                    <a asp-action="Index" asp-controller="Games" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Back to All Games
                     </a>
                 </div>
 
@@ -102,7 +102,7 @@
             <h4 class="alert-heading">Game Not Found</h4>
             <p>The requested game could not be found. Please try again.</p>
             <hr>
-            <a href="@Url.Action("Index", "Games")" class="btn btn-primary btn-sm">Back to Games</a>
+            <a asp-action="Index" asp-controller="Games" class="btn btn-primary btn-sm">Back to Games</a>
         </div>
     }
 </div>

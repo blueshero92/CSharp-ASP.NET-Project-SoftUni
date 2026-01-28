@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Game>
+
+@{
+    ViewData["Title"] = "Publisher Games";
+}
+
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="alert alert-info" role="alert">
+        <p>Explore the amazing video games by the publisher. Discover detailed information about each title!
+    </div>
+
+    <partial name="_AllGamesPartial" model="@Model" />
+</div>

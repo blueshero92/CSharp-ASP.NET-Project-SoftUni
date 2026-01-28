@@ -15,8 +15,8 @@ else
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">@game.Title</h5>
                         <p class="card-text small text-muted">
-                            <strong>@game.Genre</strong><br>
-                            @game.Developer.Name
+                            Genre: <strong>@game.Genre</strong><br>
+                            Developer: <strong>@game.Developer.Name</strong><br>
                         </p>
                         <a href="@Url.Action("GameDetails", "Games", new { id = game.Id })" class="btn btn-primary btn-sm mt-auto">Details</a>
                     </div>

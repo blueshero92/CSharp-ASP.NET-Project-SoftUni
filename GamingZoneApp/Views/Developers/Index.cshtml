@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Developer>
+
+@{
+    ViewData["Title"] = "Developers";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="alert alert-info" role="alert">
+        <p>Explore our collection of talented game developers. Click the "View Games" button to see all games developed by each studio.</p>
+        <hr>
+        <p class="mb-0">Discover innovative studios and independent developers creating amazing gaming experiences worldwide.</p>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (var developer in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img class="card-img-top" src="@developer.ImageUrl" alt="@developer.Name logo">
+                        <div class="card-body">
+                            <h5 class="card-title">@developer.Name</h5>
+                            <p class="card-text text-muted">
+                                <small>Games Developed: <strong>@developer.GamesDeveloped.Count</strong></small>
+                            </p>
+                            <p class="card-text">
+                                @if (!string.IsNullOrEmpty(developer.Description))
+                                {
+                                    <span>@developer.Description</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted"><em>No description available.</em></span>
+                                }
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a asp-action="DeveloperGames" asp-route-developerId="@developer.Id" class="btn btn-primary btn-sm w-100">
+                                <i class="bi bi-controller"></i> View Games
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            <p class="mb-0">No developers found. Please check back later.</p>
+        </div>
+    }
+</div>
