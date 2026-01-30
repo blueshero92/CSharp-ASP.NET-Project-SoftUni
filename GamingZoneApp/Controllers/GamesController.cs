@@ -5,6 +5,7 @@ using GamingZoneApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using NuGet.Protocol;
+using GamingZoneApp.ViewModels.Game;
 
 namespace GamingZoneApp.Controllers
 {
@@ -17,19 +18,28 @@ namespace GamingZoneApp.Controllers
             this.dbContext = dbContext;
         }
 
-        //Visualize all games.
+        //Visualize all games using a view model.
 
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Game> games = dbContext
+            IEnumerable<AllGamesViewModel> allGames = dbContext
                                      .Games
                                      .Include(g => g.Developer)
+                                     .Select( g => new AllGamesViewModel
+                                     {
+                                         Id = g.Id,
+                                         Title = g.Title,
+                                         ImageUrl = g.ImageUrl,                                         
+                                         Genre = g.Genre.ToString(),
+                                         Developer = g.Developer.Name,
+                                         
+                                     })
                                      .OrderBy(g => g.Title)
                                      .AsNoTracking()
                                      .ToList();
 
-            return View(games);
+            return View(allGames);
         }
 
 

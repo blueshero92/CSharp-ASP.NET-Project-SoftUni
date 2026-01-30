@@ -1,5 +1,6 @@
 ﻿using GamingZoneApp.Data;
 using GamingZoneApp.Data.Models;
+using GamingZoneApp.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,17 +30,25 @@ namespace GamingZoneApp.Controllers
             return View(publishers);
         }
 
-        //Visualize all games by a specific publisherr.
+        //Visualize all games by a specific publisher using a view model.
         //Created buttons to be able to access this view from the Publishers/Index view.
 
         [HttpGet]
         public IActionResult PublisherGames(Guid publisherId)
         {
-            IEnumerable<Game> gamesByPublisher = dbContext
+            IEnumerable<AllGamesViewModel> gamesByPublisher = dbContext
                                        .Games
                                        .Include(g => g.Developer)
                                        .Include(g => g.Publisher)
                                        .Where(g => g.PublisherId == publisherId)
+                                       .Select(g => new AllGamesViewModel
+                                        {
+                                             Id = g.Id,
+                                             Title = g.Title,
+                                             ImageUrl = g.ImageUrl,
+                                             Genre = g.Genre.ToString(),
+                                             Developer = g.Developer.Name
+                                        })
                                        .AsNoTracking()
                                        .AsSplitQuery()
                                        .ToList();
