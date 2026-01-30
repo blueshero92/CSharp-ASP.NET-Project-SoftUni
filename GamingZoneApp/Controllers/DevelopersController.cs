@@ -1,5 +1,5 @@
 ﻿using GamingZoneApp.Data;
-using GamingZoneApp.Data.Models;
+using GamingZoneApp.ViewModels.Developer;
 using GamingZoneApp.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +15,22 @@ namespace GamingZoneApp.Controllers
             this.dbContext = dbContext;
         }
 
-        //Visualize all developers.
+        //Visualize all developers using view model.
 
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Developer> developers = dbContext
+            IEnumerable<AllDevelopersViewModel> developers = dbContext
                                              .Developers
                                              .Include(d => d.GamesDeveloped)
+                                             .Select(d => new AllDevelopersViewModel
+                                                {
+                                                    Id = d.Id,
+                                                    Name = d.Name,
+                                                    GamesDeveloped = d.GamesDeveloped.Count,
+                                                    Description = d.Description,
+                                                    ImageUrl = d.ImageUrl,
+                                                })
                                              .OrderBy(d => d.Name)
                                              .AsNoTracking()
                                              .ToList();

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using GamingZoneApp.Data;
-using GamingZoneApp.Data.Models;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.HttpResults;
-using NuGet.Protocol;
+
 using GamingZoneApp.ViewModels.Game;
 
 namespace GamingZoneApp.Controllers
@@ -42,7 +41,7 @@ namespace GamingZoneApp.Controllers
             return View(allGames);
         }
 
-
+        //Visualize game details for an individual game using a view model.
         [HttpGet]
         public IActionResult GameDetails(Guid id)
         {

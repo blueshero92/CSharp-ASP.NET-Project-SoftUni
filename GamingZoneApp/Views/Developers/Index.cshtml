@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Developer>
+﻿@using GamingZoneApp.ViewModels.Developer
+@model IEnumerable<AllDevelopersViewModel>
 
 @{
     ViewData["Title"] = "Developers";
@@ -24,7 +25,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@developer.Name</h5>
                             <p class="card-text text-muted">
-                                <small>Games Developed: <strong>@developer.GamesDeveloped.Count</strong></small>
+                                <small>Games Developed: <strong>@developer.GamesDeveloped</strong></small>
                             </p>
                             <p class="card-text">
                                 @if (!string.IsNullOrEmpty(developer.Description))

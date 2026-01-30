@@ -1,7 +1,8 @@
-﻿using GamingZoneApp.Data.Models;
-
-namespace GamingZoneApp.ViewModels.Game
+﻿namespace GamingZoneApp.ViewModels.Game
 {
+    using GamingZoneApp.Data.Models;
+
+    // View model for displaying detailed information about an individual game.
     public class GameViewModel
     {
         public Guid Id { get; set; }
