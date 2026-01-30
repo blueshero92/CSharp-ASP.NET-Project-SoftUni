@@ -1,6 +1,7 @@
 ﻿using GamingZoneApp.Data;
 using GamingZoneApp.Data.Models;
 using GamingZoneApp.ViewModels.Game;
+using GamingZoneApp.ViewModels.Publisher;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,15 +16,23 @@ namespace GamingZoneApp.Controllers
             this.dbContext = dbContext;
         }
 
-        //Visualize all publishers.
+        //Visualize all publishers using a view model.
 
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Publisher> publishers = dbContext
+            IEnumerable<AllPublishersViewModel> publishers = dbContext
                                              .Publishers
                                              .Include(p => p.GamesPublished)
                                              .OrderBy(p => p.Name)
+                                             .Select(p => new AllPublishersViewModel
+                                                {
+                                                    Id = p.Id,
+                                                    Name = p.Name,
+                                                    Description = p.Description,
+                                                    GamesPublished = p.GamesPublished.Count,
+                                                    ImageUrl = p.ImageUrl,
+                                                })
                                              .AsNoTracking()
                                              .ToList();
 
