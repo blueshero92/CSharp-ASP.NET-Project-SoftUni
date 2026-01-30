@@ -46,10 +46,22 @@ namespace GamingZoneApp.Controllers
         [HttpGet]
         public IActionResult GameDetails(Guid id)
         {
-            Game? selectedGame = dbContext
+            GameViewModel? selectedGame = dbContext
                                .Games
                                .Include(g => g.Developer)
                                .Include(g => g.Publisher)
+                               .Select(g => new GameViewModel
+                               {
+                                   Id = g.Id,
+                                   Title = g.Title,
+                                   ReleaseDate = g.ReleaseDate.ToString("dd/MM/yyyy"),
+                                   Genre = g.Genre.ToString(),
+                                   Description = g.Description,
+                                   Rating = g.Rating,
+                                   ImageUrl = g.ImageUrl,
+                                   Developer = g.Developer,
+                                   Publisher = g.Publisher
+                               })
                                .AsNoTracking()
                                .AsSplitQuery()
                                .SingleOrDefault(g => g.Id == id);

@@ -1,4 +1,5 @@
-﻿@model Game
+﻿@using GamingZoneApp.ViewModels.Game
+@model GameViewModel
 
 @{
     ViewData["Title"] = Model?.Title ?? "Game Details";
@@ -55,7 +56,7 @@
                         <!-- Release Date -->
                         <div class="mb-3">
                             <p class="mb-1"><strong>Release Date:</strong></p>
-                            <p class="text-muted">@Model.ReleaseDate.ToString("dd/MM/yyyy")</p>
+                            <p class="text-muted">@Model.ReleaseDate</p>
                         </div>
 
                         <!-- Description -->
