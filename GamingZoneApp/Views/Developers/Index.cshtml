@@ -23,10 +23,7 @@
                     <div class="card h-100 shadow-sm">
                         <img class="card-img-top" src="@developer.ImageUrl" alt="@developer.Name logo">
                         <div class="card-body">
-                            <h5 class="card-title">@developer.Name</h5>
-                            <p class="card-text text-muted">
-                                <small>Games Developed: <strong>@developer.GamesDeveloped</strong></small>
-                            </p>
+                            <h5 class="card-title">@developer.Name</h5>                            
                             <p class="card-text">
                                 @if (!string.IsNullOrEmpty(developer.Description))
                                 {
@@ -40,7 +37,7 @@
                         </div>
                         <div class="card-footer bg-transparent border-top-0">
                             <a asp-action="DeveloperGames" asp-route-developerId="@developer.Id" class="btn btn-primary btn-sm w-100">
-                                <i class="bi bi-controller"></i> View Games
+                                <i class="bi bi-controller"></i> View Games (@developer.GamesDeveloped)
                             </a>
                         </div>
                     </div>

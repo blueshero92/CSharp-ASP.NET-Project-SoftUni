@@ -22,9 +22,6 @@
                         <img class="card-img-top" src="@publisher.ImageUrl" alt="@publisher.Name logo">
                         <div class="card-body">
                             <h5 class="card-title">@publisher.Name</h5>
-                            <p class="card-text text-muted">
-                                <small>Games Published: <strong>@publisher.GamesPublished</strong></small>
-                            </p>
                             <p class="card-text">
                                 @if (!string.IsNullOrEmpty(publisher.Description))
                                 {
@@ -38,7 +35,7 @@
                         </div>
                         <div class="card-footer bg-transparent border-top-0">
                             <a asp-action="PublisherGames" asp-route-publisherId="@publisher.Id" class="btn btn-primary btn-sm w-100">
-                                <i class="bi bi-controller"></i> View Games
+								<i class="bi bi-controller"></i> View Games (@publisher.GamesPublished)
                             </a>
                         </div>
                     </div>
