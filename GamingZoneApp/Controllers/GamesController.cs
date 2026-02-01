@@ -58,8 +58,11 @@ namespace GamingZoneApp.Controllers
                                    Description = g.Description,
                                    Rating = g.Rating,
                                    ImageUrl = g.ImageUrl,
-                                   Developer = g.Developer,
-                                   Publisher = g.Publisher
+                                   Developer = g.Developer.Name,
+                                   Publisher = g.Publisher.Name,
+                                   DeveloperLogoUrl = g.Developer.ImageUrl,
+                                   PublisherLogoUrl = g.Publisher.ImageUrl
+
                                })
                                .AsNoTracking()
                                .AsSplitQuery()

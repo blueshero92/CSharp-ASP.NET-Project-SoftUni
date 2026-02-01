@@ -12,7 +12,11 @@
         public string Description { get; set; } = null!;
         public decimal Rating { get; set; }
         public string ImageUrl { get; set; } = null!;
-        public Developer Developer { get; set; } = null!;
-        public Publisher Publisher { get; set; } = null!;
+        public string Developer { get; set; } = null!;
+        public string Publisher { get; set; } = null!;
+
+        public string DeveloperLogoUrl { get; set; } = null!;
+
+        public string PublisherLogoUrl { get; set; } = null!;
     }
 }

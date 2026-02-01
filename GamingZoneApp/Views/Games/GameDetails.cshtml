@@ -65,29 +65,30 @@
                             <p class="text-justify">@Model.Description</p>
                         </div>
 
-                        <!-- Developer Info -->
-                        <div class="card mb-4 border-light bg-light">
-                            <div class="card-body">
-                                <h6 class="card-title">Developer</h6>
-                                <div class="d-flex align-items-start gap-3">
-                                    <img src="@Model.Developer.ImageUrl" alt="@Model.Developer.Name" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
-                                    <div>
-                                        <h6 class="mb-2">@Model.Developer.Name</h6>
-                                        <p class="small text-muted mb-0">@Model.Developer.Description</p>
+                        <!-- Developer and Publisher Info -->
+                        <div class="row g-3">
+                            <!-- Developer Info -->
+                            <div class="col-md-6">
+                                <div class="card border-light bg-light h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title mb-3">Developer</h6>
+                                        <div class="d-flex flex-column align-items-center text-center">
+                                            <img src="@Model.DeveloperLogoUrl" alt="@Model.Developer" class="rounded mb-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                            <h6 class="mb-0">@Model.Developer</h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Publisher Info -->
-                        <div class="card border-light bg-light">
-                            <div class="card-body">
-                                <h6 class="card-title">Publisher</h6>
-                                <div class="d-flex align-items-start gap-3">
-                                    <img src="@Model.Publisher.ImageUrl" alt="@Model.Publisher.Name" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
-                                    <div>
-                                        <h6 class="mb-2">@Model.Publisher.Name</h6>
-                                        <p class="small text-muted mb-0">@Model.Publisher.Description</p>
+                            <!-- Publisher Info -->
+                            <div class="col-md-6">
+                                <div class="card border-light bg-light h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title mb-3">Publisher</h6>
+                                        <div class="d-flex flex-column align-items-center text-center">
+                                            <img src="@Model.PublisherLogoUrl" alt="@Model.Publisher" class="rounded mb-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                            <h6 class="mb-0">@Model.Publisher</h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
