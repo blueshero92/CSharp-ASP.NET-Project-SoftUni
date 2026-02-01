@@ -19,7 +19,7 @@ else
                             Genre: <strong>@game.Genre</strong><br>
                             Developer: <strong>@game.Developer</strong><br>
                         </p>
-                        <a href="@Url.Action("GameDetails", "Games", new { id = game.Id })" class="btn btn-primary btn-sm mt-auto">Details</a>
+                        <a asp-controller="Games" asp-action="GameDetails" asp-route-id="@game.Id" class="btn btn-primary btn-sm mt-auto">Details</a>
                     </div>
                 </div>
             </div>
