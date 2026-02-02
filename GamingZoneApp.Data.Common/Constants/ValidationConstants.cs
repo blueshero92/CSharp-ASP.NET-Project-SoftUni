@@ -21,7 +21,7 @@ namespace GamingZoneApp.Data.Common.Constants
             /// <summary>
             /// Game description should be able to store text with length of at least to 256 characters.
             /// </summary>
-            public const int GameDescriptionMinLength = 256;
+            public const int GameDescriptionMinLength = 20;
 
             /// <summary>
             /// Game description should be able to store text with length up to 2048 characters.
@@ -42,6 +42,11 @@ namespace GamingZoneApp.Data.Common.Constants
             /// This is the maximum value for the game rating.
             /// </summary>
             public const decimal GameRatingMaxValue = 10.0m;
+
+            /// <summary>
+            /// Image URL should be able to store text with length of at least 7 characters.
+            /// </summary>
+            public const int ImageUrlMinLength = 7;
 
             /// <summary>
             /// Image URL should be able to store text with length up to 2048 characters.
