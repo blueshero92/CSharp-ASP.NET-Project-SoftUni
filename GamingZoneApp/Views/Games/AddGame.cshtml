@@ -1,8 +1,11 @@
 ﻿@using GamingZoneApp.Data.Models.Enums
 @using GamingZoneApp.ViewModels.Game
+@using System.Globalization
+@using static GamingZoneApp.Data.Common.Constants.AppConstants;
 @model GameInputModel
 @{
     ViewData["Title"] = "Add Game";
+	string today = DateTime.Now.ToString(DateFormat, CultureInfo.InvariantCulture);
 }
 
 <div class="container mt-5">
@@ -22,7 +25,7 @@
 
                         <div class="mb-3">
                             <label asp-for="ReleaseDate" class="form-label">Release Date</label>
-                            <input type="date" class="form-control" id="ReleaseDate" name="ReleaseDate" required>
+                            <input asp-for="ReleaseDate" type="date" class="form-control" max="@today">
                             <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                         </div>
 

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using GamingZoneApp.Data.Models;
 using GamingZoneApp.Data.Models.Enums;
 
+using static GamingZoneApp.Data.Common.Constants.AppConstants;
+using System.Globalization;
+
 
 namespace GamingZoneApp.Controllers
 {
@@ -54,7 +57,7 @@ namespace GamingZoneApp.Controllers
                                {
                                    Id = g.Id,
                                    Title = g.Title,
-                                   ReleaseDate = g.ReleaseDate.ToString("dd/MM/yyyy"),
+                                   ReleaseDate = g.ReleaseDate.ToString(DateFormat, CultureInfo.InvariantCulture),
                                    Genre = g.Genre.ToString(),
                                    Description = g.Description,
                                    Rating = g.Rating,
