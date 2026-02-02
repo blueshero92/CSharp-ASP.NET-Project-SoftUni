@@ -84,7 +84,7 @@ namespace GamingZoneApp.Controllers
         [HttpGet]
         public IActionResult AddGame()
         {
-            AddGameInputModel viewModel = new AddGameInputModel()
+            GameInputModel viewModel = new GameInputModel()
             {
                 Developers = GetAllDevelopers().ToList(),
 
@@ -96,7 +96,7 @@ namespace GamingZoneApp.Controllers
 
         //Process the Add Game form submission.
         [HttpPost]
-        public IActionResult AddGame(AddGameInputModel inputModel)
+        public IActionResult AddGame(GameInputModel inputModel)
         {
             if (!ModelState.IsValid)
             {

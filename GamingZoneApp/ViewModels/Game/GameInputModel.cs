@@ -4,7 +4,7 @@ using static GamingZoneApp.Data.Common.Constants.ValidationConstants.GameConstan
 
 namespace GamingZoneApp.ViewModels.Game
 {
-    public class AddGameInputModel
+    public class GameInputModel
     {
         [Required]
         [MinLength(TitleMinLength, ErrorMessage = "Title must be at least {1} characters long.")]
