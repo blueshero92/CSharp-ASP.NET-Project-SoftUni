@@ -19,9 +19,9 @@ namespace GamingZoneApp.Data.Common.Constants
             public const int TitleMaxLength = 184;
 
             /// <summary>
-            /// Game description should be able to store text with length of at least to 256 characters.
+            /// Game description should be able to store text with length of at least to 30 characters.
             /// </summary>
-            public const int GameDescriptionMinLength = 20;
+            public const int GameDescriptionMinLength = 30;
 
             /// <summary>
             /// Game description should be able to store text with length up to 2048 characters.

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 using static GamingZoneApp.Data.Common.Constants.ValidationConstants.GameConstants;
+using static GamingZoneApp.Data.Common.Constants.AppConstants;
 
 
 namespace GamingZoneApp.ViewModels.Game
@@ -12,9 +14,11 @@ namespace GamingZoneApp.ViewModels.Game
         public string Title { get; set; } = null!;
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0" + DateFormat + "}", ApplyFormatInEditMode = true)]
+        [RegularExpression(ReleaseDateValidationRegex, ErrorMessage = "Release date must be in the format yyyy-MM-dd.")]
         public DateTime ReleaseDate { get; set; }
 
-        [Required]
+        [Required]        
         public string Genre { get; set; } = null!;
 
         [Required]
@@ -27,14 +31,14 @@ namespace GamingZoneApp.ViewModels.Game
         [MaxLength(ImageUrlMaxLength, ErrorMessage = "Image URL cannot exceed {1} characters.")]
         public string ImageUrl { get; set; } = null!;
 
-        [Required(ErrorMessage = "Please select a developer!")]
+        [Required(ErrorMessage = "Please select a developer.")]
         public Guid DeveloperId { get; set; }
 
         [Required]
         public ICollection<AddGameDeveloperViewModel> Developers { get; set; } 
             = new List<AddGameDeveloperViewModel>();
 
-        [Required(ErrorMessage = "Please select a publisher!")]
+        [Required(ErrorMessage = "Please select a publisher.")]
         public Guid PublisherId { get; set; }
 
         [Required]
