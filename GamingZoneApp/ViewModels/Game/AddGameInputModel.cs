@@ -7,8 +7,8 @@ namespace GamingZoneApp.ViewModels.Game
     public class AddGameInputModel
     {
         [Required]
-        [MinLength(TitleMinLength)]
-        [MaxLength(TitleMaxLength)]
+        [MinLength(TitleMinLength, ErrorMessage = "Title must be at least {1} characters long.")]
+        [MaxLength(TitleMaxLength, ErrorMessage = "Title cannot exceed {1} characters.")]
         public string Title { get; set; } = null!;
 
         [Required]
@@ -18,23 +18,23 @@ namespace GamingZoneApp.ViewModels.Game
         public string Genre { get; set; } = null!;
 
         [Required]
-        [MinLength(GameDescriptionMinLength)]
-        [MaxLength(GameDescriptionMaxLength)]
+        [MinLength(GameDescriptionMinLength, ErrorMessage = "Description must be at least {1} characters long.")]
+        [MaxLength(GameDescriptionMaxLength, ErrorMessage = "Description cannot exceed {1} characters.")]
         public string Description { get; set; } = null!;
 
         [Required]
-        [MinLength(ImageUrlMinLength)]
-        [MaxLength(ImageUrlMaxLength)]
+        [MinLength(ImageUrlMinLength, ErrorMessage = "Image URL must be at least {1} characters long.")]
+        [MaxLength(ImageUrlMaxLength, ErrorMessage = "Image URL cannot exceed {1} characters.")]
         public string ImageUrl { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = "Please select a developer!")]
         public Guid DeveloperId { get; set; }
 
         [Required]
         public ICollection<AddGameDeveloperViewModel> Developers { get; set; } 
             = new List<AddGameDeveloperViewModel>();
 
-        [Required]
+        [Required(ErrorMessage = "Please select a publisher!")]
         public Guid PublisherId { get; set; }
 
         [Required]
