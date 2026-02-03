@@ -238,13 +238,20 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
+            Game? gameToEdit = dbContext
+                                .Games
+                                .Include(g => g.Developer)
+                                .Include(g => g.Publisher)
+                                .SingleOrDefault(g => g.Id == id);
+
+            if(gameToEdit == null)
+            {
+                return NotFound();
+            }
+
             //Try to update and save the edited game. Catch any exceptions and return the view with an error message.
             try
-            {
-                Game gameToEdit = dbContext
-                                .Games
-                                .Single(g => g.Id == id);
-
+            {                
                 gameToEdit.Title = inputModel.Title;
                 gameToEdit.ReleaseDate = inputModel.ReleaseDate;
                 gameToEdit.Genre = Enum.Parse<Genre>(inputModel.Genre);
