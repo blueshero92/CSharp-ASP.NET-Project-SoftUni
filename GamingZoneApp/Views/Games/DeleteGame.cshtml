@@ -1,0 +1,35 @@
+﻿@using GamingZoneApp.ViewModels.Game
+@model DeleteGameViewModel
+@{
+    ViewData["Title"] = "Delete Game";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h5 class="alert-heading">Are you sure?</h5>
+                        <p>You are about to delete the following game:</p>
+                        <hr>
+                        <p class="mb-0"><strong>@Model.Title</strong></p>
+                    </div>
+
+                    <p class="text-muted">This action cannot be undone.</p>
+
+                    <form asp-action="DeleteGame" method="post">
+                        <input type="hidden" asp-for="Title" />
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" asp-controller="Games" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

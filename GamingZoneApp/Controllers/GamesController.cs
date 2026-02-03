@@ -275,6 +275,79 @@ namespace GamingZoneApp.Controllers
             }
         }
 
+        //Visualize the Delete Game confirmation page.
+        [HttpGet]
+        public IActionResult DeleteGame(Guid id)
+        {
+            //Check if the game exists in the database for it to be deleted.
+            if(!GameExists(id))
+            {
+                return BadRequest();
+            }
+
+            //Retrieve the game to be deleted.
+            Game? gameToDelete = dbContext
+                                .Games
+                                .Include(g => g.Developer)
+                                .Include(g => g.Publisher)
+                                .AsNoTracking()
+                                .SingleOrDefault(g => g.Id == id);
+
+            //If the game is not found, return NotFound.
+            if (gameToDelete == null)
+            {
+                return NotFound();
+            }
+
+            DeleteGameViewModel viewModel = new DeleteGameViewModel
+            {
+                Title = gameToDelete.Title,           
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteGame(Guid id, DeleteGameViewModel? viewModel)
+        {
+            //Check if the game exists in the database for it to be deleted.
+            if(!GameExists(id))
+            {
+                return BadRequest();
+            }
+
+            //Retrieve the game to be deleted.
+            Game? gameToDelete = dbContext
+                                .Games
+                                .Include(g => g.Developer)
+                                .Include(g => g.Publisher)
+                                .SingleOrDefault(g => g.Id == id);
+
+            //If the game is not found, return NotFound.
+            if (gameToDelete == null)
+            {
+                return NotFound();
+            }
+
+            //Try to delete the game. Catch any exceptions and return the view with an error message.
+            try
+            {
+                dbContext.Games.Remove(gameToDelete);
+                dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+
+                ModelState.AddModelError(string.Empty, "An error occurred while deleting the game. Please try again.");
+
+                return View(viewModel);
+            }
+        }
+
+
         //Helper method to check if a game exists in the database.
         private bool GameExists(Guid gameId)
         {
