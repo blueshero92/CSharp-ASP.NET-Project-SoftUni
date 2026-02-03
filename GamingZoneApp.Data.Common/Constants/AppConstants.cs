@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GamingZoneApp.Data.Common.Constants
+﻿namespace GamingZoneApp.Data.Common.Constants
 {
     public static class AppConstants
     {
         //Standard date format used across the application.
         public const string DateFormat = "yyyy-MM-dd";
-
-        //Regex pattern to validate date in the format "yyyy-MM-dd".
-        public const string ReleaseDateValidationRegex = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 
         /// <summary>
         /// This is the minimum value for the game rating.
@@ -23,5 +14,11 @@ namespace GamingZoneApp.Data.Common.Constants
         /// This is the maximum value for the game rating.
         /// </summary>
         public const decimal GameRatingMaxValue = 10.0m;
+
+        //The first ever video game was created in 1958.
+        /// <summary>
+        /// The minimum valid year for a game's release date.
+        /// </summary>
+        public const int ReleaseDateMinYear = 1958;
     }
 }

@@ -1,0 +1,93 @@
+﻿@using GamingZoneApp.Data.Models.Enums
+@using GamingZoneApp.ViewModels.Game
+@using static GamingZoneApp.Data.Common.Constants.AppConstants;
+@model GameInputModel
+@{
+    ViewData["Title"] = "Edit Game";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="mb-0">@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditGame" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label"></label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter game title">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ReleaseDate" class="form-label"></label>
+                            <input asp-for="ReleaseDate" asp-format="{0:@DateFormat}" type="text" class="form-control">
+                            <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Genre" class="form-label">Genre</label>
+                            <select asp-for="Genre" class="form-select">
+                                <option value="">-- Select Genre --</option>
+                                @foreach (var genre in Enum.GetValues<Genre>())
+                                {
+                                    <option value="@genre">@genre</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Genre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="5"
+                                      placeholder="Enter game description (minimum 20 characters)"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ImageUrl" class="form-label"></label>
+                            <input asp-for="ImageUrl" type="url" class="form-control" 
+                                   placeholder="https://example.com/image.jpg">
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DeveloperId" class="form-label">Developer</label>
+                            <select asp-for="DeveloperId" class="form-select" size="1">
+                                <option value="">-- Select Developer --</option>
+                                @foreach (AddGameDeveloperViewModel developer in Model.Developers)
+                                {
+                                    <option value="@developer.Id">@developer.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="DeveloperId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PublisherId" class="form-label">Publisher</label>
+                            <select asp-for="PublisherId" class="form-select" size="1">
+                                <option value="">-- Select Publisher --</option>
+                                @foreach (AddGamePublisherViewModel publisher in Model.Publishers)
+                                {
+                                    <option value="@publisher.Id">@publisher.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="PublisherId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" asp-controller="Games" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-warning">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

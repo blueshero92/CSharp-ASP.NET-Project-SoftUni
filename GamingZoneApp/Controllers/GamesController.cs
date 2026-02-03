@@ -14,6 +14,7 @@ namespace GamingZoneApp.Controllers
 {
     public class GamesController : Controller
     {
+
         private readonly GamingZoneDbContext dbContext;
 
         public GamesController(GamingZoneDbContext dbContext)
@@ -22,7 +23,6 @@ namespace GamingZoneApp.Controllers
         }
 
         //Visualize all games using a view model.
-
         [HttpGet]
         public IActionResult Index()
         {
@@ -87,11 +87,13 @@ namespace GamingZoneApp.Controllers
         [HttpGet]
         public IActionResult AddGame()
         {
+            //The view model to be passed to the view.
+            //This model contains the lists of developers and publishers for the dropdowns.
             GameInputModel viewModel = new GameInputModel()
             {
+                //Using helper methods to get all developers and publishers.
                 Developers = GetAllDevelopers().ToList(),
-
-                Publishers = GetAllPublishers().ToList()
+                Publishers = GetAllPublishers().ToList() 
             };
 
             return View(viewModel);
@@ -101,8 +103,11 @@ namespace GamingZoneApp.Controllers
         [HttpPost]
         public IActionResult AddGame(GameInputModel inputModel)
         {
+
+            //Validate the model state.
             if (!ModelState.IsValid)
             {
+                //Using helper methods to get all developers and publishers and return the view with the input model.
                 inputModel.Developers = GetAllDevelopers().ToList();
 
                 inputModel.Publishers = GetAllPublishers().ToList();
@@ -110,6 +115,7 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
+            //Validate that the selected developer exists.
             if (!DeveloperExists(inputModel.DeveloperId))
             {
                 ModelState.AddModelError(nameof(inputModel.DeveloperId), "Selected developer does not exist.");
@@ -117,6 +123,7 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
+            //Validate that the selected publisher exists.
             if (!PublisherExists(inputModel.PublisherId))
             {
                 ModelState.AddModelError(nameof(inputModel.PublisherId), "Selected publisher does not exist.");
@@ -124,6 +131,7 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
+            //Try to create and save the new game. Catch any exceptions and return the view with an error message.
             try
             {
                 Game newGame = new Game
@@ -150,6 +158,120 @@ namespace GamingZoneApp.Controllers
                 
                 return View(inputModel);
             }
+        }
+
+        //Visualize the Edit Game form with developers and publishers.
+        [HttpGet]
+        public IActionResult EditGame(Guid id)
+        {
+            if(!GameExists(id)) //Using helper method to check if the game exists.
+            {
+                return BadRequest();
+            }
+
+            //Retrieve the game to be edited.
+            Game? selectedGame = dbContext
+                                .Games
+                                .Include(g => g.Developer)
+                                .Include(g => g.Publisher)
+                                .AsNoTracking()
+                                .SingleOrDefault(g => g.Id == id);
+
+            //If the game is not found, return NotFound.
+            if (selectedGame == null)
+            {
+                return NotFound();
+            }
+
+            //The game input model to be passed to the view. This is the model we will edit.
+            GameInputModel gameViewModel = new()
+            {
+                Title = selectedGame.Title,
+                ReleaseDate = selectedGame.ReleaseDate,
+                Genre = selectedGame.Genre.ToString(),
+                Description = selectedGame.Description,
+                ImageUrl = selectedGame.ImageUrl,
+                DeveloperId = selectedGame.DeveloperId,
+                Developers = GetAllDevelopers().ToList(),
+                PublisherId = selectedGame.PublisherId,
+                Publishers = GetAllPublishers().ToList()
+            };
+
+
+            return View(gameViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditGame(Guid id, GameInputModel inputModel)
+        {
+            //Check if the game exists in the database for it to be edited.
+            if (!GameExists(id))
+            {
+                return BadRequest();
+            }
+
+            //Validate the model state.
+            if (!ModelState.IsValid)
+            {
+                //Using helper methods to get all developers and publishers and return the view with the input model.
+
+                inputModel.Developers = GetAllDevelopers().ToList();
+
+                inputModel.Publishers = GetAllPublishers().ToList();
+
+                return View(inputModel);
+            }
+
+            //Validate that the selected developer exists.
+            if (!DeveloperExists(inputModel.DeveloperId))
+            {
+                ModelState.AddModelError(nameof(inputModel.DeveloperId), "Selected developer does not exist.");
+
+                return View(inputModel);
+            }
+
+            //Validate that the selected publisher exists.
+            if (!PublisherExists(inputModel.PublisherId))
+            {
+                ModelState.AddModelError(nameof(inputModel.PublisherId), "Selected publisher does not exist.");
+
+                return View(inputModel);
+            }
+
+            //Try to update and save the edited game. Catch any exceptions and return the view with an error message.
+            try
+            {
+                Game gameToEdit = dbContext
+                                .Games
+                                .Single(g => g.Id == id);
+
+                gameToEdit.Title = inputModel.Title;
+                gameToEdit.ReleaseDate = inputModel.ReleaseDate;
+                gameToEdit.Genre = Enum.Parse<Genre>(inputModel.Genre);
+                gameToEdit.Description = inputModel.Description;
+                gameToEdit.ImageUrl = inputModel.ImageUrl;
+                gameToEdit.DeveloperId = inputModel.DeveloperId;
+                gameToEdit.PublisherId = inputModel.PublisherId;
+
+                dbContext.Games.Update(gameToEdit);
+                dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+
+                ModelState.AddModelError(string.Empty, "An error occurred while editing the game. Please try again.");
+
+                return View(inputModel);
+            }
+        }
+
+        //Helper method to check if a game exists in the database.
+        private bool GameExists(Guid gameId)
+        {
+            return dbContext.Games.Any(g => g.Id == gameId);
         }
 
         //Helper method to check if a developer exists in the database.

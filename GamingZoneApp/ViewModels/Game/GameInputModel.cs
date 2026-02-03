@@ -2,10 +2,12 @@
 
 using static GamingZoneApp.Data.Common.Constants.ValidationConstants.GameConstants;
 using static GamingZoneApp.Data.Common.Constants.AppConstants;
+using GamingZoneApp.Data.Common.CustomValidationAttributes;
 
 
 namespace GamingZoneApp.ViewModels.Game
 {
+    // Input model for adding/editing a game.
     public class GameInputModel
     {
         [Required]
@@ -15,7 +17,7 @@ namespace GamingZoneApp.ViewModels.Game
 
         [Required]
         [DisplayFormat(DataFormatString = "{0" + DateFormat + "}", ApplyFormatInEditMode = true)]
-        [RegularExpression(ReleaseDateValidationRegex, ErrorMessage = "Release date must be in the format yyyy-MM-dd.")]
+        [ValidReleaseDate] //Custom validation attribute to validate release date.
         public DateTime ReleaseDate { get; set; }
 
         [Required]        
@@ -36,13 +38,13 @@ namespace GamingZoneApp.ViewModels.Game
 
         [Required]
         public ICollection<AddGameDeveloperViewModel> Developers { get; set; } 
-            = new List<AddGameDeveloperViewModel>();
+            = new List<AddGameDeveloperViewModel>(); //Collection of nested view model for Developers dropdown selection.
 
         [Required(ErrorMessage = "Please select a publisher.")]
         public Guid PublisherId { get; set; }
 
         [Required]
         public ICollection<AddGamePublisherViewModel> Publishers { get; set; } 
-            = new List<AddGamePublisherViewModel>();
+            = new List<AddGamePublisherViewModel>(); //Collection of nested view model for Publishers dropdown selection.
     }
 }
