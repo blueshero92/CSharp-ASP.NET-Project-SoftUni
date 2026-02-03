@@ -19,7 +19,10 @@ else
                             Genre: <strong>@game.Genre</strong><br>
                             Developer: <strong>@game.Developer</strong><br>
                         </p>
-                        <a asp-controller="Games" asp-action="GameDetails" asp-route-id="@game.Id" class="btn btn-primary btn-sm mt-auto">Details</a>
+                        <div class="mt-auto d-flex gap-2 w-100">
+                            <a asp-controller="Games" asp-action="GameDetails" asp-route-id="@game.Id" class="btn btn-primary btn-sm w-50">Details</a>
+                            <a asp-controller="Games" asp-action="EditGame" asp-route-id="@game.Id" class="btn btn-warning btn-sm w-50">Edit</a>
+                        </div>
                     </div>
                 </div>
             </div>
