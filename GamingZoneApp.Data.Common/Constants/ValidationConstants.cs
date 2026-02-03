@@ -19,9 +19,9 @@ namespace GamingZoneApp.Data.Common.Constants
             public const int TitleMaxLength = 184;
 
             /// <summary>
-            /// Game description should be able to store text with length of at least to 256 characters.
+            /// Game description should be able to store text with length of at least to 30 characters.
             /// </summary>
-            public const int GameDescriptionMinLength = 256;
+            public const int GameDescriptionMinLength = 30;
 
             /// <summary>
             /// Game description should be able to store text with length up to 2048 characters.
@@ -37,11 +37,12 @@ namespace GamingZoneApp.Data.Common.Constants
             /// Release date column type should be datetime2.
             /// </summary>
             public const string ReleaseDateType = "datetime2";
+            
 
             /// <summary>
-            /// This is the maximum value for the game rating.
+            /// Image URL should be able to store text with length of at least 7 characters.
             /// </summary>
-            public const decimal GameRatingMaxValue = 10.0m;
+            public const int ImageUrlMinLength = 7;
 
             /// <summary>
             /// Image URL should be able to store text with length up to 2048 characters.
