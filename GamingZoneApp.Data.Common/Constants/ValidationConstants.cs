@@ -37,11 +37,7 @@ namespace GamingZoneApp.Data.Common.Constants
             /// Release date column type should be datetime2.
             /// </summary>
             public const string ReleaseDateType = "datetime2";
-
-            /// <summary>
-            /// This is the maximum value for the game rating.
-            /// </summary>
-            public const decimal GameRatingMaxValue = 10.0m;
+            
 
             /// <summary>
             /// Image URL should be able to store text with length of at least 7 characters.
