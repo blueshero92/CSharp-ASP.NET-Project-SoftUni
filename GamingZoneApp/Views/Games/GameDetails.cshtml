@@ -93,6 +93,16 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex flex-column gap-2 mt-4 w-100">
+                            <a asp-action="EditGame" asp-controller="Games" asp-route-id="@Model.Id" class="btn btn-warning w-100">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a asp-action="DeleteGame" asp-controller="Games" asp-route-id="@Model.Id" class="btn btn-danger w-100">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
