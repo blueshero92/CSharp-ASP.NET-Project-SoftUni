@@ -24,7 +24,7 @@
                     <form asp-action="DeleteGame" method="post">
                         <input type="hidden" asp-for="Title" />
                         <div class="d-flex gap-2 justify-content-end">
-                            <a asp-action="Index" asp-controller="Games" class="btn btn-secondary">Cancel</a>
+                            <a asp-action="Index" asp-controller="Games" class="btn btn-secondary" onclick="history.back()">Cancel</a>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </div>
                     </form>
