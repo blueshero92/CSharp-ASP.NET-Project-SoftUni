@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static GamingZoneApp.Data.Common.Constants.ValidationConstants.GameConstants;
+
+using static GamingZoneApp.GCommon.Constants.ValidationConstants.GameConstants;
 
 namespace GamingZoneApp.Data.Models
 {

@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GamingZoneApp.Data.Common\GamingZoneApp.Data.Common.csproj" />
+    <ProjectReference Include="..\GamingZoneApp.Data.Models\GamingZoneApp.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

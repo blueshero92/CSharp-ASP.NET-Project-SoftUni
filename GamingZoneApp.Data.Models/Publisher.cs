@@ -1,34 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-using static GamingZoneApp.Data.Common.Constants.ValidationConstants.DeveloperConstants;
+using static GamingZoneApp.GCommon.Constants.ValidationConstants.PublisherConstants;
 
 namespace GamingZoneApp.Data.Models
 {
-    [Comment("Developers in the system.")]
-    public class Developer
+    [Comment("Publishers in the system.")]
+    public class Publisher
     {
         [Key]
-        [Comment("Identifier for the developer.")]
+        [Comment("Identifier for the publisher.")]
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(DevNameMaxLength)]
-        [Comment("Name of the developer.")]
+        [MaxLength(PublisherNameMaxLength)]
+        [Comment("Name of the publisher.")]
         public string Name { get; set; } = null!;
 
         [Required]
-        [MaxLength(DevDescriptionMaxLength)]
-        [Comment("Brief information about the developer.")]
+        [MaxLength(PublisherDescriptionMaxLength)]
+        [Comment("Brief information about the publisher.")]
         public string Description { get; set; } = null!;
 
         [Required]
         [MaxLength(ImageUrlMaxLength)]
-        [Comment("URL of the developer logo image.")]
+        [Comment("URL of the publisher logo image.")]
         public string ImageUrl { get; set; } = null!;
 
         //HashSet<T> is used for future extesibility and speed for working with larger amounts of data and to avoid duplications.
-        public ICollection<Game> GamesDeveloped { get; set; }
+        public ICollection<Game> GamesPublished { get; set; }
             = new HashSet<Game>();
     }
 }

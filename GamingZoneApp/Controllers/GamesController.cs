@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using GamingZoneApp.Data.Models;
 using GamingZoneApp.Data.Models.Enums;
 
-using static GamingZoneApp.Data.Common.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.AppConstants;
 using System.Globalization;
 
 

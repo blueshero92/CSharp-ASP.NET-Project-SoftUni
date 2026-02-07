@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using static GamingZoneApp.Data.Common.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.AppConstants;
 
-namespace GamingZoneApp.Data.Common.CustomValidationAttributes
+namespace GamingZoneApp.GCommon.CustomValidationAttributes
 {
     /// <summary>
     /// Custom validation attribute to validate release date in the Add/Edit form.

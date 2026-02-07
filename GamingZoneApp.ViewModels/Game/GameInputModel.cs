@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using static GamingZoneApp.Data.Common.Constants.ValidationConstants.GameConstants;
-using static GamingZoneApp.Data.Common.Constants.AppConstants;
-using GamingZoneApp.Data.Common.CustomValidationAttributes;
+using static GamingZoneApp.GCommon.Constants.ValidationConstants.GameConstants;
+using static GamingZoneApp.GCommon.Constants.AppConstants;
+using GamingZoneApp.GCommon.CustomValidationAttributes;
 
 
 namespace GamingZoneApp.ViewModels.Game

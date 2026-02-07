@@ -1,4 +1,4 @@
-﻿namespace GamingZoneApp.Data.Common.Constants
+﻿namespace GamingZoneApp.GCommon.Constants
 {
     public static class AppConstants
     {

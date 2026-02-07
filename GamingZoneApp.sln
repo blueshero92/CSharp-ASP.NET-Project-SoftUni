@@ -7,9 +7,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp", "GamingZone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Data", "GamingZoneApp.Data\GamingZoneApp.Data.csproj", "{68DF5303-AA3D-43D5-AF3B-44D1A931AC3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Services", "GamingZoneApp.Services\GamingZoneApp.Services.csproj", "{E5724DA0-B523-4AAD-A991-FCEF12C11B5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Services.Core", "GamingZoneApp.Services\GamingZoneApp.Services.Core.csproj", "{E5724DA0-B523-4AAD-A991-FCEF12C11B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Data.Common", "GamingZoneApp.Data.Common\GamingZoneApp.Data.Common.csproj", "{0E473D8C-A0B1-4E2E-A8E8-24C255382990}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.GCommon", "GamingZoneApp.Data.Common\GamingZoneApp.GCommon.csproj", "{0E473D8C-A0B1-4E2E-A8E8-24C255382990}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.ViewModels", "GamingZoneApp.ViewModels\GamingZoneApp.ViewModels.csproj", "{3BEE609F-0D68-45C7-9F94-C9EDDE81A645}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{DF662255-B946-44BA-BAAA-2E6A8CB11800}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Data.Models", "GamingZoneApp.Data.Models\GamingZoneApp.Data.Models.csproj", "{A0DE77EC-2AB6-4998-BE96-5E7DBA0919B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EA1697AE-F54C-44CD-8E0E-A1242D76FAE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +43,24 @@ Global
 		{0E473D8C-A0B1-4E2E-A8E8-24C255382990}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E473D8C-A0B1-4E2E-A8E8-24C255382990}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E473D8C-A0B1-4E2E-A8E8-24C255382990}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BEE609F-0D68-45C7-9F94-C9EDDE81A645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BEE609F-0D68-45C7-9F94-C9EDDE81A645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BEE609F-0D68-45C7-9F94-C9EDDE81A645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BEE609F-0D68-45C7-9F94-C9EDDE81A645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0DE77EC-2AB6-4998-BE96-5E7DBA0919B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0DE77EC-2AB6-4998-BE96-5E7DBA0919B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0DE77EC-2AB6-4998-BE96-5E7DBA0919B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0DE77EC-2AB6-4998-BE96-5E7DBA0919B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{019770A3-B490-4D69-80F0-ABFC444BD146} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{68DF5303-AA3D-43D5-AF3B-44D1A931AC3A} = {DF662255-B946-44BA-BAAA-2E6A8CB11800}
+		{E5724DA0-B523-4AAD-A991-FCEF12C11B5B} = {EA1697AE-F54C-44CD-8E0E-A1242D76FAE3}
+		{3BEE609F-0D68-45C7-9F94-C9EDDE81A645} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A0DE77EC-2AB6-4998-BE96-5E7DBA0919B9} = {DF662255-B946-44BA-BAAA-2E6A8CB11800}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4042AE11-6A9C-4040-B173-5808C61D5B85}

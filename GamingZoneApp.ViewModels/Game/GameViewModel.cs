@@ -1,6 +1,5 @@
 ﻿namespace GamingZoneApp.ViewModels.Game
 {
-    using GamingZoneApp.Data.Models;
 
     // View model for displaying detailed information about an individual game.
     public class GameViewModel
