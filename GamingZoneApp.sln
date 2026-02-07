@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Data", "Gamin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Services.Core", "GamingZoneApp.Services\GamingZoneApp.Services.Core.csproj", "{E5724DA0-B523-4AAD-A991-FCEF12C11B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.GCommon", "GamingZoneApp.Data.Common\GamingZoneApp.GCommon.csproj", "{0E473D8C-A0B1-4E2E-A8E8-24C255382990}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.GCommon", "GamingZoneApp.GCommon\GamingZoneApp.GCommon.csproj", "{0E473D8C-A0B1-4E2E-A8E8-24C255382990}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
