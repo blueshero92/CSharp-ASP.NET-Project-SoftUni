@@ -10,6 +10,14 @@ namespace GamingZoneApp.Services.Core.Interfaces
 
         Task<bool> AddGameAsync(GameInputModel model);
 
+        Task<GameInputModel> ShowEditGameFormAsync(Guid gameId);
+
+        Task<bool> EditGameAsync(Guid gameId, GameInputModel? inputModel);
+
+        Task<DeleteGameViewModel> ShowDeleteGameFormAsync(Guid gameId);
+
+        Task<bool> DeleteGameAsync(Guid gameId, DeleteGameViewModel? viewModel);
+
         Task<bool> GameExistsAsync(Guid gameId);
     }
 }

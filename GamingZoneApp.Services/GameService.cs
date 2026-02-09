@@ -113,6 +113,125 @@ namespace GamingZoneApp.Services.Core
 
         }
 
+        public async Task<GameInputModel> ShowEditGameFormAsync(Guid gameId)
+        {
+            //Retrieve the game from the database by its Id.
+            Game? gameToEdit = await dbContext
+                                        .Games
+                                        .Include(g => g.Developer)
+                                        .Include(g => g.Publisher)
+                                        .AsNoTracking()
+                                        .SingleOrDefaultAsync(g => g.Id == gameId);
+            
+            //If no game is found with the provided Id, return null.
+            if (gameToEdit == null)
+            {
+                return null!;
+            }
+           
+            //Project the retrieved game into a GameInputModel for editing.
+            GameInputModel gameInputModel = new GameInputModel
+            {
+                Title = gameToEdit.Title,
+                ReleaseDate = gameToEdit.ReleaseDate,
+                Genre = gameToEdit.Genre.ToString(),
+                Description = gameToEdit.Description,
+                ImageUrl = gameToEdit.ImageUrl,
+                DeveloperId = gameToEdit.DeveloperId,
+                PublisherId = gameToEdit.PublisherId
+            };
+            
+            //Return the GameInputModel for editing.
+            return gameInputModel;
+        }
+
+        public async Task<bool> EditGameAsync(Guid gameId, GameInputModel? inputModel)
+        {
+            //Retrieve the game from the database by its Id.
+            Game? gameToEdit = await dbContext
+                                    .Games
+                                    .Include(g => g.Developer)
+                                    .Include(g => g.Publisher)
+                                    .SingleOrDefaultAsync(g => g.Id == gameId);
+
+            //If no game is found with the provided Id, return false.
+            if (gameToEdit == null)
+            {
+                return false;
+            }
+
+            //Try to update the retrieved game.
+            try
+            {
+                gameToEdit.Title = inputModel.Title;
+                gameToEdit.ReleaseDate = inputModel.ReleaseDate;
+                gameToEdit.Genre = Enum.Parse<Genre>(inputModel.Genre);
+                gameToEdit.Description = inputModel.Description;
+                gameToEdit.ImageUrl = inputModel.ImageUrl;
+                gameToEdit.DeveloperId = inputModel.DeveloperId;
+                gameToEdit.PublisherId = inputModel.PublisherId;
+
+                dbContext.Games.Update(gameToEdit);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            //If any exception occurs during the process of updating the game in the database, catch the exception and return false.
+            catch (Exception)
+            {                
+                return false;
+            }
+        }
+
+        public async Task<DeleteGameViewModel> ShowDeleteGameFormAsync(Guid gameId)
+        {
+            //Retrieve the game to be deleted.
+            Game? gameToDelete = await dbContext
+                                      .Games
+                                      .Include(g => g.Developer)
+                                      .Include(g => g.Publisher)
+                                      .AsNoTracking()
+                                      .SingleOrDefaultAsync(g => g.Id == gameId);
+
+            if(gameToDelete == null)
+            {
+                return null!;
+            }
+
+            DeleteGameViewModel? deleteGameViewModel = new DeleteGameViewModel
+            {
+                Title = gameToDelete.Title
+            };
+
+            return deleteGameViewModel;
+
+        }
+        public async Task<bool> DeleteGameAsync(Guid gameId, DeleteGameViewModel? viewModel)
+        {
+            Game? gameToDelete = await dbContext
+                                      .Games
+                                      .Include(g => g.Developer)
+                                      .Include(g => g.Publisher)
+                                      .SingleOrDefaultAsync(g => g.Id == gameId);
+
+            if(gameToDelete == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                dbContext.Games.Remove(gameToDelete);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> GameExistsAsync(Guid gameId)
         {
             return await dbContext
