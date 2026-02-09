@@ -26,7 +26,6 @@ namespace GamingZoneApp.Services.Core
             //Retrieve all games from the database, including their developers.
             IQueryable<Game> getAllGames = dbContext
                                           .Games
-                                          .Include(g => g.Developer)
                                           .AsNoTracking();
 
             //Project the retrieved games into a collection of AllGamesViewModel, ordered by title.
@@ -40,14 +39,13 @@ namespace GamingZoneApp.Services.Core
                                                                            Genre = g.Genre.ToString(),
                                                                            Developer = g.Developer.Name,
 
-                                                                       })
-                                                                       .AsNoTracking()
+                                                                       })                                                                       
                                                                        .ToListAsync();
             //Return the collection of AllGamesViewModel.
             return getAllGamesViewModel;
         }
 
-        public async Task<GameViewModel> GetGameDetailsByIdAsync(Guid id)
+        public async Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id)
         {
             //Retrieve a game from the database by it's Id, including its developer and publisher.
             GameViewModel? selectedGameViewModel = await dbContext
@@ -77,7 +75,7 @@ namespace GamingZoneApp.Services.Core
             //This check is necessary to prevent potential null reference exceptions.
             if (selectedGameViewModel == null)
             {
-                return null!;
+                return null;
             }
 
             //Return the retrieved game projected as a GameViewModel.
@@ -89,11 +87,16 @@ namespace GamingZoneApp.Services.Core
             //Create a new Game entity using the data from the provided GameInputModel.
             try
             {
+                if(!Enum.TryParse<Genre>(inputModel.Genre, out Genre genre))
+                {
+                    return false;
+                }
+
                 Game newGame = new Game
                 {
                     Title = inputModel.Title,
                     ReleaseDate = inputModel.ReleaseDate,
-                    Genre = Enum.Parse<Genre>(inputModel.Genre),
+                    Genre = genre,
                     Description = inputModel.Description,
                     ImageUrl = inputModel.ImageUrl,
                     DeveloperId = inputModel.DeveloperId,
@@ -113,7 +116,7 @@ namespace GamingZoneApp.Services.Core
 
         }
 
-        public async Task<GameInputModel> ShowEditGameFormAsync(Guid gameId)
+        public async Task<GameInputModel?> GetGameForEditAsync(Guid gameId)
         {
             //Retrieve the game from the database by its Id.
             Game? gameToEdit = await dbContext
@@ -126,7 +129,7 @@ namespace GamingZoneApp.Services.Core
             //If no game is found with the provided Id, return null.
             if (gameToEdit == null)
             {
-                return null!;
+                return null;
             }
            
             //Project the retrieved game into a GameInputModel for editing.
@@ -145,7 +148,7 @@ namespace GamingZoneApp.Services.Core
             return gameInputModel;
         }
 
-        public async Task<bool> EditGameAsync(Guid gameId, GameInputModel? inputModel)
+        public async Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel)
         {
             //Retrieve the game from the database by its Id.
             Game? gameToEdit = await dbContext
@@ -163,9 +166,14 @@ namespace GamingZoneApp.Services.Core
             //Try to update the retrieved game.
             try
             {
+                if(!Enum.TryParse<Genre>(inputModel?.Genre, out Genre genre))
+                {
+                    return false;
+                }
+
                 gameToEdit.Title = inputModel.Title;
                 gameToEdit.ReleaseDate = inputModel.ReleaseDate;
-                gameToEdit.Genre = Enum.Parse<Genre>(inputModel.Genre);
+                gameToEdit.Genre = genre;
                 gameToEdit.Description = inputModel.Description;
                 gameToEdit.ImageUrl = inputModel.ImageUrl;
                 gameToEdit.DeveloperId = inputModel.DeveloperId;
@@ -183,7 +191,7 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        public async Task<DeleteGameViewModel> ShowDeleteGameFormAsync(Guid gameId)
+        public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId)
         {
             //Retrieve the game to be deleted.
             Game? gameToDelete = await dbContext
@@ -195,7 +203,7 @@ namespace GamingZoneApp.Services.Core
 
             if(gameToDelete == null)
             {
-                return null!;
+                return null;
             }
 
             DeleteGameViewModel? deleteGameViewModel = new DeleteGameViewModel
@@ -206,7 +214,8 @@ namespace GamingZoneApp.Services.Core
             return deleteGameViewModel;
 
         }
-        public async Task<bool> DeleteGameAsync(Guid gameId, DeleteGameViewModel? viewModel)
+
+        public async Task<bool> DeleteGameAsync(Guid gameId)
         {
             Game? gameToDelete = await dbContext
                                       .Games

@@ -1,12 +1,8 @@
-﻿using GamingZoneApp.Data;
-using GamingZoneApp.ViewModels.Game;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using GamingZoneApp.Data.Models;
-using GamingZoneApp.Data.Models.Enums;
+﻿using GamingZoneApp.ViewModels.Game;
 
 using GamingZoneApp.Services.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
 
 
 namespace GamingZoneApp.Controllers
@@ -29,7 +25,7 @@ namespace GamingZoneApp.Controllers
         public async Task<IActionResult> Index()
         {
             //Using the game service to retrieve all games and map them to the collection of AllGamesViewModel.
-            IEnumerable<AllGamesViewModel> allGames 
+            IEnumerable<AllGamesViewModel> allGames
                 = await gameService
                        .GetAllGamesAsync();
 
@@ -57,7 +53,6 @@ namespace GamingZoneApp.Controllers
 
         }
 
-
         //Visualize the Add Game form with developers and publishers.
         [HttpGet]
         public async Task<IActionResult> AddGame()
@@ -82,10 +77,8 @@ namespace GamingZoneApp.Controllers
             //Validate the model state.
             if (!ModelState.IsValid)
             {
-                //Using helper methods from corresponding services to get all developers and publishers and return the view with the input model.
-                inputModel.Developers = (await developerService.GetAllDevelopersAsync()).ToList();
-
-                inputModel.Publishers = (await publisherService.GetAllPublishersAsync()).ToList();
+                //Using helper method to get all developers and publishers.
+                await PopulateDevelopersAndPublishersAsync(inputModel);
 
                 return View(inputModel);
             }
@@ -95,6 +88,9 @@ namespace GamingZoneApp.Controllers
             {
                 ModelState.AddModelError(nameof(inputModel.DeveloperId), "Selected developer does not exist.");
 
+                // Reload developers and publishers for the dropdowns
+                await PopulateDevelopersAndPublishersAsync(inputModel);
+
                 return View(inputModel);
             }
 
@@ -102,6 +98,9 @@ namespace GamingZoneApp.Controllers
             if (!await publisherService.PublisherExistsAsync(inputModel.PublisherId))
             {
                 ModelState.AddModelError(nameof(inputModel.PublisherId), "Selected publisher does not exist.");
+
+                // Reload developers and publishers for the dropdowns
+                await PopulateDevelopersAndPublishersAsync(inputModel);
 
                 return View(inputModel);
             }
@@ -115,7 +114,7 @@ namespace GamingZoneApp.Controllers
                 ModelState.AddModelError(string.Empty, "An error occurred while adding the game. Please try again.");
                 return View(inputModel);
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -123,21 +122,21 @@ namespace GamingZoneApp.Controllers
         [HttpGet]
         public async Task<IActionResult> EditGame(Guid id)
         {
-            if(!await gameService.GameExistsAsync(id)) //Using helper method to check if the game exists.
+            if (!await gameService.GameExistsAsync(id)) //Using helper method to check if the game exists.
             {
                 return BadRequest();
             }
 
-            GameInputModel? gameInputModel = await gameService.ShowEditGameFormAsync(id); 
-
-            gameInputModel.Developers = (await developerService.GetAllDevelopersAsync()).ToList();
-            gameInputModel.Publishers = (await publisherService.GetAllPublishersAsync()).ToList();
+            GameInputModel? gameInputModel = await gameService.GetGameForEditAsync(id);
 
             //If the game is not found, return NotFound.
             if (gameInputModel == null)
             {
                 return NotFound();
             }
+
+            gameInputModel.Developers = (await developerService.GetAllDevelopersAsync()).ToList();
+            gameInputModel.Publishers = (await publisherService.GetAllPublishersAsync()).ToList();
 
 
             return View(gameInputModel);
@@ -155,11 +154,8 @@ namespace GamingZoneApp.Controllers
             //Validate the model state.
             if (!ModelState.IsValid)
             {
-                //Using helper methods from the corresponding services to get all developers and publishers.
-
-                inputModel.Developers = (await developerService.GetAllDevelopersAsync()).ToList();
-
-                inputModel.Publishers = (await publisherService.GetAllPublishersAsync()).ToList();
+                //Using helper method to get all developers and publishers.
+                await PopulateDevelopersAndPublishersAsync(inputModel);
 
                 return View(inputModel);
             }
@@ -169,6 +165,9 @@ namespace GamingZoneApp.Controllers
             {
                 ModelState.AddModelError(nameof(inputModel.DeveloperId), "Selected developer does not exist.");
 
+                // Reload developers and publishers for the dropdowns
+                await PopulateDevelopersAndPublishersAsync(inputModel);
+
                 return View(inputModel);
             }
 
@@ -176,6 +175,9 @@ namespace GamingZoneApp.Controllers
             if (!await publisherService.PublisherExistsAsync(inputModel.PublisherId))
             {
                 ModelState.AddModelError(nameof(inputModel.PublisherId), "Selected publisher does not exist.");
+
+                // Reload developers and publishers for the dropdowns
+                await PopulateDevelopersAndPublishersAsync(inputModel);
 
                 return View(inputModel);
             }
@@ -193,19 +195,18 @@ namespace GamingZoneApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         //Visualize the Delete Game confirmation page.
         [HttpGet]
         public async Task<IActionResult> DeleteGame(Guid id)
         {
             //Check if the game exists in the database for it to be deleted.
-            if(!await gameService.GameExistsAsync(id))
+            if (!await gameService.GameExistsAsync(id))
             {
                 return BadRequest();
             }
 
             //Retrieve the game to be deleted using the game service and map it to the DeleteGameViewModel.         
-            DeleteGameViewModel? viewModel = await gameService.ShowDeleteGameFormAsync(id);
+            DeleteGameViewModel? viewModel = await gameService.GetGameForDeleteAsync(id);
 
             //If the game is not found, return NotFound.
             if (viewModel == null)
@@ -220,26 +221,33 @@ namespace GamingZoneApp.Controllers
         public async Task<IActionResult> DeleteGame(Guid id, DeleteGameViewModel? viewModel)
         {
             //Check if the game exists in the database for it to be deleted.
-            if(!await gameService.GameExistsAsync(id))
+            if (!await gameService.GameExistsAsync(id))
             {
                 return BadRequest();
             }
 
             //Retrieve the game to be deleted.
-            bool gameIsDeleted = await gameService.DeleteGameAsync(id, viewModel);
+            bool gameIsDeleted = await gameService.DeleteGameAsync(id);
 
-            //If the game is not found, return NotFound.
+            //Checks if the game is deleted successfully. If not, return the view with an error message.
             if (!gameIsDeleted)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while deleting the game. Please try again.");
                 return View(viewModel);
             }
 
-            //Try to delete the game. Catch any exceptions and return the view with an error message.
             return RedirectToAction(nameof(Index));
         }
 
-
+        //A helper method to populate the developers and publishers for the dropdowns in the Add and Edit views.
+        private async Task PopulateDevelopersAndPublishersAsync(GameInputModel inputModel)
+        {
+            inputModel.Developers = (await developerService.GetAllDevelopersAsync()).ToList();
+            inputModel.Publishers = (await publisherService.GetAllPublishersAsync()).ToList();
+        }
     }
+
+        
 }
+
 
