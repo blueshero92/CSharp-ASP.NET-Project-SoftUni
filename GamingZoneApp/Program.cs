@@ -1,5 +1,7 @@
 using GamingZoneApp.Data;
 using GamingZoneApp.Data.Models;
+using GamingZoneApp.Services.Core;
+using GamingZoneApp.Services.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +20,8 @@ namespace GamingZoneApp
             builder.Services.AddDbContext<GamingZoneDbContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.AddScoped<IGameService, GameService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = false)
                             .AddRoles<IdentityRole<Guid>>()

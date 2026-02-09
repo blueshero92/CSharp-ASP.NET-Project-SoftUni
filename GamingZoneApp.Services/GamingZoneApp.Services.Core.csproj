@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GamingZoneApp.Data.Models\GamingZoneApp.Data.Models.csproj" />
     <ProjectReference Include="..\GamingZoneApp.Data\GamingZoneApp.Data.csproj" />
+    <ProjectReference Include="..\GamingZoneApp.GCommon\GamingZoneApp.GCommon.csproj" />
+    <ProjectReference Include="..\GamingZoneApp.ViewModels\GamingZoneApp.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

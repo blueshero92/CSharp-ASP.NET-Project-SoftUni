@@ -8,6 +8,8 @@ using GamingZoneApp.Data.Models.Enums;
 
 using static GamingZoneApp.GCommon.Constants.AppConstants;
 using System.Globalization;
+using GamingZoneApp.Services.Core.Interfaces;
+using System.Threading.Tasks;
 
 
 namespace GamingZoneApp.Controllers
@@ -16,63 +18,38 @@ namespace GamingZoneApp.Controllers
     {
 
         private readonly GamingZoneDbContext dbContext;
+        private readonly IGameService gameService;
 
-        public GamesController(GamingZoneDbContext dbContext)
+        public GamesController(GamingZoneDbContext dbContext, IGameService gameService)
         {
             this.dbContext = dbContext;
+            this.gameService = gameService;
         }
 
         //Visualize all games using a view model.
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<AllGamesViewModel> allGames = dbContext
-                                     .Games
-                                     .Include(g => g.Developer)
-                                     .Select(g => new AllGamesViewModel
-                                     {
-                                         Id = g.Id,
-                                         Title = g.Title,
-                                         ImageUrl = g.ImageUrl,
-                                         Genre = g.Genre.ToString(),
-                                         Developer = g.Developer.Name,
+            //Using the game service to retrieve all games and map them to the collection of AllGamesViewModel.
+            IEnumerable<AllGamesViewModel> allGames 
+                = await gameService
+                       .GetAllGamesAsync();
 
-                                     })
-                                     .OrderBy(g => g.Title)
-                                     .AsNoTracking()
-                                     .ToList();
-
+            //Return the view with the collection of AllGamesViewModel.
             return View(allGames);
         }
 
         //Visualize game details for an individual game using a view model.
         [HttpGet]
-        public IActionResult GameDetails(Guid id)
+        public async Task<IActionResult> GameDetails(Guid id)
         {
-            GameViewModel? selectedGame = dbContext
-                               .Games
-                               .Include(g => g.Developer)
-                               .Include(g => g.Publisher)
-                               .Select(g => new GameViewModel
-                               {
-                                   Id = g.Id,
-                                   Title = g.Title,
-                                   ReleaseDate = g.ReleaseDate.ToString(DateFormat, CultureInfo.InvariantCulture),
-                                   Genre = g.Genre.ToString(),
-                                   Description = g.Description,
-                                   Rating = g.Rating,
-                                   ImageUrl = g.ImageUrl,
-                                   Developer = g.Developer.Name,
-                                   Publisher = g.Publisher.Name,
-                                   DeveloperLogoUrl = g.Developer.ImageUrl,
-                                   PublisherLogoUrl = g.Publisher.ImageUrl
-
-                               })
-                               .AsNoTracking()
-                               .AsSplitQuery()
-                               .SingleOrDefault(g => g.Id == id);
+            //Using the game service to retrieve the game details by id.
+            GameViewModel? selectedGame = await gameService
+                                            .GetGameDetailsByIdAsync(id);
 
 
+            //If the game is not found, return NotFound.
+            //This is an addional validation to ensure the game exists even if we have already validated it in the GameService.
             if (selectedGame == null)
             {
                 return NotFound();

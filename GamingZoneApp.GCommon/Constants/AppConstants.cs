@@ -3,7 +3,7 @@
     public static class AppConstants
     {
         //Standard date format used across the application.
-        public const string DateFormat = "yyyy-MM-dd";
+        public const string AppDateFormat = "yyyy-MM-dd";
 
         /// <summary>
         /// This is the minimum value for the game rating.

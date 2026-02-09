@@ -24,7 +24,7 @@ namespace GamingZoneApp.GCommon.CustomValidationAttributes
                 //TryParseExact ensures the date is in the specified format and validates the month/day ranges.
                 bool parsedDate = DateTime.TryParseExact(
                     dateString, 
-                    DateFormat, 
+                    AppDateFormat, 
                     CultureInfo.InvariantCulture, 
                     DateTimeStyles.None, 
                     out releaseDate);
@@ -32,7 +32,7 @@ namespace GamingZoneApp.GCommon.CustomValidationAttributes
                 //Returns error if parsing fails.
                 if (!parsedDate)
                 {
-                    return new ValidationResult($"Please enter the date in {DateFormat} format.");
+                    return new ValidationResult($"Please enter the date in {AppDateFormat} format.");
                 }
             }
             else

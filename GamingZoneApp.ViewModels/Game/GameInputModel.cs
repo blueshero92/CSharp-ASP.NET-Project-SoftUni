@@ -16,7 +16,7 @@ namespace GamingZoneApp.ViewModels.Game
         public string Title { get; set; } = null!;
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0" + DateFormat + "}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0" + AppDateFormat + "}", ApplyFormatInEditMode = true)]
         [ValidReleaseDate] //Custom validation attribute to validate release date.
         public DateTime ReleaseDate { get; set; }
 
