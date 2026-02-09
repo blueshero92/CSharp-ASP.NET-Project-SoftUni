@@ -1,7 +1,7 @@
 ﻿using GamingZoneApp.Data;
-using GamingZoneApp.Data.Models;
 using GamingZoneApp.ViewModels.Game;
 using GamingZoneApp.ViewModels.Publisher;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

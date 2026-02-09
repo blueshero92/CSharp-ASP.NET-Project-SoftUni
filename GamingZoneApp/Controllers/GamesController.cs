@@ -6,10 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using GamingZoneApp.Data.Models;
 using GamingZoneApp.Data.Models.Enums;
 
-using static GamingZoneApp.GCommon.Constants.AppConstants;
-using System.Globalization;
 using GamingZoneApp.Services.Core.Interfaces;
-using System.Threading.Tasks;
 
 
 namespace GamingZoneApp.Controllers
@@ -19,11 +16,16 @@ namespace GamingZoneApp.Controllers
 
         private readonly GamingZoneDbContext dbContext;
         private readonly IGameService gameService;
+        private readonly IDeveloperService developerService;
+        private readonly IPublisherService publisherService;
 
-        public GamesController(GamingZoneDbContext dbContext, IGameService gameService)
+        public GamesController(GamingZoneDbContext dbContext, IGameService gameService, 
+                               IDeveloperService developerService, IPublisherService publisherService)
         {
             this.dbContext = dbContext;
             this.gameService = gameService;
+            this.developerService = developerService;
+            this.publisherService = publisherService;
         }
 
         //Visualize all games using a view model.
@@ -62,15 +64,15 @@ namespace GamingZoneApp.Controllers
 
         //Visualize the Add Game form with developers and publishers.
         [HttpGet]
-        public IActionResult AddGame()
+        public async Task<IActionResult> AddGame()
         {
             //The view model to be passed to the view.
             //This model contains the lists of developers and publishers for the dropdowns.
             GameInputModel viewModel = new GameInputModel()
             {
-                //Using helper methods to get all developers and publishers.
-                Developers = GetAllDevelopers().ToList(),
-                Publishers = GetAllPublishers().ToList() 
+                //Using helper methods from corresponding services to get all developers and publishers.
+                Developers = (await developerService.GetAllDevelopersAsync()).ToList(),
+                Publishers = (await publisherService.GetAllPublishersAsync()).ToList()
             };
 
             return View(viewModel);
@@ -78,63 +80,47 @@ namespace GamingZoneApp.Controllers
 
         //Process the Add Game form submission.
         [HttpPost]
-        public IActionResult AddGame(GameInputModel inputModel)
+        public async Task<IActionResult> AddGame(GameInputModel inputModel)
         {
 
             //Validate the model state.
             if (!ModelState.IsValid)
             {
-                //Using helper methods to get all developers and publishers and return the view with the input model.
-                inputModel.Developers = GetAllDevelopers().ToList();
+                //Using helper methods from corresponding services to get all developers and publishers and return the view with the input model.
+                inputModel.Developers = (await developerService.GetAllDevelopersAsync()).ToList();
 
-                inputModel.Publishers = GetAllPublishers().ToList();
+                inputModel.Publishers = (await publisherService.GetAllPublishersAsync()).ToList();
 
                 return View(inputModel);
             }
 
-            //Validate that the selected developer exists.
-            if (!DeveloperExists(inputModel.DeveloperId))
+            //Validate that the selected developer exists using helper method from the developer service.
+            if (!await developerService.DeveloperExistsAsync(inputModel.DeveloperId))
             {
                 ModelState.AddModelError(nameof(inputModel.DeveloperId), "Selected developer does not exist.");
 
                 return View(inputModel);
             }
 
-            //Validate that the selected publisher exists.
-            if (!PublisherExists(inputModel.PublisherId))
+            //Validate that the selected publisher exists using helper method from the publisher service.
+            if (!await publisherService.PublisherExistsAsync(inputModel.PublisherId))
             {
                 ModelState.AddModelError(nameof(inputModel.PublisherId), "Selected publisher does not exist.");
 
                 return View(inputModel);
             }
 
-            //Try to create and save the new game. Catch any exceptions and return the view with an error message.
-            try
+            //Try to create and save the new game using the game service. Catch any exceptions and return the view with an error message.
+            bool gameIsAdded = await gameService.AddGameAsync(inputModel);
+
+            //If the game is not added successfully, return the view with an error message.
+            if (!gameIsAdded)
             {
-                Game newGame = new Game
-                {
-                    Title = inputModel.Title,
-                    ReleaseDate = inputModel.ReleaseDate,
-                    Genre = Enum.Parse<Genre>(inputModel.Genre),
-                    Description = inputModel.Description,
-                    ImageUrl = inputModel.ImageUrl,
-                    DeveloperId = inputModel.DeveloperId,
-                    PublisherId = inputModel.PublisherId
-                };
-
-                dbContext.Games.Add(newGame);
-                dbContext.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch(Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-
                 ModelState.AddModelError(string.Empty, "An error occurred while adding the game. Please try again.");
-                
                 return View(inputModel);
             }
+            
+            return RedirectToAction(nameof(Index));
         }
 
         //Visualize the Edit Game form with developers and publishers.

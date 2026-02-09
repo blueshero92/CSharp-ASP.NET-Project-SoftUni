@@ -22,6 +22,8 @@ namespace GamingZoneApp
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddScoped<IGameService, GameService>();
+            builder.Services.AddScoped<IDeveloperService, DeveloperService>();
+            builder.Services.AddScoped<IPublisherService, PublisherService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = false)
                             .AddRoles<IdentityRole<Guid>>()

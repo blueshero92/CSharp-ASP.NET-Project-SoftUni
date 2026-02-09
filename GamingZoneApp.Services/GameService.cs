@@ -1,10 +1,13 @@
 ﻿using GamingZoneApp.Data;
 using GamingZoneApp.Data.Models;
+using GamingZoneApp.Data.Models.Enums;
 using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.ViewModels.Game;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
+
 using System.Globalization;
+
 using static GamingZoneApp.GCommon.Constants.AppConstants;
 
 namespace GamingZoneApp.Services.Core
@@ -16,6 +19,7 @@ namespace GamingZoneApp.Services.Core
         {
             this.dbContext = dbContext;
         }
+
 
         public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesAsync()
         {
@@ -35,7 +39,7 @@ namespace GamingZoneApp.Services.Core
                                                                            ImageUrl = g.ImageUrl,
                                                                            Genre = g.Genre.ToString(),
                                                                            Developer = g.Developer.Name,
-                                                                       
+
                                                                        })
                                                                        .AsNoTracking()
                                                                        .ToListAsync();
@@ -79,5 +83,42 @@ namespace GamingZoneApp.Services.Core
             //Return the retrieved game projected as a GameViewModel.
             return selectedGameViewModel;
         }
+
+        public async Task<bool> AddGameAsync(GameInputModel inputModel)
+        {            
+            //Create a new Game entity using the data from the provided GameInputModel.
+            try
+            {
+                Game newGame = new Game
+                {
+                    Title = inputModel.Title,
+                    ReleaseDate = inputModel.ReleaseDate,
+                    Genre = Enum.Parse<Genre>(inputModel.Genre),
+                    Description = inputModel.Description,
+                    ImageUrl = inputModel.ImageUrl,
+                    DeveloperId = inputModel.DeveloperId,
+                    PublisherId = inputModel.PublisherId
+                };
+
+                await dbContext.Games.AddAsync(newGame);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            //If any exception occurs during the process of adding the new game to the database, catch the exception and return false.
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<bool> GameExistsAsync(Guid gameId)
+        {
+            return await dbContext
+                        .Games
+                        .AnyAsync(g => g.Id == gameId);
+        }
+
     }
 }

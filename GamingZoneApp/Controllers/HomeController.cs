@@ -1,5 +1,7 @@
 using System.Diagnostics;
+
 using GamingZoneApp.ViewModels;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamingZoneApp.Controllers
