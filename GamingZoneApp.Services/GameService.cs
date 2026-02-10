@@ -20,7 +20,7 @@ namespace GamingZoneApp.Services.Core
             this.dbContext = dbContext;
         }
 
-
+        //Task for viewing all games with their info.
         public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesAsync()
         {
             //Retrieve all games from the database, including their developers.
@@ -45,6 +45,7 @@ namespace GamingZoneApp.Services.Core
             return getAllGamesViewModel;
         }
 
+        //Task for viewing the details of a specific game by its Id.
         public async Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id)
         {
             //Retrieve a game from the database by it's Id, including its developer and publisher.
@@ -82,6 +83,7 @@ namespace GamingZoneApp.Services.Core
             return selectedGameViewModel;
         }
 
+        //Task for adding a new game to the database.
         public async Task<bool> AddGameAsync(GameInputModel inputModel)
         {            
             //Create a new Game entity using the data from the provided GameInputModel.
@@ -116,6 +118,7 @@ namespace GamingZoneApp.Services.Core
 
         }
 
+        //Task for retrieving a game by its Id and loading it into the form for editing.
         public async Task<GameInputModel?> GetGameForEditAsync(Guid gameId)
         {
             //Retrieve the game from the database by its Id.
@@ -148,6 +151,7 @@ namespace GamingZoneApp.Services.Core
             return gameInputModel;
         }
 
+        //Task for updating an existing game in the database using the provided GameInputModel.
         public async Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel)
         {
             //Retrieve the game from the database by its Id.
@@ -191,6 +195,7 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
+        //Task for retrieving a game by its Id and projecting it into a DeleteGameViewModel for deletion confirmation.
         public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId)
         {
             //Retrieve the game to be deleted.
@@ -215,6 +220,7 @@ namespace GamingZoneApp.Services.Core
 
         }
 
+        //Task for deleting a game from the database by its Id.
         public async Task<bool> DeleteGameAsync(Guid gameId)
         {
             Game? gameToDelete = await dbContext
@@ -241,6 +247,7 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
+        //Task for checking if a game exists in the database by its Id.
         public async Task<bool> GameExistsAsync(Guid gameId)
         {
             return await dbContext

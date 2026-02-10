@@ -1,40 +1,31 @@
 ﻿using GamingZoneApp.Data;
+using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.ViewModels.Developer;
 using GamingZoneApp.ViewModels.Game;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace GamingZoneApp.Controllers
 {
     public class DevelopersController : Controller
     {
-        private readonly GamingZoneDbContext dbContext;
 
-        public DevelopersController(GamingZoneDbContext dbContext)
+        private readonly IDeveloperService developerService;
+
+        public DevelopersController(IDeveloperService developerService)
         {
-            this.dbContext = dbContext;
+            this.developerService = developerService;
         }
 
         //Visualize all developers using view model.
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<AllDevelopersViewModel> developers = dbContext
-                                             .Developers
-                                             .Include(d => d.GamesDeveloped)
-                                             .Select(d => new AllDevelopersViewModel
-                                                {
-                                                    Id = d.Id,
-                                                    Name = d.Name,
-                                                    GamesDeveloped = d.GamesDeveloped.Count,
-                                                    Description = d.Description,
-                                                    ImageUrl = d.ImageUrl,
-                                                })
-                                             .OrderBy(d => d.Name)
-                                             .AsNoTracking()
-                                             .ToList();
+            IEnumerable<AllDevelopersViewModel> developers
+                = await developerService.GetAllDevelopersWithInfoAsync();
 
             return View(developers);
         }
@@ -43,25 +34,10 @@ namespace GamingZoneApp.Controllers
         //Created buttons to be able to access this view from the Developers/Index view.
 
         [HttpGet]
-        public IActionResult DeveloperGames(Guid developerId)
+        public async Task<IActionResult> DeveloperGames(Guid developerId)
         {
-            IEnumerable<AllGamesViewModel> gamesByDev = dbContext
-                                       .Games
-                                       .Include(g => g.Developer)
-                                       .Include(g => g.Publisher)
-                                       .Where(g => g.DeveloperId == developerId)
-                                       .Select(g => new AllGamesViewModel
-                                       {   
-                                           Id = g.Id,
-                                           Title = g.Title,
-                                           ImageUrl = g.ImageUrl,
-                                           Genre = g.Genre.ToString(),
-                                           Developer = g.Developer.Name,
-
-                                       })
-                                       .AsNoTracking()
-                                       .AsSplitQuery()
-                                       .ToList();
+            IEnumerable<AllGamesViewModel> gamesByDev 
+                = await developerService.GetAllGamesByDeveloperIdAsync(developerId);
 
             return View(gamesByDev);
 
