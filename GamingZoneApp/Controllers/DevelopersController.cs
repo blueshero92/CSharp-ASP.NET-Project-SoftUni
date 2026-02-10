@@ -20,7 +20,6 @@ namespace GamingZoneApp.Controllers
         }
 
         //Visualize all developers using view model.
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -32,7 +31,6 @@ namespace GamingZoneApp.Controllers
 
         //Visualize all games by a specific developer using a view model.
         //Created buttons to be able to access this view from the Developers/Index view.
-
         [HttpGet]
         public async Task<IActionResult> DeveloperGames(Guid developerId)
         {
