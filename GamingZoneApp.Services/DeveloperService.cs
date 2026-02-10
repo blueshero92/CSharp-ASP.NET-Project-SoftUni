@@ -20,14 +20,12 @@ namespace GamingZoneApp.Services.Core
 
         //Task for viewing all developers with their info.
         public async Task<IEnumerable<AllDevelopersViewModel>> GetAllDevelopersWithInfoAsync()
-        {
-            //Building the query to get all developers, including their related GamesDeveloped.
-            IQueryable<Developer> allDevelopers = dbContext
-                                             .Developers
-                                             .Include(d => d.GamesDeveloped);
+        {            
 
-            //Projecting the developers to the AllDevelopersViewModel, ordering by name and the count of games developed, and materializing the query.
-            IEnumerable<AllDevelopersViewModel> developersViewModel = await allDevelopers
+            //Projecting the developers to the AllDevelopersViewModel, ordering by name and the count of games developed.
+            IEnumerable<AllDevelopersViewModel> developersViewModel = await dbContext
+                                                                           .Developers
+                                                                           .Include(d => d.GamesDeveloped)
                                                                            .Select(d => new AllDevelopersViewModel
                                                                            {
                                                                                Id = d.Id,
@@ -47,15 +45,12 @@ namespace GamingZoneApp.Services.Core
         //Task for viewing all games by a specific developer.
         public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByDeveloperIdAsync(Guid developerId)
         {
-            //Building the query to get games by developer ID, including related Developer and Publisher.
-            IQueryable<Game> gamesByDevQuery = dbContext
-                                            .Games
-                                            .Include(g => g.Developer)
-                                            .Include(g => g.Publisher)
-                                            .Where(g => g.DeveloperId == developerId);
-
-            // Projecting the games to the AllGamesViewModel, ordering by title, and materializing the query.
-            IEnumerable<AllGamesViewModel> gamesByDev = await gamesByDevQuery
+            // Projecting the games to the AllGamesViewModel, ordering by title.
+            IEnumerable<AllGamesViewModel> gamesByDev = await dbContext
+                                                             .Games
+                                                             .Include(g => g.Developer)
+                                                             .Include(g => g.Publisher)
+                                                             .Where(g => g.DeveloperId == developerId)
                                                              .Select(g => new AllGamesViewModel
                                                              {
                                                                  Id = g.Id,
