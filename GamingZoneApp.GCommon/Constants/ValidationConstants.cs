@@ -2,7 +2,19 @@
 {
     public static class ValidationConstants
     {
-    
+
+        public class ApplicationUserConstants
+        {
+            /// <summary>
+            /// User's first name should be able to store text with length of at least 2 characters.
+            /// </summary>
+            public const int UsernameMinLength = 3;
+            /// <summary>
+            /// User's first name should be able to store text with length up to 50 characters.
+            /// </summary>
+            public const int UsernameMaxLength = 30;
+        }
+       
 
         public class GameConstants
         {
