@@ -23,7 +23,13 @@
 
                         <div class="mb-3">
                             <label asp-for="ReleaseDate" class="form-label"></label>
-                            <input asp-for="ReleaseDate" asp-format="{0:@AppDateFormat}" type="text" class="form-control">
+                            @{
+                                
+                                var releaseDateValue = Model.ReleaseDate == default(DateTime)
+                                    ? string.Empty
+                                    : Model.ReleaseDate.ToString(AppDateFormat);
+                            }
+                            <input asp-for="ReleaseDate" asp-format="@($"{{0:{AppDateFormat}}}")" type="text" class="form-control" placeholder="@AppDateFormat" value="@releaseDateValue" />
                             <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                         </div>
 
