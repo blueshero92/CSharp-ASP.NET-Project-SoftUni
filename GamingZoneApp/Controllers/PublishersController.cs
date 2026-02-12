@@ -1,14 +1,12 @@
-﻿using GamingZoneApp.Data;
-using GamingZoneApp.Services.Core.Interfaces;
+﻿using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.ViewModels.Game;
 using GamingZoneApp.ViewModels.Publisher;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GamingZoneApp.Controllers
 {
-    public class PublishersController : Controller
+    public class PublishersController : BaseController
     {
         private readonly IPublisherService publisherService;
 
@@ -19,6 +17,7 @@ namespace GamingZoneApp.Controllers
 
         //Visualize all publishers using a view model.
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             IEnumerable<AllPublishersViewModel> publishers 
@@ -30,6 +29,7 @@ namespace GamingZoneApp.Controllers
         //Visualize all games by a specific publisher using a view model.
         //Created buttons to be able to access this view from the Publishers/Index view.
         [HttpGet]
+        [AllowAnonymous]
         public async  Task<IActionResult> PublisherGames(Guid publisherId)
         {
             IEnumerable<AllGamesViewModel> gamesByPublisher 

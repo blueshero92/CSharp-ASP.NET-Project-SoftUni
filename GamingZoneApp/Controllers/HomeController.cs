@@ -1,12 +1,12 @@
 using System.Diagnostics;
 
 using GamingZoneApp.ViewModels;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamingZoneApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -16,17 +16,20 @@ namespace GamingZoneApp.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

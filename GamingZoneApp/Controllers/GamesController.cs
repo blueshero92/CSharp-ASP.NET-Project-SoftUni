@@ -2,12 +2,13 @@
 
 using GamingZoneApp.Services.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 
 
 namespace GamingZoneApp.Controllers
 {
-    public class GamesController : Controller
+    public class GamesController : BaseController
     {
         private readonly IGameService gameService;
         private readonly IDeveloperService developerService;
@@ -22,6 +23,7 @@ namespace GamingZoneApp.Controllers
 
         //Visualize all games using a view model.
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             //Using the game service to retrieve all games and map them to the collection of AllGamesViewModel.
@@ -35,6 +37,7 @@ namespace GamingZoneApp.Controllers
 
         //Visualize game details for an individual game using a view model.
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GameDetails(Guid id)
         {
             //Using the game service to retrieve the game details by id.
