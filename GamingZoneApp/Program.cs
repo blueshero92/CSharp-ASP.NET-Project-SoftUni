@@ -34,7 +34,20 @@ namespace GamingZoneApp
             })
                             .AddRoles<IdentityRole<Guid>>()
                             .AddEntityFrameworkStores<GamingZoneDbContext>();
-            
+
+            //Configuring application cookie settings for redirecting to login when user is not logged in.
+            //This is necesarry because custom ApplicationUser is used instead of the default IdentityUser.
+            //Also, AddIdentity does not add the services required for the Identity UI as AddDefaultIdentity does.
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.ReturnUrlParameter = "returnUrl";
+                options.Cookie.Name = "GamingZoneAppCookie";
+
+            });
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddRazorPages();
