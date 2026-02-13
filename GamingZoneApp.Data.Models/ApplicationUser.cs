@@ -12,5 +12,8 @@ namespace GamingZoneApp.Data.Models
         //HashSet<T> is used for future extesibility and speed for working with larger amounts of data and to avoid duplications.
         public ICollection<ApplicationUserGame> UsersGames { get; set; }
             = new HashSet<ApplicationUserGame>();
+
+        public ICollection<Game> MyGames { get; set; } 
+            = new HashSet<Game>();
     }
 }

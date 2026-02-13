@@ -10,14 +10,17 @@ namespace GamingZoneApp.Services.Core.Interfaces
         //Task for viewing details of a specific game by it's Id.
         Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id);
 
+        //Task for viewing all games added by a specific user by the user's Id.
+        Task<IEnumerable<AllGamesViewModel>> GetAllGamesByUserIdAsync(Guid userId);
+
         //Task for adding a new game to the database.
-        Task<bool> AddGameAsync(GameInputModel model);
+        Task<bool> AddGameAsync(GameInputModel model, Guid userId);
 
         //Task for getting a game by it's Id and loading the EditGame form.
-        Task<GameInputModel?> GetGameForEditAsync(Guid gameId);
+        Task<GameInputModel?> GetGameForEditAsync(Guid gameId, Guid userId);
 
         //Task for executing the editing of a game in the database.
-        Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel);
+        Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel, Guid userId);
 
         //Task for getting a game by it's Id and loading the DeleteGame form.
         Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId);
@@ -27,5 +30,8 @@ namespace GamingZoneApp.Services.Core.Interfaces
 
         //Task for checking if a game exists in the database by its Id.
         Task<bool> GameExistsAsync(Guid gameId);
+
+        Task<bool> IsUserCreatorAsync(Guid gameId, Guid userId);
+
     }
 }

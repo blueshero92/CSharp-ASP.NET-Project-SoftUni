@@ -83,8 +83,28 @@ namespace GamingZoneApp.Services.Core
             return selectedGameViewModel;
         }
 
+        //Task for viewing all games added by a specific user by the user's Id.
+        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByUserIdAsync(Guid userId)
+        {
+            IEnumerable<AllGamesViewModel> getAllGamesByUserId = await dbContext
+                                                                      .Games
+                                                                      .Where(g => g.UserId == userId)
+                                                                      .AsNoTracking()
+                                                                      .Select(g => new AllGamesViewModel
+                                                                      {
+                                                                          Id = g.Id,
+                                                                          Title = g.Title,
+                                                                          ImageUrl = g.ImageUrl,
+                                                                          Genre = g.Genre.ToString(),
+                                                                          Developer = g.Developer.Name,
+                                                                      })
+                                                                      .OrderBy(g => g.Title)
+                                                                      .ToListAsync();
+
+            return getAllGamesByUserId;
+        }
         //Task for adding a new game to the database.
-        public async Task<bool> AddGameAsync(GameInputModel inputModel)
+        public async Task<bool> AddGameAsync(GameInputModel inputModel, Guid userId)
         {            
             //Create a new Game entity using the data from the provided GameInputModel.
             try
@@ -102,7 +122,8 @@ namespace GamingZoneApp.Services.Core
                     Description = inputModel.Description,
                     ImageUrl = inputModel.ImageUrl,
                     DeveloperId = inputModel.DeveloperId,
-                    PublisherId = inputModel.PublisherId
+                    PublisherId = inputModel.PublisherId,
+                    UserId = userId
                 };
 
                 await dbContext.Games.AddAsync(newGame);
@@ -119,7 +140,7 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for retrieving a game by its Id and loading it into the form for editing.
-        public async Task<GameInputModel?> GetGameForEditAsync(Guid gameId)
+        public async Task<GameInputModel?> GetGameForEditAsync(Guid gameId, Guid userId)
         {
             //Retrieve the game from the database by its Id.
             Game? gameToEdit = await dbContext
@@ -128,7 +149,13 @@ namespace GamingZoneApp.Services.Core
                                         .Include(g => g.Publisher)
                                         .AsNoTracking()
                                         .SingleOrDefaultAsync(g => g.Id == gameId);
-            
+
+            //Additional validation to ensure that the user attempting to edit the game is the creator of the game.
+            if (gameToEdit?.UserId != userId)
+            {
+                return null;
+            }
+
             //If no game is found with the provided Id, return null.
             if (gameToEdit == null)
             {
@@ -144,7 +171,9 @@ namespace GamingZoneApp.Services.Core
                 Description = gameToEdit.Description,
                 ImageUrl = gameToEdit.ImageUrl,
                 DeveloperId = gameToEdit.DeveloperId,
-                PublisherId = gameToEdit.PublisherId
+                PublisherId = gameToEdit.PublisherId,
+                UserId = gameToEdit.UserId
+
             };
             
             //Return the GameInputModel for editing.
@@ -152,7 +181,7 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for updating an existing game in the database using the provided GameInputModel.
-        public async Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel)
+        public async Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel, Guid userId)
         {
             //Retrieve the game from the database by its Id.
             Game? gameToEdit = await dbContext
@@ -160,6 +189,12 @@ namespace GamingZoneApp.Services.Core
                                     .Include(g => g.Developer)
                                     .Include(g => g.Publisher)
                                     .SingleOrDefaultAsync(g => g.Id == gameId);
+
+            //Additional validation to ensure that the user attempting to edit the game is the creator of the game.
+            if (gameToEdit?.UserId != userId)
+            {
+                return false;
+            }
 
             //If no game is found with the provided Id, return false.
             if (gameToEdit == null)
@@ -255,5 +290,12 @@ namespace GamingZoneApp.Services.Core
                         .AnyAsync(g => g.Id == gameId);
         }
 
+        //Helper task for checking if a user is the creator of a game by comparing the game's UserId with the provided userId.
+        public async Task<bool> IsUserCreatorAsync(Guid gameId, Guid userId)
+        {
+            return await dbContext
+                        .Games
+                        .AnyAsync(g => g.Id == gameId && g.UserId == userId);
+        }
     }
 }

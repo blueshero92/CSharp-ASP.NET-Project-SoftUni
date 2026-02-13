@@ -4,6 +4,7 @@ using GamingZoneApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingZoneApp.Data.Migrations
 {
     [DbContext(typeof(GamingZoneDbContext))]
-    partial class GamingZoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260212153046_AddedOneToManyRelationForGameAndUser")]
+    partial class AddedOneToManyRelationForGameAndUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,24 +89,6 @@ namespace GamingZoneApp.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a7baa931-fad9-4db1-845b-784c40674c8f",
-                            Email = "admin@example.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOzyJ5Kezia4l2IlstE5GUVRTLemg+BBpOTWrKz2e2CxtL9BJWMc7IXGhztoPWPjug==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "1068daec-8d01-4a7e-91ae-6f49e2f6ebe8",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("GamingZoneApp.Data.Models.ApplicationUserGame", b =>
@@ -308,9 +293,8 @@ namespace GamingZoneApp.Data.Migrations
                         .HasColumnType("nvarchar(184)")
                         .HasComment("Title of the videogame.");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasComment("Foreign Key referencing the user who added the game.");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -337,8 +321,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("a0529584-8eb3-4880-8674-c4e5cc67b487"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2024, 10, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Bloodlight Sanatorium",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Bloodlight Sanatorium"
                         },
                         new
                         {
@@ -351,8 +334,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("f128d30f-d5df-4ea2-9638-6a3f2aef82dd"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Lorekeepers of Aethermoor",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Lorekeepers of Aethermoor"
                         },
                         new
                         {
@@ -365,8 +347,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("f128d30f-d5df-4ea2-9638-6a3f2aef82dd"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Synthetica: Fractured Grid",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Synthetica: Fractured Grid"
                         },
                         new
                         {
@@ -379,8 +360,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2022, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Thornveil Dominion",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Thornveil Dominion"
                         },
                         new
                         {
@@ -393,8 +373,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2019, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Oath of the Vermillion Ronin",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Oath of the Vermillion Ronin"
                         },
                         new
                         {
@@ -407,8 +386,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2016, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Embervault Requiem",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Embervault Requiem"
                         },
                         new
                         {
@@ -421,8 +399,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("e23228f4-77a4-448c-b816-ccb1826eed36"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2021, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "The Mystery of Ravencrest",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "The Mystery of Ravencrest"
                         },
                         new
                         {
@@ -435,8 +412,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("3c77575e-bad2-4408-901b-9ec193a7cfba"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2022, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Fury of the Stormborn",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Fury of the Stormborn"
                         },
                         new
                         {
@@ -449,8 +425,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("b037a40e-b701-4bdc-a5c0-96b0fdd92619"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2017, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Gearwright Caverns",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Gearwright Caverns"
                         },
                         new
                         {
@@ -463,8 +438,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("0039fd7b-fdc2-4218-b942-e24ec3f3cf1f"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2020, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Pyreclimb Ascendancy",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Pyreclimb Ascendancy"
                         },
                         new
                         {
@@ -477,8 +451,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("1a94a706-493a-4ec2-b3e1-3cd802128f59"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2020, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Aethershard Chronicles",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Aethershard Chronicles"
                         },
                         new
                         {
@@ -491,8 +464,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("bad774ec-fc82-479d-800c-97c5bd602884"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2023, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Voidstrider Odyssey",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Voidstrider Odyssey"
                         },
                         new
                         {
@@ -505,8 +477,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("e89f7368-94f7-4f55-8e0d-a03333659abb"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2011, 4, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Paradox Chamber",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Paradox Chamber"
                         },
                         new
                         {
@@ -519,8 +490,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("3c77575e-bad2-4408-901b-9ec193a7cfba"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2020, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Whisper of the Daimyo",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Whisper of the Daimyo"
                         },
                         new
                         {
@@ -533,8 +503,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("e23228f4-77a4-448c-b816-ccb1826eed36"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2018, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Colossus Hunt: Untamed",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Colossus Hunt: Untamed"
                         },
                         new
                         {
@@ -547,8 +516,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("e2b91da3-3f00-4eb4-9785-643acbcf4c55"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2023, 8, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Veilguard Accord",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Veilguard Accord"
                         },
                         new
                         {
@@ -561,8 +529,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("e23228f4-77a4-448c-b816-ccb1826eed36"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2023, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Iron Legends VI",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Iron Legends VI"
                         },
                         new
                         {
@@ -575,8 +542,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("556474fc-388b-48a7-9bd2-c45528b09bb1"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2025, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Wanderers of the Shattered Isles",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Wanderers of the Shattered Isles"
                         },
                         new
                         {
@@ -589,8 +555,7 @@ namespace GamingZoneApp.Data.Migrations
                             PublisherId = new Guid("ed820b54-96c2-4fbf-a533-09b193c08028"),
                             Rating = 0.0m,
                             ReleaseDate = new DateTime(2024, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Galactic Crusaders II",
-                            UserId = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
+                            Title = "Galactic Crusaders II"
                         });
                 });
 
@@ -885,10 +850,8 @@ namespace GamingZoneApp.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("GamingZoneApp.Data.Models.ApplicationUser", "User")
-                        .WithMany("MyGames")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("CreatedGames")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Developer");
 
@@ -950,7 +913,7 @@ namespace GamingZoneApp.Data.Migrations
 
             modelBuilder.Entity("GamingZoneApp.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("MyGames");
+                    b.Navigation("CreatedGames");
 
                     b.Navigation("UsersGames");
                 });

@@ -46,5 +46,7 @@ namespace GamingZoneApp.ViewModels.Game
         [Required]
         public ICollection<AddGamePublisherViewModel> Publishers { get; set; } 
             = new List<AddGamePublisherViewModel>(); //Collection of nested view model for Publishers dropdown selection.
+        
+        public Guid? UserId { get; set; }
     }
 }

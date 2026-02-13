@@ -65,6 +65,12 @@ namespace GamingZoneApp.Data.Models
         public ICollection<ApplicationUserGame> GamesUsers { get; set; }
             = new HashSet<ApplicationUserGame>();
 
+        [Required]
+        [ForeignKey(nameof(User))]
+        [Comment("Foreign Key referencing the user who added the game.")]
+        public Guid UserId { get; set; }
 
+        [Required]
+        public ApplicationUser? User { get; set; }
     }
 }

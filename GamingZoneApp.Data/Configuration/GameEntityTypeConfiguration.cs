@@ -8,6 +8,8 @@ namespace GamingZoneApp.Data.Configuration
 {
     public class GameEntityTypeConfiguration : IEntityTypeConfiguration<Game>
     {
+        
+
         //Seeded games data in the database.
         private readonly IEnumerable<Game> games = new List<Game>()
         {
@@ -21,7 +23,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("f75ee60f-4615-4bca-8a21-be507c6d3a49"),
                 PublisherId = Guid.Parse("a0529584-8eb3-4880-8674-c4e5cc67b487"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Whispers+of+Hollowmere"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Whispers+of+Hollowmere",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -33,7 +36,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("ba8230ef-c6b3-4be8-9408-43d57b2049c3"),
                 PublisherId = Guid.Parse("f128d30f-d5df-4ea2-9638-6a3f2aef82dd"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Lorekeepers+of+Aethermoor"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Lorekeepers+of+Aethermoor",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -45,7 +49,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("ba8230ef-c6b3-4be8-9408-43d57b2049c3"),
                 PublisherId = Guid.Parse("f128d30f-d5df-4ea2-9638-6a3f2aef82dd"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Synthetica+Fractured+Grid"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Synthetica+Fractured+Grid",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -57,7 +62,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("d7197d8b-d7f4-49ba-b24c-87b2152c6440"),
                 PublisherId = Guid.Parse("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Thornveil+Dominion"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Thornveil+Dominion",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -69,7 +75,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("d7197d8b-d7f4-49ba-b24c-87b2152c6440"),
                 PublisherId = Guid.Parse("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Oath+of+Vermillion+Ronin"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Oath+of+Vermillion+Ronin",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -81,7 +88,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("d7197d8b-d7f4-49ba-b24c-87b2152c6440"),
                 PublisherId = Guid.Parse("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Embervault+Requiem"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Embervault+Requiem",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -93,7 +101,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("0b4120ce-a6f9-4b1d-b8d8-de31e4173f7e"),
                 PublisherId = Guid.Parse("e23228f4-77a4-448c-b816-ccb1826eed36"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Ravencrest+Estate"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Ravencrest+Estate",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -105,7 +114,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("4af65147-9ea5-4e30-a16d-de4750debe73"),
                 PublisherId = Guid.Parse("3c77575e-bad2-4408-901b-9ec193a7cfba"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Fury+of+Stormborn"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Fury+of+Stormborn",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -117,7 +127,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("c0d88616-83ce-416a-a034-11264b776cc1"),
                 PublisherId = Guid.Parse("b037a40e-b701-4bdc-a5c0-96b0fdd92619"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Gearwright+Caverns"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Gearwright+Caverns",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -129,7 +140,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("7596ad8e-5eaa-44da-a716-6ab508873b52"),
                 PublisherId = Guid.Parse("0039fd7b-fdc2-4218-b942-e24ec3f3cf1f"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Pyreclimb+Ascendancy"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Pyreclimb+Ascendancy",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -141,7 +153,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("c81c009f-66c6-4c32-9c14-f3c9b68e20a3"),
                 PublisherId = Guid.Parse("1a94a706-493a-4ec2-b3e1-3cd802128f59"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Aethershard+Chronicles"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Aethershard+Chronicles",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -153,7 +166,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("0dd6b5e3-9d72-4a1a-89b0-a8651c6bebf4"),
                 PublisherId = Guid.Parse("bad774ec-fc82-479d-800c-97c5bd602884"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Voidstrider+Odyssey"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Voidstrider+Odyssey",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -165,7 +179,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("07dbe539-557e-4692-85e6-c875b1262a71"),
                 PublisherId = Guid.Parse("e89f7368-94f7-4f55-8e0d-a03333659abb"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Paradox+Chamber"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Paradox+Chamber",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -177,7 +192,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("ae06f7d4-7f50-411d-86af-c97ac324972e"),
                 PublisherId = Guid.Parse("3c77575e-bad2-4408-901b-9ec193a7cfba"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Whisper+of+Daimyo"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Whisper+of+Daimyo",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -189,7 +205,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("0b4120ce-a6f9-4b1d-b8d8-de31e4173f7e"),
                 PublisherId = Guid.Parse("e23228f4-77a4-448c-b816-ccb1826eed36"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Colossus+Hunt+Untamed"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Colossus+Hunt+Untamed",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -201,7 +218,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("52753bfd-d052-4ac1-a648-c9ae2fda3ae4"),
                 PublisherId = Guid.Parse("e2b91da3-3f00-4eb4-9785-643acbcf4c55"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Veilguard+Accord"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Veilguard+Accord",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -213,7 +231,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("0b4120ce-a6f9-4b1d-b8d8-de31e4173f7e"),
                 PublisherId = Guid.Parse("e23228f4-77a4-448c-b816-ccb1826eed36"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Iron+Fist+Legends+VI"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Iron+Fist+Legends+VI",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -225,7 +244,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("7010a2f8-1545-48d8-bb52-86ea0995c45e"),
                 PublisherId = Guid.Parse("556474fc-388b-48a7-9bd2-c45528b09bb1"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Wanderers+Shattered+Isles"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Wanderers+Shattered+Isles",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
             {
@@ -237,7 +257,8 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("166ff532-b1c1-40ad-b6ef-85a73d049d1e"),
                 PublisherId = Guid.Parse("ed820b54-96c2-4fbf-a533-09b193c08028"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Stellarborne+Legionnaires+II"
+                ImageUrl = "https://via.placeholder.com/300x400?text=Stellarborne+Legionnaires+II",
+                UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             }
         };
 

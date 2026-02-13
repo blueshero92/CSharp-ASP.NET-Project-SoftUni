@@ -56,6 +56,17 @@ namespace GamingZoneApp.Controllers
 
         }
 
+        //Visualize all games added by the current user using a view model.
+        [HttpGet]
+        public async Task<IActionResult> MyGames()
+        {
+            Guid userId = GetUserId();
+
+            IEnumerable<AllGamesViewModel> myGames = await gameService.GetAllGamesByUserIdAsync(userId); 
+            
+            return View(myGames);
+        }
+
         //Visualize the Add Game form with developers and publishers.
         [HttpGet]
         public async Task<IActionResult> AddGame()
@@ -76,6 +87,8 @@ namespace GamingZoneApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddGame(GameInputModel inputModel)
         {
+            //Using helper method from the BaseController to get the current user's id.
+            Guid userId = GetUserId();
 
             //Validate the model state.
             if (!ModelState.IsValid)
@@ -109,7 +122,7 @@ namespace GamingZoneApp.Controllers
             }
 
             //Try to create and save the new game using the game service. Catch any exceptions and return the view with an error message.
-            bool gameIsAdded = await gameService.AddGameAsync(inputModel);
+            bool gameIsAdded = await gameService.AddGameAsync(inputModel, userId);
 
             //If the game is not added successfully, return the view with an error message.
             if (!gameIsAdded)
@@ -124,18 +137,26 @@ namespace GamingZoneApp.Controllers
         //Visualize the Edit Game form with developers and publishers.
         [HttpGet]
         public async Task<IActionResult> EditGame(Guid id)
-        {
+        {            
+            Guid userId = GetUserId();
+
             if (!await gameService.GameExistsAsync(id)) //Using helper method to check if the game exists.
             {
                 return BadRequest();
             }
 
-            GameInputModel? gameInputModel = await gameService.GetGameForEditAsync(id);
+            //After authentication, check if the user is the creator of the game using helper task from the game service.
+            if (!await gameService.IsUserCreatorAsync(id, userId))
+            {
+                return BadRequest();
+            }
+
+            GameInputModel? gameInputModel = await gameService.GetGameForEditAsync(id, userId);            
 
             //If the game is not found, return NotFound.
             if (gameInputModel == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(EditGame));
             }
 
             gameInputModel.Developers = (await developerService.GetAllDevelopersAsync()).ToList();
@@ -145,11 +166,20 @@ namespace GamingZoneApp.Controllers
             return View(gameInputModel);
         }
 
+        //Process the Edit Game form submission.
         [HttpPost]
         public async Task<IActionResult> EditGame(Guid id, GameInputModel inputModel)
         {
+            Guid userId = GetUserId();
+
             //Check if the game exists in the database for it to be edited using helper method from the game service.
             if (!await gameService.GameExistsAsync(id))
+            {
+                return BadRequest();
+            }
+
+            //After authentication, check if the user is the creator of the game using helper task from the game service same as in the GET EditGame action.
+            if (!await gameService.IsUserCreatorAsync(id, userId))
             {
                 return BadRequest();
             }
@@ -186,7 +216,7 @@ namespace GamingZoneApp.Controllers
             }
 
             //Try to edit and save the game using the game service.
-            bool gameIsEdited = await gameService.EditGameAsync(id, inputModel);
+            bool gameIsEdited = await gameService.EditGameAsync(id, inputModel, userId);
 
             //If the game is not edited successfully, return the view with an error message.
             if (!gameIsEdited)
