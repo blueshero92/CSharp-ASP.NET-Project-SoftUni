@@ -148,7 +148,8 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                return BadRequest();
+                ModelState.AddModelError(string.Empty, "You are not authorized to edit this game.");
+                return RedirectToAction(nameof(NotAuthorizedError));
             }
 
             GameInputModel? gameInputModel = await gameService.GetGameForEditAsync(id, userId);            
@@ -181,7 +182,8 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service same as in the GET EditGame action.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                return BadRequest();
+                ModelState.AddModelError(string.Empty, "You are not authorized to edit this game.");
+                return RedirectToAction(nameof(NotAuthorizedError));
             }
 
             //Validate the model state.
@@ -243,7 +245,8 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                return BadRequest();
+                ModelState.AddModelError(string.Empty, "You are not authorized to delete this game.");
+                return RedirectToAction(nameof(NotAuthorizedError));
             }
 
             //Retrieve the game to be deleted using the game service and map it to the DeleteGameViewModel.         
@@ -258,6 +261,7 @@ namespace GamingZoneApp.Controllers
             return View(viewModel);
         }
 
+        //Process the Delete Game confirmation.
         [HttpPost]
         public async Task<IActionResult> DeleteGame(Guid id, DeleteGameViewModel? viewModel)
         {
@@ -272,7 +276,8 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                return BadRequest();
+                ModelState.AddModelError(string.Empty, "You are not authorized to delete this game.");
+                return RedirectToAction(nameof(NotAuthorizedError));
             }
 
             //Retrieve the game to be deleted.
@@ -288,6 +293,18 @@ namespace GamingZoneApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Visualize the Not Authorized error page when a user tries to edit or delete a game they did not create.
+        [HttpGet]
+        public async Task<IActionResult> NotAuthorizedError(Guid gameId, Guid userId)
+        {
+            //Used just to make Action async.
+            if (!await gameService.IsUserCreatorAsync(gameId, userId))
+            {
+                return View();
+            }
+            
+            return BadRequest();
+        }
         //A helper method to populate the developers and publishers for the dropdowns in the Add and Edit views.
         private async Task PopulateDevelopersAndPublishersAsync(GameInputModel inputModel)
         {

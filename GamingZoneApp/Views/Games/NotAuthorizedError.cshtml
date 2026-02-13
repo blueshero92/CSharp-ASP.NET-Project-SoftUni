@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Not authorized";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card border-danger shadow-sm">
+                <div class="card-body text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                    </div>
+
+                    <h2 class="card-title text-danger mb-3">Not Authorized...</h2>
+
+                    <p class="lead mb-4">
+                        You are not authorized to edit or delete this game.
+                        Only the user who created the game may perform that action.
+                    </p>
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-3">
+                            <a asp-controller="Games" asp-action="MyGames" class="btn btn-primary">
+                                <i class="fas fa-user me-2"></i> Go to My Games
+                            </a>
+                            <a asp-controller="Games" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-gamepad me-2"></i> Go to All Games
+                            </a>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
