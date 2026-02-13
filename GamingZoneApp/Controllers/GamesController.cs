@@ -232,14 +232,22 @@ namespace GamingZoneApp.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteGame(Guid id)
         {
+            Guid userId = GetUserId();
+
             //Check if the game exists in the database for it to be deleted.
             if (!await gameService.GameExistsAsync(id))
             {
                 return BadRequest();
             }
 
+            //After authentication, check if the user is the creator of the game using helper task from the game service.
+            if (!await gameService.IsUserCreatorAsync(id, userId))
+            {
+                return BadRequest();
+            }
+
             //Retrieve the game to be deleted using the game service and map it to the DeleteGameViewModel.         
-            DeleteGameViewModel? viewModel = await gameService.GetGameForDeleteAsync(id);
+            DeleteGameViewModel? viewModel = await gameService.GetGameForDeleteAsync(id, userId);
 
             //If the game is not found, return NotFound.
             if (viewModel == null)
@@ -253,14 +261,22 @@ namespace GamingZoneApp.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteGame(Guid id, DeleteGameViewModel? viewModel)
         {
+            Guid userId = GetUserId();
+
             //Check if the game exists in the database for it to be deleted.
             if (!await gameService.GameExistsAsync(id))
             {
                 return BadRequest();
             }
 
+            //After authentication, check if the user is the creator of the game using helper task from the game service.
+            if (!await gameService.IsUserCreatorAsync(id, userId))
+            {
+                return BadRequest();
+            }
+
             //Retrieve the game to be deleted.
-            bool gameIsDeleted = await gameService.DeleteGameAsync(id);
+            bool gameIsDeleted = await gameService.DeleteGameAsync(id, userId);
 
             //Checks if the game is deleted successfully. If not, return the view with an error message.
             if (!gameIsDeleted)

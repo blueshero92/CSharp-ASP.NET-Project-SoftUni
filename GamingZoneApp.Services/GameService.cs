@@ -231,7 +231,7 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for retrieving a game by its Id and projecting it into a DeleteGameViewModel for deletion confirmation.
-        public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId)
+        public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId)
         {
             //Retrieve the game to be deleted.
             Game? gameToDelete = await dbContext
@@ -241,7 +241,13 @@ namespace GamingZoneApp.Services.Core
                                       .AsNoTracking()
                                       .SingleOrDefaultAsync(g => g.Id == gameId);
 
-            if(gameToDelete == null)
+            //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
+            if (gameToDelete?.UserId != userId)
+            {
+                return null;
+            }
+
+            if (gameToDelete == null)
             {
                 return null;
             }
@@ -256,7 +262,7 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for deleting a game from the database by its Id.
-        public async Task<bool> DeleteGameAsync(Guid gameId)
+        public async Task<bool> DeleteGameAsync(Guid gameId, Guid userId)
         {
             Game? gameToDelete = await dbContext
                                       .Games
@@ -264,7 +270,13 @@ namespace GamingZoneApp.Services.Core
                                       .Include(g => g.Publisher)
                                       .SingleOrDefaultAsync(g => g.Id == gameId);
 
-            if(gameToDelete == null)
+            //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
+            if (gameToDelete?.UserId != userId)
+            {
+                return false;
+            }
+
+            if (gameToDelete == null)
             {
                 return false;
             }

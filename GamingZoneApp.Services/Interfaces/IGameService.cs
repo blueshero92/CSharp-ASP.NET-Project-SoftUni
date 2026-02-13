@@ -23,10 +23,10 @@ namespace GamingZoneApp.Services.Core.Interfaces
         Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel, Guid userId);
 
         //Task for getting a game by it's Id and loading the DeleteGame form.
-        Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId);
+        Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId);
 
         //Task for executing the deletion of a game from the database.
-        Task<bool> DeleteGameAsync(Guid gameId);
+        Task<bool> DeleteGameAsync(Guid gameId, Guid userId);
 
         //Task for checking if a game exists in the database by its Id.
         Task<bool> GameExistsAsync(Guid gameId);
