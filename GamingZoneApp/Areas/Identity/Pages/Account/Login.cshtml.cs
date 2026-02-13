@@ -108,7 +108,7 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
                 }
 
                 //Check the password and sign in the user if successful.
-                SignInResult? result = await signInManager.CheckPasswordSignInAsync(user, Input.Password, lockoutOnFailure: false);
+                SignInResult? result = await signInManager.CheckPasswordSignInAsync(user, Input.Password, lockoutOnFailure: true);
 
                 if (result.Succeeded)
                 {
