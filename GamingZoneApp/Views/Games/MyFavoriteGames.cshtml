@@ -1,0 +1,47 @@
+﻿@using GamingZoneApp.ViewModels.Game
+@model IEnumerable<AllGamesViewModel>
+
+@{
+    ViewData["Title"] = "My Favorite Games";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">@ViewData["Title"]</h1>
+        <a asp-action="Index" asp-controller="Games" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to All Games
+        </a>
+    </div>
+
+    @if (TempData["FavoritesMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["FavoritesMessage"]
+        </div>
+    }
+    @if (TempData["FavoritesError"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FavoritesError"]
+        </div>
+    }
+
+    <div class="alert alert-info" role="alert">
+        <p class="mb-0">
+            These are the games you've added to your favorites. Click "Details" to view a game or remove it from your favorites on the details page.
+        </p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <h4>No favorites yet</h4>
+            <p class="text-muted">Browse games and add the ones you like to your favorites.</p>
+            <a asp-action="Index" asp-controller="Games" class="btn btn-primary mt-3">Browse Games</a>
+        </div>
+    }
+    else
+    {
+        <partial name="_AllGamesPartial" model="@Model" />
+    }
+</div>

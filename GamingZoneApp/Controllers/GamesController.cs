@@ -67,6 +67,98 @@ namespace GamingZoneApp.Controllers
             return View(myGames);
         }
 
+        //Visualize all games added to favorites by the current user using a view model.
+        [HttpGet]
+        public async Task<IActionResult> MyFavoriteGames()
+        {
+            Guid userId = GetUserId();
+
+            IEnumerable<AllGamesViewModel> myFavoriteGames = await gameService.GetFavoriteGamesByUserIdAsync(userId);
+
+            return View(myFavoriteGames);
+        }
+
+        //Add a game to the favorites of the current user by the game's Id.
+        [HttpPost]
+        public async Task<IActionResult> AddToFavorites(Guid gameId)
+        {
+            //Using helper method from the BaseController to get the current user's id.
+            Guid userId = GetUserId();
+
+            //Validate that the game exists using helper method from the game service.
+            if (!await gameService.GameExistsAsync(gameId))
+            {
+                return BadRequest();
+            }
+
+            //Validate that the game is not already in the favorites of the user using helper method from the game service.
+            if (await gameService.IsGameInFavoritesAsync(gameId, userId))
+            {
+                //If the game is already in favorites, return the view with an error message.
+                TempData["FavoritesError"] = "This game is already in your favorites.";
+                return RedirectToAction(nameof(MyFavoriteGames));
+            }
+
+            //Validate that the user is not the creator of the game using helper method from the game service. A user cannot add their own game to favorites.
+            if (await gameService.IsUserCreatorAsync(gameId, userId))
+            {
+                TempData["FavoritesError"] = "You cannot add your own game to favorites.";
+                return RedirectToAction(nameof(MyFavoriteGames));
+            }
+
+            //Try to add the game to favorites using the game service.
+            bool isAddedToFavorites = await gameService.AddGameToFavoritesAsync(gameId, userId);
+
+            //If the game is not added to favorites successfully, return the view with an error message.
+            if (!isAddedToFavorites)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while adding the game to favorites. Please try again.");
+                return RedirectToAction(nameof(GameDetails), new { id = gameId });
+            }
+
+            return RedirectToAction(nameof(MyFavoriteGames));
+        }
+
+        //Remove game from favorites of the current user by the game's Id and the user's Id.
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromFavorites(Guid gameId)
+        {
+            //Using helper method from the BaseController to get the current user's id.
+            Guid userId = GetUserId();
+
+            //Validate that the game exists using helper method from the game service.
+            if (!await gameService.GameExistsAsync(gameId))
+            {
+                return BadRequest();
+            }
+
+            //Validate that the game is not in the favorites of the user using helper method from the game service.
+            if (!await gameService.IsGameInFavoritesAsync(gameId, userId))
+            {
+                //Check if user is the creator. A user cannot remove their own game from favorites because they cannot add it in the first place.
+                if (await gameService.IsUserCreatorAsync(gameId, userId))
+                {
+                    TempData["FavoritesError"] = "You cannot remove your own game from favorites because you cannot add it in the first place.";
+                    return RedirectToAction(nameof(MyFavoriteGames));
+                }
+
+                //If the game is not in favorites, return the view with an error message.
+                TempData["FavoritesError"] = "This game is not in your favorites.";
+                return RedirectToAction(nameof(MyFavoriteGames));
+            }
+
+            //Try to remove the game from favorites using the game service.
+            bool isRemovedFromFavorites = await gameService.RemoveGameFromFavoritesAsync(gameId, userId);
+
+            //If the game is not removed from favorites successfully, return the view with an error message.
+            if (!isRemovedFromFavorites)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while removing the game from favorites. Please try again.");
+                return RedirectToAction(nameof(GameDetails), new { id = gameId });
+            }
+            return RedirectToAction(nameof(MyFavoriteGames));
+        }
+
         //Visualize the Add Game form with developers and publishers.
         [HttpGet]
         public async Task<IActionResult> AddGame()
@@ -131,7 +223,7 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyGames));
         }
 
         //Visualize the Edit Game form with developers and publishers.
@@ -305,6 +397,7 @@ namespace GamingZoneApp.Controllers
             
             return BadRequest();
         }
+        
         //A helper method to populate the developers and publishers for the dropdowns in the Add and Edit views.
         private async Task PopulateDevelopersAndPublishersAsync(GameInputModel inputModel)
         {

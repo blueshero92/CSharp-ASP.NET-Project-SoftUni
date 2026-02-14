@@ -83,6 +83,64 @@ namespace GamingZoneApp.Services.Core
             return selectedGameViewModel;
         }
 
+        //Task for adding a game to a user's favorites by the game's Id and the user's Id.
+        public async Task<bool> AddGameToFavoritesAsync(Guid gameId, Guid userId)
+        {           
+
+            bool isAlreadyInFavorites = await IsGameInFavoritesAsync(gameId, userId);
+
+            //If the game is already in the user's favorites, return false to indicate that the game cannot be added again.
+            if (isAlreadyInFavorites)
+            {
+                return false;
+            }
+
+            //Try to add the game to the user's favorites by creating a new ApplicationUserGame entity and saving it to the database.
+            try
+            {
+                ApplicationUserGame gameToAdd = new ApplicationUserGame
+                {
+                    GameId = gameId,
+                    UserId = userId
+                };
+
+                await dbContext.ApplicationUsersGames.AddAsync(gameToAdd);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        //Task for removing a game from a user's favorites by the game's Id and the user's Id.
+        public async Task<bool> RemoveGameFromFavoritesAsync(Guid gameId, Guid userId)
+        {
+            ApplicationUserGame? gameToRemove = dbContext
+                                                .ApplicationUsersGames
+                                                .SingleOrDefault(au => au.GameId == gameId && au.UserId == userId);
+
+            //If the game is not found in the user's favorites, return false to indicate that there is no game to remove.
+            if (gameToRemove == null)
+            {
+                return false;
+            }
+
+            //Try to remove the game from the user's favorites by deleting the corresponding ApplicationUserGame entity from the database.
+            try
+            {
+                dbContext.ApplicationUsersGames.Remove(gameToRemove);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         //Task for viewing all games added by a specific user by the user's Id.
         public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByUserIdAsync(Guid userId)
         {
@@ -103,6 +161,31 @@ namespace GamingZoneApp.Services.Core
 
             return getAllGamesByUserId;
         }
+
+        //Task for viewing all games in a user's favorites by the user's Id.
+        public async Task<IEnumerable<AllGamesViewModel>> GetFavoriteGamesByUserIdAsync(Guid userId)
+        {
+                IEnumerable<AllGamesViewModel> favoriteGamesViewModel =  await dbContext
+                                                                              .Games
+                                                                              .Include(g => g.GamesUsers)
+                                                                              .OrderBy(g => g.Title)                                                               
+                                                                              .AsNoTracking()
+                                                                              .Where(g => g.GamesUsers
+                                                                                           .Any(gu => gu.UserId == userId))
+                                                                              .Select(g => new AllGamesViewModel
+                                                                              {
+                                                                                  Id = g.Id,
+                                                                                  Title = g.Title,
+                                                                                  ImageUrl = g.ImageUrl,
+                                                                                  Genre = g.Genre.ToString(),
+                                                                                  Developer = g.Developer.Name
+                                                                              })
+                                                                              .ToListAsync();
+
+                return favoriteGamesViewModel;
+
+        }
+        
         //Task for adding a new game to the database.
         public async Task<bool> AddGameAsync(GameInputModel inputModel, Guid userId)
         {            
@@ -309,5 +392,15 @@ namespace GamingZoneApp.Services.Core
                         .Games
                         .AnyAsync(g => g.Id == gameId && g.UserId == userId);
         }
+
+        //Helper task for checking if a game is in a user's favorites.
+        public async Task<bool> IsGameInFavoritesAsync(Guid gameId, Guid userId)
+        {
+            return await dbContext
+                        .ApplicationUsersGames
+                        .AnyAsync(au => au.GameId == gameId && au.UserId == userId);
+        }
+
+
     }
 }
