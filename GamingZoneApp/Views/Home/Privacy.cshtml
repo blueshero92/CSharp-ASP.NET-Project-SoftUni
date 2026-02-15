@@ -1,6 +1,78 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <p class="lead">
+        Your privacy is important. This page explains what data Gaming Zone collects, why we collect it, and how we use and protect it.
+        This application is a university / development project — treat seeded accounts and demo data as development-only.
+    </p>
+
+    <section class="mb-4">
+        <h4>1. Information we collect</h4>
+        <ul>
+            <li><strong>Account information:</strong> email, username and password when you register.</li>
+            <li><strong>Profile actions:</strong> games you create, edit or delete; games you add to your favorites.</li>
+            <li><strong>Cookies:</strong> authentication cookies and standard session cookies to keep you signed in and improve UX.</li>
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h4>2. How we use your information</h4>
+        <ul>
+            <li>Authenticate and authorize you so you can manage your games and favorites.</li>
+            <li>Persist your games and favorites so they are available only to you (or public where applicable).</li>
+            <li>Improve the application during development by diagnosing issues and testing features.</li>
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h4>3. Data sharing and third parties</h4>
+        <p>
+            We do not sell or share your personal data with third parties for marketing. During development the app may reference external libraries (CDNs, analytics) — review those services' policies if enabled.
+        </p>
+    </section>
+
+    <section class="mb-4">
+        <h4>4. Security</h4>
+        <p>
+            We follow common development practices: passwords are hashed and database access is protected by server credentials.
+        </p>
+    </section>
+
+    <section class="mb-4">
+        <h4>5. Retention</h4>
+        <p>
+            Data is retained while the application database exists.
+        </p>
+    </section>
+
+    <section class="mb-4">
+        <h4>6. Your choices</h4>
+        <ul>
+            <li>You can delete games you created from the UI.</li>
+            <li>You can remove items from your favorites at any time.</li>
+            <li>To remove your account contact administrator and request data deletion.</li>
+        </ul>
+    </section>
+
+    <section class="mb-4">
+        <h4>7. Changes to this policy</h4>
+        <p>
+            This privacy policy may change. Significant changes will be reflected on this page.
+        </p>
+    </section>
+
+    <section class="mb-4">
+        <h4>8. Contact</h4>
+        <p class="mb-0">
+			For questions about this app contact the administrator of this page.
+        </p>
+    </section>
+
+    <div class="mt-3">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">Back to Home</a>
+    </div>
+</div>

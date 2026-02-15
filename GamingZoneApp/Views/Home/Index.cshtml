@@ -2,7 +2,69 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Gaming Zone Homepage</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-7">
+            <h1 class="display-4 fw-bold">Gaming Zone — Discover, Collect, Share!</h1>
+            <p class="lead text-muted">
+                A modern game catalog that makes it easy to browse awesome games, save your favorites and manage your own collection.
+            </p>
+
+            <div class="row g-2 mt-4">
+                <div class="col-auto">
+                    <a asp-controller="Games" asp-action="Index" class="btn btn-primary btn-lg">
+                        Browse Games
+                    </a>
+                </div>
+                <div class="col-auto">
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Games" asp-action="AddGame" class="btn btn-primary btn-lg">
+                            Add a Game
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" class="btn btn-success btn-lg">
+                            Get Started
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Why Gaming Zone?</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><strong>Awesome games</strong> — detailed descriptions, developer & publisher info.</li>
+                        <li class="mb-2"><strong>Personal collection</strong> — add, edit and remove games you created.</li>
+                        <li class="mb-2"><strong>Favorites</strong> — save games you love and access them quickly.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-4">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="border rounded p-4 h-100">
+                    <h4 class="mb-3 fs-4 fw-semibold">For Players</h4>
+                    <p class="mb-0 fs-6 text-muted">
+                        Explore curated game pages with rich details, images and ratings. Save the titles you love to your personal favorites for quick access.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="border rounded p-4 h-100">
+                    <h4 class="mb-3 fs-4 fw-semibold">For Creators</h4>
+                    <p class="mb-0 fs-6 text-muted">
+                        Add and manage your games using a simple, form-driven workflow — ideal for prototypes, portfolios and quick publishing.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
