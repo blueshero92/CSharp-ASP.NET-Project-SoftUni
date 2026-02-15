@@ -87,14 +87,6 @@ namespace GamingZoneApp.Services.Core
         public async Task<bool> AddGameToFavoritesAsync(Guid gameId, Guid userId)
         {           
 
-            bool isAlreadyInFavorites = await IsGameInFavoritesAsync(gameId, userId);
-
-            //If the game is already in the user's favorites, return false to indicate that the game cannot be added again.
-            if (isAlreadyInFavorites)
-            {
-                return false;
-            }
-
             //Try to add the game to the user's favorites by creating a new ApplicationUserGame entity and saving it to the database.
             try
             {

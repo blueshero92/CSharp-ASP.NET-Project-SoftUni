@@ -22,7 +22,6 @@ namespace GamingZoneApp.Services.Core
             IEnumerable<AllPublishersViewModel> publishers = await dbContext
                                                                   .Publishers
                                                                   .Include(p => p.GamesPublished)
-                                                                  .OrderBy(p => p.Name)
                                                                   .Select(p => new AllPublishersViewModel
                                                                   {
                                                                       Id = p.Id,
@@ -67,11 +66,13 @@ namespace GamingZoneApp.Services.Core
         {
             return await dbContext
                         .Publishers
+                        .AsNoTracking()
                         .Select(p => new AddGamePublisherViewModel
                         {
                             Id = p.Id,
                             Name = p.Name
                         })
+                        .OrderBy (p => p.Name)
                         .ToListAsync();
         }
 
