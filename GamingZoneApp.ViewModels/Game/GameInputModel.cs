@@ -29,6 +29,7 @@ namespace GamingZoneApp.ViewModels.Game
         public string Description { get; set; } = null!;
 
         [Required]
+        [Url(ErrorMessage = "Please enter a valid URL for the image. Example: https://example.com/image.jpg")]
         [MinLength(ImageUrlMinLength, ErrorMessage = "Image URL must be at least {1} characters long.")]
         [MaxLength(ImageUrlMaxLength, ErrorMessage = "Image URL cannot exceed {1} characters.")]
         public string ImageUrl { get; set; } = null!;
