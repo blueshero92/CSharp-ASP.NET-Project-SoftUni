@@ -33,11 +33,13 @@ namespace GamingZoneApp.Data.Models
         [Comment("Description/trivia of the game.")]
         public string Description { get; set; } = null!;
 
+        //TODO: Implement a more complex rating system in the future, with user ratings and an average rating calculation.
         [Required]
         [Column(TypeName = GameRatingType)]
         [Comment("Videogame's average rating. Default value used, because users will rate the game")]
         public decimal Rating { get; set; } = 0.0m;
 
+        //TODO: Implement IsDeleted property for soft deletion of games.
         [Required]
         [Comment("Shows if the videogame is deleted.")]
         public bool IsDeleted { get; set; }
