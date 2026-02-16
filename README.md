@@ -66,7 +66,7 @@ Follow these steps to get the project running locally.
 
 ```bash
 git clone https://github.com/blueshero92/CSharp-ASP.NET-Project-SoftUni
-CSharp-ASP.NET-Project-SoftUni
+
 ```
 
 ### 2. Restore dependencies
