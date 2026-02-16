@@ -4,6 +4,7 @@ using GamingZoneApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingZoneApp.Data.Migrations
 {
     [DbContext(typeof(GamingZoneDbContext))]
-    partial class GamingZoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260216121050_AddedDefaultImageForPublishers")]
+    partial class AddedDefaultImageForPublishers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,15 +95,15 @@ namespace GamingZoneApp.Data.Migrations
                         {
                             Id = new Guid("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d34b619f-1b58-4523-af5c-fa96c66ac534",
+                            ConcurrencyStamp = "328fdc1f-d267-4c9a-a3bb-50a9de737c5b",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG9HZPp5FTB/Cqyw0gIbk1yapERckChftWPm5K35IW0RiWugOIR3zhEYPGbq/IvI4g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKkxf4LTrtNo2T5yXUYgdliZRauPT960zWk7GblBGvPz1AQwsoDMTMtHCswYC6FgDw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d4d281b0-6ded-4d3a-a69f-770d1e2ef178",
+                            SecurityStamp = "04f1d89c-9917-4958-9c26-f486cb3d5796",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -276,7 +279,7 @@ namespace GamingZoneApp.Data.Migrations
                             Description = "Venture into the abandoned Bloodlight Sanatorium where shadows breathe and walls remember. As paranormal investigator Elena Voss, unravel decades of buried secrets while evading entities that feed on fear itself.",
                             DeveloperId = new Guid("f75ee60f-4615-4bca-8a21-be507c6d3a49"),
                             Genre = 9,
-                            ImageUrl = "/images/game/gameDefault.png",
+                            ImageUrl = "https://via.placeholder.com/300x400?text=Whispers+of+Hollowmere",
                             IsDeleted = false,
                             PublisherId = new Guid("a0529584-8eb3-4880-8674-c4e5cc67b487"),
                             Rating = 0.0m,
@@ -290,7 +293,7 @@ namespace GamingZoneApp.Data.Migrations
                             Description = "Disgraced and left for dead, rise as a nameless swordsman in the war-ravaged Kiyohara Province. Master the forbidden Crimson Style, hunt those who betrayed you, and carve a path through oni and warlord alike.",
                             DeveloperId = new Guid("d7197d8b-d7f4-49ba-b24c-87b2152c6440"),
                             Genre = 4,
-                            ImageUrl = "/images/game/gameDefault.png",
+                            ImageUrl = "https://via.placeholder.com/300x400?text=Oath+of+Vermillion+Ronin",
                             IsDeleted = false,
                             PublisherId = new Guid("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
                             Rating = 0.0m,
@@ -304,7 +307,7 @@ namespace GamingZoneApp.Data.Migrations
                             Description = "Something ancient stirs beneath Ravencrest Estate. As Dominic Ashford, search for your missing daughter through decaying halls, confront manifestations of familial guilt, and survive a night where the house itself hunts you.",
                             DeveloperId = new Guid("0b4120ce-a6f9-4b1d-b8d8-de31e4173f7e"),
                             Genre = 9,
-                            ImageUrl = "/images/game/gameDefault.png",
+                            ImageUrl = "https://via.placeholder.com/300x400?text=Ravencrest+Estate",
                             IsDeleted = false,
                             PublisherId = new Guid("e23228f4-77a4-448c-b816-ccb1826eed36"),
                             Rating = 0.0m,
@@ -318,7 +321,7 @@ namespace GamingZoneApp.Data.Migrations
                             Description = "Deep within the Brass Hollows, a clockwork civilization crumbles. Guide the last Tinker through labyrinthine foundries, rewire ancient mechanisms, and discover why the Great Engine fell silent centuries ago.",
                             DeveloperId = new Guid("c0d88616-83ce-416a-a034-11264b776cc1"),
                             Genre = 21,
-                            ImageUrl = "/images/game/gameDefault.png",
+                            ImageUrl = "https://via.placeholder.com/300x400?text=Gearwright+Caverns",
                             IsDeleted = false,
                             PublisherId = new Guid("b037a40e-b701-4bdc-a5c0-96b0fdd92619"),
                             Rating = 0.0m,
@@ -332,7 +335,7 @@ namespace GamingZoneApp.Data.Migrations
                             Description = "Sail between floating archipelagos in a world torn asunder by magical cataclysm. Recruit a crew of outcasts, uncover the secrets of the Sundering, and restore balance before the remaining islands fall into the void.",
                             DeveloperId = new Guid("7010a2f8-1545-48d8-bb52-86ea0995c45e"),
                             Genre = 8,
-                            ImageUrl = "/images/game/gameDefault.png",
+                            ImageUrl = "https://via.placeholder.com/300x400?text=Wanderers+Shattered+Isles",
                             IsDeleted = false,
                             PublisherId = new Guid("556474fc-388b-48a7-9bd2-c45528b09bb1"),
                             Rating = 0.0m,
@@ -346,7 +349,7 @@ namespace GamingZoneApp.Data.Migrations
                             Description = "The Hegemony's elite answer humanity's darkest hour. Lead Sergeant Kira Vance through xeno-infested worlds, command squad tactics in brutal firefights, and uncover a conspiracy that threatens the entire frontier.",
                             DeveloperId = new Guid("166ff532-b1c1-40ad-b6ef-85a73d049d1e"),
                             Genre = 7,
-                            ImageUrl = "/images/game/gameDefault.png",
+                            ImageUrl = "https://via.placeholder.com/300x400?text=Stellarborne+Legionnaires+II",
                             IsDeleted = false,
                             PublisherId = new Guid("ed820b54-96c2-4fbf-a533-09b193c08028"),
                             Rating = 0.0m,

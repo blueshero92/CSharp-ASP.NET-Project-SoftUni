@@ -23,7 +23,7 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("f75ee60f-4615-4bca-8a21-be507c6d3a49"),
                 PublisherId = Guid.Parse("a0529584-8eb3-4880-8674-c4e5cc67b487"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Whispers+of+Hollowmere",
+                ImageUrl = "/images/game/gameDefault.png",
                 UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
@@ -36,7 +36,7 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("d7197d8b-d7f4-49ba-b24c-87b2152c6440"),
                 PublisherId = Guid.Parse("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Oath+of+Vermillion+Ronin",
+                ImageUrl = "/images/game/gameDefault.png",
                 UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
@@ -49,7 +49,7 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("0b4120ce-a6f9-4b1d-b8d8-de31e4173f7e"),
                 PublisherId = Guid.Parse("e23228f4-77a4-448c-b816-ccb1826eed36"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Ravencrest+Estate",
+                ImageUrl = "/images/game/gameDefault.png",
                 UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
@@ -62,7 +62,7 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("c0d88616-83ce-416a-a034-11264b776cc1"),
                 PublisherId = Guid.Parse("b037a40e-b701-4bdc-a5c0-96b0fdd92619"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Gearwright+Caverns",
+                ImageUrl = "/images/game/gameDefault.png",
                 UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
@@ -75,7 +75,7 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("7010a2f8-1545-48d8-bb52-86ea0995c45e"),
                 PublisherId = Guid.Parse("556474fc-388b-48a7-9bd2-c45528b09bb1"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Wanderers+Shattered+Isles",
+                ImageUrl = "/images/game/gameDefault.png",
                 UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             },
             new Game
@@ -88,7 +88,7 @@ namespace GamingZoneApp.Data.Configuration
                 IsDeleted = false,
                 DeveloperId = Guid.Parse("166ff532-b1c1-40ad-b6ef-85a73d049d1e"),
                 PublisherId = Guid.Parse("ed820b54-96c2-4fbf-a533-09b193c08028"),
-                ImageUrl = "https://via.placeholder.com/300x400?text=Stellarborne+Legionnaires+II",
+                ImageUrl = "/images/game/gameDefault.png",
                 UserId = Guid.Parse("e303f8ff-8c3d-4ec7-bdc9-bc5efa05325f")
             }
         };
