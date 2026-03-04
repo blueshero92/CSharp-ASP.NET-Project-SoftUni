@@ -35,7 +35,7 @@ namespace GamingZoneApp.Services.Core
                                                                        {
                                                                            Id = g.Id,
                                                                            Title = g.Title,
-                                                                           ImageUrl = g.ImageUrl,
+                                                                           ImageUrl = g.ImageUrl ?? string.Empty,
                                                                            Genre = g.Genre.ToString(),
                                                                            Developer = g.Developer.Name,
 
@@ -62,11 +62,11 @@ namespace GamingZoneApp.Services.Core
                                                             Genre = g.Genre.ToString(),
                                                             Description = g.Description,
                                                             Rating = g.Rating,
-                                                            ImageUrl = g.ImageUrl,
+                                                            ImageUrl = g.ImageUrl ?? string.Empty,
                                                             Developer = g.Developer.Name,
                                                             Publisher = g.Publisher.Name,
-                                                            DeveloperLogoUrl = g.Developer.ImageUrl,
-                                                            PublisherLogoUrl = g.Publisher.ImageUrl
+                                                            DeveloperLogoUrl = g.Developer.ImageUrl ?? string.Empty,
+                                                            PublisherLogoUrl = g.Publisher.ImageUrl ?? string.Empty
 
                                                         })
                                                         .AsNoTracking()
@@ -144,7 +144,7 @@ namespace GamingZoneApp.Services.Core
                                                                       {
                                                                           Id = g.Id,
                                                                           Title = g.Title,
-                                                                          ImageUrl = g.ImageUrl,
+                                                                          ImageUrl = g.ImageUrl ?? string.Empty,
                                                                           Genre = g.Genre.ToString(),
                                                                           Developer = g.Developer.Name,
                                                                       })
@@ -168,7 +168,7 @@ namespace GamingZoneApp.Services.Core
                                                                               {
                                                                                   Id = g.Id,
                                                                                   Title = g.Title,
-                                                                                  ImageUrl = g.ImageUrl,
+                                                                                  ImageUrl = g.ImageUrl ?? string.Empty,
                                                                                   Genre = g.Genre.ToString(),
                                                                                   Developer = g.Developer.Name
                                                                               })
@@ -195,7 +195,7 @@ namespace GamingZoneApp.Services.Core
                     ReleaseDate = inputModel.ReleaseDate,
                     Genre = genre,
                     Description = inputModel.Description,
-                    ImageUrl = inputModel.ImageUrl,
+                    ImageUrl = inputModel.ImageUrl ?? string.Empty,
                     DeveloperId = inputModel.DeveloperId,
                     PublisherId = inputModel.PublisherId,
                     UserId = userId
@@ -244,7 +244,7 @@ namespace GamingZoneApp.Services.Core
                 ReleaseDate = gameToEdit.ReleaseDate,
                 Genre = gameToEdit.Genre.ToString(),
                 Description = gameToEdit.Description,
-                ImageUrl = gameToEdit.ImageUrl,
+                ImageUrl = gameToEdit.ImageUrl ?? string.Empty,
                 DeveloperId = gameToEdit.DeveloperId,
                 PublisherId = gameToEdit.PublisherId,
                 UserId = gameToEdit.UserId
@@ -289,7 +289,7 @@ namespace GamingZoneApp.Services.Core
                 gameToEdit.ReleaseDate = inputModel.ReleaseDate;
                 gameToEdit.Genre = genre;
                 gameToEdit.Description = inputModel.Description;
-                gameToEdit.ImageUrl = inputModel.ImageUrl;
+                gameToEdit.ImageUrl = inputModel.ImageUrl ?? string.Empty;
                 gameToEdit.DeveloperId = inputModel.DeveloperId;
                 gameToEdit.PublisherId = inputModel.PublisherId;
 

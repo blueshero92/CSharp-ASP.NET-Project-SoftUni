@@ -44,10 +44,9 @@ namespace GamingZoneApp.Data.Models
         [Comment("Shows if the videogame is deleted.")]
         public bool IsDeleted { get; set; }
 
-        [Required]
         [MaxLength(ImageUrlMaxLength)]
         [Comment("URL of the videogame image.")]
-        public string ImageUrl { get; set; } = null!;
+        public string? ImageUrl { get; set; }
 
         [Required]
         [ForeignKey(nameof(Developer))]

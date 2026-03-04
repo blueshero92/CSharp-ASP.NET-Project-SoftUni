@@ -22,10 +22,9 @@ namespace GamingZoneApp.Data.Models
         [Comment("Brief information about the publisher.")]
         public string Description { get; set; } = null!;
 
-        [Required]
         [MaxLength(ImageUrlMaxLength)]
         [Comment("URL of the publisher logo image.")]
-        public string ImageUrl { get; set; } = null!;
+        public string? ImageUrl { get; set; }
 
         //HashSet<T> is used for future extesibility and speed for working with larger amounts of data and to avoid duplications.
         public ICollection<Game> GamesPublished { get; set; }
