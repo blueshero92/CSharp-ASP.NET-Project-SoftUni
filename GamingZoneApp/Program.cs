@@ -100,7 +100,7 @@ namespace GamingZoneApp
             options.Password.RequireLowercase = configuration.GetValue<bool>("IdentityOptions:Password:RequireLowercase");
             options.Password.RequireNonAlphanumeric = configuration.GetValue<bool>("IdentityOptions:Password:RequireNonAlphanumeric");
             options.Password.RequireUppercase = configuration.GetValue<bool>("IdentityOptions:Password:RequireUppercase");
-            options.Password.RequiredLength = configuration.GetValue<int>("IdentityOptions:Password:RequiredLength");
+            options.Password.RequiredLength = configuration.GetValue("IdentityOptions:Password:RequiredLength", options.Password.RequiredLength);
 
             //Lockout settings for user accounts used for development and testing purposes.
             options.Lockout.MaxFailedAccessAttempts = configuration.GetValue<int>("IdentityOptions:Lockout:MaxFailedAccessAttempts");
