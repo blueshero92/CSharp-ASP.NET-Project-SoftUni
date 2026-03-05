@@ -373,7 +373,7 @@ namespace GamingZoneApp.Controllers
             }
 
             //Retrieve the game to be deleted.
-            bool gameIsDeleted = await gameService.DeleteGameAsync(id, userId);
+            bool gameIsDeleted = await gameService.SoftDeleteGameAsync(id, userId);
 
             //Checks if the game is deleted successfully. If not, return the view with an error message.
             if (!gameIsDeleted)

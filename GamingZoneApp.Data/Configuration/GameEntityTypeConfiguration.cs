@@ -9,6 +9,11 @@ namespace GamingZoneApp.Data.Configuration
     public class GameEntityTypeConfiguration : IEntityTypeConfiguration<Game>
     {
         
+        public void Configure(EntityTypeBuilder<Game> entity)
+        {
+            entity.HasQueryFilter(g => !g.IsDeleted);
+            entity.HasData(games);
+        }
 
         //Seeded games data in the database.
         private readonly IEnumerable<Game> games = new List<Game>()
@@ -93,9 +98,5 @@ namespace GamingZoneApp.Data.Configuration
             }
         };
 
-        public void Configure(EntityTypeBuilder<Game> entity)
-        {
-            entity.HasData(games);
-        }
     }
 }

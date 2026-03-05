@@ -34,8 +34,11 @@ namespace GamingZoneApp.Services.Core.Interfaces
         //Task for getting a game by it's Id and loading the DeleteGame form.
         Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId);
 
+        //Task for executing the soft deletion of a game from the application, by setting the IsDeleted property to true in the database.
+        Task<bool> SoftDeleteGameAsync(Guid gameId, Guid userId);
+
         //Task for executing the deletion of a game from the database.
-        Task<bool> DeleteGameAsync(Guid gameId, Guid userId);
+        Task<bool> HardDeleteGameAsync(Guid gameId, Guid userId);
 
         //Task for checking if a game exists in the database by its Id.
         Task<bool> GameExistsAsync(Guid gameId);
