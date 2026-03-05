@@ -13,6 +13,17 @@
             /// User's first name should be able to store text with length up to 50 characters.
             /// </summary>
             public const int UsernameMaxLength = 30;
+
+            /// <summary>
+            /// Password should be able to store text with length of at least 4 characters.
+            /// </summary>
+            public const int PasswordMinLength = 4;
+
+            /// <summary>
+            /// Password should be able to store text with length up to 100 characters.
+            /// </summary>
+            public const int PasswordMaxLength = 100;
+
         }
        
 

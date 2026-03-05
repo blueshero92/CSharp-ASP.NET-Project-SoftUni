@@ -48,5 +48,16 @@ namespace GamingZoneApp.GCommon.Constants
 
 
         }
+
+        public class RegisterErrors
+        {
+            public const string UsernameLengthError = "The {0} must be at least {2} and at max {1} characters long.";
+            public const string PasswordLengthError = "The {0} must be at least {2} and at max {1} characters long.";
+
+            public const string EmailNotSupportedError = "The default UI requires a user store with email support.";
+
+            public const string PasswordsDoNotMatchError = "The password and confirmation password do not match.";
+            
+        }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using static GamingZoneApp.GCommon.Constants.ValidationConstants.ApplicationUserConstants;
+using static GamingZoneApp.GCommon.Constants.ErrorMessages.RegisterErrors;
 
 
 namespace GamingZoneApp.Areas.Identity.Pages.Account
@@ -61,7 +62,7 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [Display(Name = "Username")]
-            [StringLength(UsernameMaxLength, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = UsernameMinLength)]
+            [StringLength(UsernameMaxLength, ErrorMessage = UsernameLengthError, MinimumLength = UsernameMinLength)]
             public string Username { get; set; }
 
             /// <summary>
@@ -78,7 +79,7 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(PasswordMaxLength, ErrorMessage = PasswordLengthError, MinimumLength = PasswordMinLength)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -89,7 +90,7 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = PasswordsDoNotMatchError)]
             public string ConfirmPassword { get; set; }
         }
 
@@ -163,7 +164,7 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
         {
             if (!userManager.SupportsUserEmail)
             {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
+                throw new NotSupportedException(EmailNotSupportedError);
             }
             return (IUserEmailStore<ApplicationUser>)userStore;
         }
