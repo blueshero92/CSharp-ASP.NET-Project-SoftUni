@@ -195,7 +195,7 @@ namespace GamingZoneApp.Services.Core
                     ReleaseDate = inputModel.ReleaseDate,
                     Genre = genre,
                     Description = inputModel.Description,
-                    ImageUrl = inputModel.ImageUrl ?? string.Empty,
+                    ImageUrl = inputModel.ImageUrl ?? null,
                     DeveloperId = inputModel.DeveloperId,
                     PublisherId = inputModel.PublisherId,
                     UserId = userId
@@ -244,7 +244,7 @@ namespace GamingZoneApp.Services.Core
                 ReleaseDate = gameToEdit.ReleaseDate,
                 Genre = gameToEdit.Genre.ToString(),
                 Description = gameToEdit.Description,
-                ImageUrl = gameToEdit.ImageUrl ?? string.Empty,
+                ImageUrl = gameToEdit.ImageUrl ?? null,
                 DeveloperId = gameToEdit.DeveloperId,
                 PublisherId = gameToEdit.PublisherId,
                 UserId = gameToEdit.UserId
@@ -289,7 +289,7 @@ namespace GamingZoneApp.Services.Core
                 gameToEdit.ReleaseDate = inputModel.ReleaseDate;
                 gameToEdit.Genre = genre;
                 gameToEdit.Description = inputModel.Description;
-                gameToEdit.ImageUrl = inputModel.ImageUrl ?? string.Empty;
+                gameToEdit.ImageUrl = inputModel.ImageUrl ?? null;
                 gameToEdit.DeveloperId = inputModel.DeveloperId;
                 gameToEdit.PublisherId = inputModel.PublisherId;
 
