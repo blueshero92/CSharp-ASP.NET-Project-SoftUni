@@ -4,7 +4,7 @@ using GamingZoneApp.Services.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-
+using static GamingZoneApp.GCommon.Constants.ErrorMessages.GameControllerErrors;
 
 namespace GamingZoneApp.Controllers
 {
@@ -95,14 +95,14 @@ namespace GamingZoneApp.Controllers
             if (await gameService.IsGameInFavoritesAsync(gameId, userId))
             {
                 //If the game is already in favorites, return the view with an error message.
-                TempData["FavoritesError"] = "This game is already in your favorites.";
+                TempData["FavoritesError"] = GameAlreadyInFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
 
             //Validate that the user is not the creator of the game using helper method from the game service. A user cannot add their own game to favorites.
             if (await gameService.IsUserCreatorAsync(gameId, userId))
             {
-                TempData["FavoritesError"] = "You cannot add your own game to favorites.";
+                TempData["FavoritesError"] = OwnGameCannotBeAddedToFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
 
@@ -112,7 +112,7 @@ namespace GamingZoneApp.Controllers
             //If the game is not added to favorites successfully, return the view with an error message.
             if (!isAddedToFavorites)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while adding the game to favorites. Please try again.");
+                ModelState.AddModelError(string.Empty, ErrorAddingGameToFavorites);
                 return RedirectToAction(nameof(GameDetails), new { id = gameId });
             }
 
@@ -138,12 +138,12 @@ namespace GamingZoneApp.Controllers
                 //Check if user is the creator. A user cannot remove their own game from favorites because they cannot add it in the first place.
                 if (await gameService.IsUserCreatorAsync(gameId, userId))
                 {
-                    TempData["FavoritesError"] = "You cannot remove your own game from favorites because you cannot add it in the first place.";
+                    TempData["FavoritesError"] = OwnGameCannotbeRemovedFromFavoritesError;
                     return RedirectToAction(nameof(MyFavoriteGames));
                 }
 
                 //If the game is not in favorites, return the view with an error message.
-                TempData["FavoritesError"] = "This game is not in your favorites.";
+                TempData["FavoritesError"] = GameNotInFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
 
@@ -153,7 +153,7 @@ namespace GamingZoneApp.Controllers
             //If the game is not removed from favorites successfully, return the view with an error message.
             if (!isRemovedFromFavorites)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while removing the game from favorites. Please try again.");
+                ModelState.AddModelError(string.Empty, ErrorRemovingGameFromFavorites);
                 return RedirectToAction(nameof(GameDetails), new { id = gameId });
             }
             return RedirectToAction(nameof(MyFavoriteGames));
@@ -194,7 +194,7 @@ namespace GamingZoneApp.Controllers
             //Validate that the selected developer exists using helper method from the developer service.
             if (!await developerService.DeveloperExistsAsync(inputModel.DeveloperId))
             {
-                ModelState.AddModelError(nameof(inputModel.DeveloperId), "Selected developer does not exist.");
+                ModelState.AddModelError(nameof(inputModel.DeveloperId), DeveloperDoesNotExistError);
 
                 // Reload developers and publishers for the dropdowns
                 await PopulateDevelopersAndPublishersAsync(inputModel);
@@ -205,7 +205,7 @@ namespace GamingZoneApp.Controllers
             //Validate that the selected publisher exists using helper method from the publisher service.
             if (!await publisherService.PublisherExistsAsync(inputModel.PublisherId))
             {
-                ModelState.AddModelError(nameof(inputModel.PublisherId), "Selected publisher does not exist.");
+                ModelState.AddModelError(nameof(inputModel.PublisherId), PublisherDoesNotExistError);
 
                 // Reload developers and publishers for the dropdowns
                 await PopulateDevelopersAndPublishersAsync(inputModel);
@@ -240,7 +240,7 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                ModelState.AddModelError(string.Empty, "You are not authorized to edit this game.");
+                ModelState.AddModelError(string.Empty, NotAuthorizedToEditGameError);
                 return RedirectToAction(nameof(NotAuthorizedError));
             }
 
@@ -274,7 +274,7 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service same as in the GET EditGame action.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                ModelState.AddModelError(string.Empty, "You are not authorized to edit this game.");
+                ModelState.AddModelError(string.Empty, NotAuthorizedToEditGameError);
                 return RedirectToAction(nameof(NotAuthorizedError));
             }
 
@@ -290,7 +290,7 @@ namespace GamingZoneApp.Controllers
             //Validate that the selected developer exists using helper method from the developer service.
             if (!await developerService.DeveloperExistsAsync(inputModel.DeveloperId))
             {
-                ModelState.AddModelError(nameof(inputModel.DeveloperId), "Selected developer does not exist.");
+                ModelState.AddModelError(nameof(inputModel.DeveloperId), DeveloperDoesNotExistError);
 
                 // Reload developers and publishers for the dropdowns
                 await PopulateDevelopersAndPublishersAsync(inputModel);
@@ -301,7 +301,7 @@ namespace GamingZoneApp.Controllers
             //Validate that the selected publisher exists using helper method from the publisher service.
             if (!await publisherService.PublisherExistsAsync(inputModel.PublisherId))
             {
-                ModelState.AddModelError(nameof(inputModel.PublisherId), "Selected publisher does not exist.");
+                ModelState.AddModelError(nameof(inputModel.PublisherId), PublisherDoesNotExistError);
 
                 // Reload developers and publishers for the dropdowns
                 await PopulateDevelopersAndPublishersAsync(inputModel);
@@ -315,7 +315,7 @@ namespace GamingZoneApp.Controllers
             //If the game is not edited successfully, return the view with an error message.
             if (!gameIsEdited)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while editing the game. Please try again.");
+                ModelState.AddModelError(string.Empty, ErrorEditingGame);
                 return View(inputModel);
             }
 
@@ -337,7 +337,7 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                ModelState.AddModelError(string.Empty, "You are not authorized to delete this game.");
+                ModelState.AddModelError(string.Empty, NotAuthorizedToDeleteGameError);
                 return RedirectToAction(nameof(NotAuthorizedError));
             }
 
@@ -368,7 +368,7 @@ namespace GamingZoneApp.Controllers
             //After authentication, check if the user is the creator of the game using helper task from the game service.
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
-                ModelState.AddModelError(string.Empty, "You are not authorized to delete this game.");
+                ModelState.AddModelError(string.Empty, NotAuthorizedToDeleteGameError);
                 return RedirectToAction(nameof(NotAuthorizedError));
             }
 
@@ -378,7 +378,7 @@ namespace GamingZoneApp.Controllers
             //Checks if the game is deleted successfully. If not, return the view with an error message.
             if (!gameIsDeleted)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while deleting the game. Please try again.");
+                ModelState.AddModelError(string.Empty, ErrorDeletingGame);
                 return View(viewModel);
             }
 

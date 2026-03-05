@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using static GamingZoneApp.GCommon.Constants.ErrorMessages.BaseControllerErrors;
+
 namespace GamingZoneApp.Controllers
 {
     [Authorize]
@@ -19,7 +21,7 @@ namespace GamingZoneApp.Controllers
             // Validate that we found a claim and that it can be parsed as a Guid.
             if (string.IsNullOrWhiteSpace(idValue) || !Guid.TryParse(idValue, out var userId))
             {
-                throw new InvalidOperationException("Authenticated user id claim not found or invalid.");
+                throw new InvalidOperationException(UserNotAuthenticatedError);
             }
 
             return userId;

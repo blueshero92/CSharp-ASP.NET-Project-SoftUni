@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using static GamingZoneApp.GCommon.Constants.ValidationConstants.GameConstants;
 using static GamingZoneApp.GCommon.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.ValidationConstants.GameConstants;
+using static GamingZoneApp.GCommon.Constants.ErrorMessages.GameInputModelErrors;
 using GamingZoneApp.GCommon.CustomValidationAttributes;
 
 
@@ -11,8 +12,8 @@ namespace GamingZoneApp.ViewModels.Game
     public class GameInputModel
     {
         [Required]
-        [MinLength(TitleMinLength, ErrorMessage = "Title must be at least {1} characters long.")]
-        [MaxLength(TitleMaxLength, ErrorMessage = "Title cannot exceed {1} characters.")]
+        [MinLength(TitleMinLength, ErrorMessage = TitleMinLengthError)]
+        [MaxLength(TitleMaxLength, ErrorMessage = TitleMaxLengthError)]
         public string Title { get; set; } = null!;
 
         [Required]
@@ -24,23 +25,23 @@ namespace GamingZoneApp.ViewModels.Game
         public string Genre { get; set; } = null!;
 
         [Required]
-        [MinLength(GameDescriptionMinLength, ErrorMessage = "Description must be at least {1} characters long.")]
-        [MaxLength(GameDescriptionMaxLength, ErrorMessage = "Description cannot exceed {1} characters.")]
+        [MinLength(GameDescriptionMinLength, ErrorMessage = DescriptionMinLengthError)]
+        [MaxLength(GameDescriptionMaxLength, ErrorMessage = DescriptionMaxLengthError)]
         public string Description { get; set; } = null!;
 
         
-        [MinLength(ImageUrlMinLength, ErrorMessage = "Image URL must be at least {1} characters long.")]
-        [MaxLength(ImageUrlMaxLength, ErrorMessage = "Image URL cannot exceed {1} characters.")]
+        [MinLength(ImageUrlMinLength, ErrorMessage = ImageUrlMinLengthError)]
+        [MaxLength(ImageUrlMaxLength, ErrorMessage = ImageUrlMaxLengthError)]
         public string? ImageUrl { get; set; }
 
-        [Required(ErrorMessage = "Please select a developer.")]
+        [Required(ErrorMessage = DeveloperRequiredError)]
         public Guid DeveloperId { get; set; }
 
         [Required]
         public ICollection<AddGameDeveloperViewModel> Developers { get; set; } 
             = new List<AddGameDeveloperViewModel>(); //Collection of nested view model for Developers dropdown selection.
 
-        [Required(ErrorMessage = "Please select a publisher.")]
+        [Required(ErrorMessage = PublisherRequiredError)]
         public Guid PublisherId { get; set; }
 
         [Required]
