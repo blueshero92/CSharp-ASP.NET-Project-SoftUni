@@ -10,7 +10,7 @@
         public string Genre { get; set; } = null!;
         public string Description { get; set; } = null!;
         public decimal Rating { get; set; }
-        public string ImageUrl { get; set; } = null!;
+        public string? ImageUrl { get; set; }
         public string Developer { get; set; } = null!;
         public string Publisher { get; set; } = null!;
 

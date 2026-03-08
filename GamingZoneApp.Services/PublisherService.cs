@@ -28,7 +28,7 @@ namespace GamingZoneApp.Services.Core
                                                                       Name = p.Name,
                                                                       Description = p.Description,
                                                                       GamesPublished = p.GamesPublished.Count,
-                                                                      ImageUrl = p.ImageUrl ?? string.Empty,
+                                                                      ImageUrl = p.ImageUrl ?? null,
                                                                   })
                                                                   .OrderBy(p => p.Name)
                                                                   .ThenByDescending(p => p.GamesPublished)
@@ -50,7 +50,7 @@ namespace GamingZoneApp.Services.Core
                                                                    {
                                                                        Id = g.Id,
                                                                        Title = g.Title,
-                                                                       ImageUrl = g.ImageUrl ?? string.Empty,
+                                                                       ImageUrl = g.ImageUrl ?? null,
                                                                        Genre = g.Genre.ToString(),
                                                                        Developer = g.Developer.Name
                                                                    })

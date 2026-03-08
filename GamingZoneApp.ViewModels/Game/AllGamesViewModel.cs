@@ -7,7 +7,7 @@
 
         public string Title { get; set; } = null!;
 
-        public string ImageUrl { get; set; } = null!;
+        public string? ImageUrl { get; set; }
 
         public string Genre { get; set; } = null!;
 

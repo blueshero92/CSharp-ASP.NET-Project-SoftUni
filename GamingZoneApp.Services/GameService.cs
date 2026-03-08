@@ -35,7 +35,7 @@ namespace GamingZoneApp.Services.Core
                                                                        {
                                                                            Id = g.Id,
                                                                            Title = g.Title,
-                                                                           ImageUrl = g.ImageUrl ?? string.Empty,
+                                                                           ImageUrl = g.ImageUrl ?? null,
                                                                            Genre = g.Genre.ToString(),
                                                                            Developer = g.Developer.Name,
 
@@ -62,7 +62,7 @@ namespace GamingZoneApp.Services.Core
                                                             Genre = g.Genre.ToString(),
                                                             Description = g.Description,
                                                             Rating = g.Rating,
-                                                            ImageUrl = g.ImageUrl ?? string.Empty,
+                                                            ImageUrl = g.ImageUrl ?? null,
                                                             Developer = g.Developer.Name,
                                                             Publisher = g.Publisher.Name,
                                                             DeveloperLogoUrl = g.Developer.ImageUrl ?? string.Empty,
@@ -144,7 +144,7 @@ namespace GamingZoneApp.Services.Core
                                                                       {
                                                                           Id = g.Id,
                                                                           Title = g.Title,
-                                                                          ImageUrl = g.ImageUrl ?? string.Empty,
+                                                                          ImageUrl = g.ImageUrl ?? null,
                                                                           Genre = g.Genre.ToString(),
                                                                           Developer = g.Developer.Name,
                                                                       })
@@ -168,7 +168,7 @@ namespace GamingZoneApp.Services.Core
                                                                               {
                                                                                   Id = g.Id,
                                                                                   Title = g.Title,
-                                                                                  ImageUrl = g.ImageUrl ?? string.Empty,
+                                                                                  ImageUrl = g.ImageUrl ?? null,
                                                                                   Genre = g.Genre.ToString(),
                                                                                   Developer = g.Developer.Name
                                                                               })
