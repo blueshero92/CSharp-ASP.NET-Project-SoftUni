@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using static GamingZoneApp.GCommon.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.TempDataSuccessMessages;
 using static GamingZoneApp.GCommon.Constants.ValidationConstants.ApplicationUserConstants;
-using static GamingZoneApp.GCommon.Constants.ErrorMessages.RegisterErrors;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.RegisterErrors;
 
 
 namespace GamingZoneApp.Areas.Identity.Pages.Account
@@ -133,6 +135,9 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
                     else
                     {
                         await signInManager.SignInAsync(user, isPersistent: false);
+
+                        TempData[SuccessTempDataKey] = UserRegisteredSuccessfullyMessage;
+
                         return LocalRedirect(returnUrl);
                     }
                 }

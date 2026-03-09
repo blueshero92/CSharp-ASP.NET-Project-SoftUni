@@ -2,7 +2,7 @@
 
 namespace GamingZoneApp.GCommon.Constants
 {
-    public static class ErrorMessages
+    public static class OutputMessages
     {
         public class GameInputModelErrors
         {
@@ -30,6 +30,7 @@ namespace GamingZoneApp.GCommon.Constants
             public const string GameAlreadyInFavoritesError = "This game is already in your favorites.";
             public const string OwnGameCannotBeAddedToFavoritesError = "You cannot add your own game to favorites.";
             public const string ErrorAddingGameToFavorites = "An error occurred while adding the game to favorites. Please try again.";
+            public const string ErrorAddingGame = "An error occurred while adding the game. Please try again.";
 
             public const string OwnGameCannotbeRemovedFromFavoritesError 
                 = "You cannot remove your own game from favorites because you cannot add it in the first place.";
@@ -58,6 +59,19 @@ namespace GamingZoneApp.GCommon.Constants
 
             public const string PasswordsDoNotMatchError = "The password and confirmation password do not match.";
             
+        }
+
+        public class TempDataSuccessMessages
+        {
+            public const string GameAddedToFavoritesSuccessfullyMessage = "Successfully added to favorites!";
+            public const string GameRemovedFromFavoritesSuccessfullyMessage = "Successfully removed from favorites!";
+
+            public const string GameAddedSuccessfullyMessage = "Game added successfully!";
+            public const string GameEditedSuccessfullyMessage = "Game edited successfully!";
+            public const string GameDeletedSuccessfullyMessage = "Game deleted successfully!";
+
+            public const string UserLoggedInSuccessfullyMessage = "You have logged in successfully!";
+            public const string UserRegisteredSuccessfullyMessage = "You have registered successfully!";
         }
     }
 }

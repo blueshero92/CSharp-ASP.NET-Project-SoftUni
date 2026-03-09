@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using static GamingZoneApp.GCommon.Constants.ErrorMessages.BaseControllerErrors;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.BaseControllerErrors;
 
 namespace GamingZoneApp.Controllers
 {

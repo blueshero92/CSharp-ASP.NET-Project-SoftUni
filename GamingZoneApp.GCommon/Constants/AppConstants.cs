@@ -20,5 +20,13 @@
         /// The minimum valid year for a game's release date.
         /// </summary>
         public const int ReleaseDateMinYear = 1958;
+
+        //Messages for TempData keys used to display notification messages to the user when adding to favorites, creating, editing or deleting a game.
+        public const string ErrorTempDataKey = "ErrorMessage";
+        public const string SuccessTempDataKey = "SuccessMessage";
+        public const string WarningTempDataKey = "WarningMessage";
+        public const string InfoTempDataKey = "InfoMessage";
+        public const string FavoritesErrorTempDataKey = "FavoritesError";
+
     }
 }

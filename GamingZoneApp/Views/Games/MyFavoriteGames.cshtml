@@ -13,19 +13,6 @@
         </a>
     </div>
 
-    @if (TempData["FavoritesMessage"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            @TempData["FavoritesMessage"]
-        </div>
-    }
-    @if (TempData["FavoritesError"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["FavoritesError"]
-        </div>
-    }
-
     <div class="alert alert-info" role="alert">
         <p class="mb-0">
             These are the games you've added to your favorites. Click "Details" to view a game or remove it from your favorites on the details page.

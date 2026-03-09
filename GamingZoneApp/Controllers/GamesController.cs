@@ -4,7 +4,9 @@ using GamingZoneApp.Services.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-using static GamingZoneApp.GCommon.Constants.ErrorMessages.GameControllerErrors;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.TempDataSuccessMessages;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.GameControllerErrors;
+using static GamingZoneApp.GCommon.Constants.AppConstants;
 
 namespace GamingZoneApp.Controllers
 {
@@ -95,14 +97,14 @@ namespace GamingZoneApp.Controllers
             if (await gameService.IsGameInFavoritesAsync(gameId, userId))
             {
                 //If the game is already in favorites, return the view with an error message.
-                TempData["FavoritesError"] = GameAlreadyInFavoritesError;
+                TempData[ErrorTempDataKey] = GameAlreadyInFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
 
             //Validate that the user is not the creator of the game using helper method from the game service. A user cannot add their own game to favorites.
             if (await gameService.IsUserCreatorAsync(gameId, userId))
             {
-                TempData["FavoritesError"] = OwnGameCannotBeAddedToFavoritesError;
+                TempData[ErrorTempDataKey] = OwnGameCannotBeAddedToFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
 
@@ -112,10 +114,11 @@ namespace GamingZoneApp.Controllers
             //If the game is not added to favorites successfully, return the view with an error message.
             if (!isAddedToFavorites)
             {
-                ModelState.AddModelError(string.Empty, ErrorAddingGameToFavorites);
+                TempData[ErrorTempDataKey] = ErrorAddingGameToFavorites;
                 return RedirectToAction(nameof(GameDetails), new { id = gameId });
             }
 
+            TempData[SuccessTempDataKey] = GameAddedToFavoritesSuccessfullyMessage;
             return RedirectToAction(nameof(MyFavoriteGames));
         }
 
@@ -138,12 +141,12 @@ namespace GamingZoneApp.Controllers
                 //Check if user is the creator. A user cannot remove their own game from favorites because they cannot add it in the first place.
                 if (await gameService.IsUserCreatorAsync(gameId, userId))
                 {
-                    TempData["FavoritesError"] = OwnGameCannotbeRemovedFromFavoritesError;
+                    TempData[ErrorTempDataKey] = OwnGameCannotbeRemovedFromFavoritesError;
                     return RedirectToAction(nameof(MyFavoriteGames));
                 }
 
                 //If the game is not in favorites, return the view with an error message.
-                TempData["FavoritesError"] = GameNotInFavoritesError;
+                TempData[ErrorTempDataKey] = GameNotInFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
 
@@ -153,9 +156,11 @@ namespace GamingZoneApp.Controllers
             //If the game is not removed from favorites successfully, return the view with an error message.
             if (!isRemovedFromFavorites)
             {
-                ModelState.AddModelError(string.Empty, ErrorRemovingGameFromFavorites);
+                TempData[ErrorTempDataKey] = ErrorRemovingGameFromFavorites;
                 return RedirectToAction(nameof(GameDetails), new { id = gameId });
             }
+
+            TempData[SuccessTempDataKey] = GameRemovedFromFavoritesSuccessfullyMessage;
             return RedirectToAction(nameof(MyFavoriteGames));
         }
 
@@ -219,10 +224,11 @@ namespace GamingZoneApp.Controllers
             //If the game is not added successfully, return the view with an error message.
             if (!gameIsAdded)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while adding the game. Please try again.");
+                ModelState.AddModelError(string.Empty, ErrorAddingGame);
                 return View(inputModel);
             }
 
+            TempData[SuccessTempDataKey] = GameAddedSuccessfullyMessage;
             return RedirectToAction(nameof(MyGames));
         }
 
@@ -246,7 +252,7 @@ namespace GamingZoneApp.Controllers
 
             GameInputModel? gameInputModel = await gameService.GetGameForEditAsync(id, userId);            
 
-            //If the game is not found, return NotFound.
+            
             if (gameInputModel == null)
             {
                 return RedirectToAction(nameof(EditGame));
@@ -319,6 +325,7 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
+            TempData[SuccessTempDataKey] = GameEditedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
 
@@ -382,6 +389,7 @@ namespace GamingZoneApp.Controllers
                 return View(viewModel);
             }
 
+            TempData[SuccessTempDataKey] = GameDeletedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
 

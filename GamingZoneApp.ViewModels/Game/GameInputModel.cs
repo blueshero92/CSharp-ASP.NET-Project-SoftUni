@@ -2,7 +2,7 @@
 
 using static GamingZoneApp.GCommon.Constants.AppConstants;
 using static GamingZoneApp.GCommon.Constants.ValidationConstants.GameConstants;
-using static GamingZoneApp.GCommon.Constants.ErrorMessages.GameInputModelErrors;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.GameInputModelErrors;
 using GamingZoneApp.GCommon.CustomValidationAttributes;
 
 

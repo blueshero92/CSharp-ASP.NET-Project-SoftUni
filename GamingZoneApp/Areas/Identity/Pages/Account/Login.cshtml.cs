@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
+using static GamingZoneApp.GCommon.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.TempDataSuccessMessages;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace GamingZoneApp.Areas.Identity.Pages.Account
@@ -114,6 +117,8 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
                 {
                     await signInManager.SignInAsync(user, isPersistent: Input.RememberMe);
                     logger.LogInformation("User logged in.");
+
+                    TempData[SuccessTempDataKey] = UserLoggedInSuccessfullyMessage;
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
