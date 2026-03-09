@@ -22,6 +22,7 @@ else
                         <div class="mt-auto d-flex flex-column gap-2 w-100">
                             <a asp-controller="Games" asp-action="GameDetails" asp-route-id="@game.Id"
                                class="btn btn-primary btn-sm w-100">
+								<i class="bi bi-info-circle"></i>
                                 Details
                             </a>
 
@@ -30,14 +31,14 @@ else
                                 <form asp-controller="Games" asp-action="AddToFavorites" method="post" class="m-0">
                                     <input type="hidden" name="gameId" value="@game.Id" />
                                     <button type="submit" class="btn btn-success btn-sm w-100">
-                                        <i class="fas fa-heart me-1"></i> Add to Favorites
+                                        <i class="bi bi-plus-circle"></i> Add to Favorites
                                     </button>
                                 </form>
 
                                 <form asp-controller="Games" asp-action="RemoveFromFavorites" method="post" class="m-0">
                                     <input type="hidden" name="gameId" value="@game.Id" />
                                     <button type="submit" class="btn btn-danger btn-sm w-100">
-                                        <i class="fas fa-trash-alt me-1"></i> Remove from Favorites
+                                        <i class="bi bi-x-circle"></i> Remove from Favorites
                                     </button>
                                 </form>
                             }

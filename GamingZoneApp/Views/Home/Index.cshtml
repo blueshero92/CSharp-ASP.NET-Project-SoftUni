@@ -13,6 +13,7 @@
             <div class="row g-2 mt-4">
                 <div class="col-auto">
                     <a asp-controller="Games" asp-action="Index" class="btn btn-primary btn-lg">
+                        <i class="bi bi-list"></i>
                         Browse Games
                     </a>
                 </div>
@@ -20,12 +21,14 @@
                     @if (User?.Identity?.IsAuthenticated == true)
                     {
                         <a asp-controller="Games" asp-action="AddGame" class="btn btn-success btn-lg">
+							<i class="bi bi-plus-circle"></i>
                             Add a Game
                         </a>
                     }
                     else
                     {
                         <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" class="btn btn-success btn-lg">
+                            <i class="bi bi-eye"></i>
                             Get Started
                         </a>
                     }
