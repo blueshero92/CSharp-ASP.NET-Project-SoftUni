@@ -39,7 +39,7 @@ namespace GamingZoneApp.Data.Models
         [Comment("Videogame's average rating. Default value used, because users will rate the game")]
         public decimal Rating { get; set; } = 0.0m;
 
-        //TODO: Implement IsDeleted property for soft deletion of games.
+        //IsDeleted property for soft deletion of games.
         [Required]
         [Comment("Shows if the videogame is deleted.")]
         public bool IsDeleted { get; set; }
