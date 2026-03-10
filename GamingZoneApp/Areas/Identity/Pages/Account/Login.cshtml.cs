@@ -116,9 +116,12 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: Input.RememberMe);
+
                     logger.LogInformation("User logged in.");
 
+                    //Set a success notification in TempData to be displayed on successful login and redirect to the return URL.
                     TempData[SuccessTempDataKey] = UserLoggedInSuccessfullyMessage;
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

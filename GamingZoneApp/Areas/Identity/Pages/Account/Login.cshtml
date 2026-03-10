@@ -30,11 +30,13 @@
                     </label>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">
+                        <i class="bi bi-box-arrow-in-right"></i> Log in
+                    </button>
                 </div>
                 <div class="mt-2">
                     <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="w-100 btn btn-sm btn-outline-secondary" role="button">
-                        Register as a new user
+                        <i class="bi bi-person-plus"></i> Register as a new user
                     </a>
                 </div>
             </form>

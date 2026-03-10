@@ -136,6 +136,7 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
                     {
                         await signInManager.SignInAsync(user, isPersistent: false);
 
+                        //Set a success message in TempData to be displayed on successfull register.
                         TempData[SuccessTempDataKey] = UserRegisteredSuccessfullyMessage;
 
                         return LocalRedirect(returnUrl);

@@ -96,7 +96,7 @@ namespace GamingZoneApp.Controllers
             //Validate that the game is not already in the favorites of the user using helper method from the game service.
             if (await gameService.IsGameInFavoritesAsync(gameId, userId))
             {
-                //If the game is already in favorites, return the view with an error message.
+                //If the game is already in favorites, return the view with an error notification.
                 TempData[ErrorTempDataKey] = GameAlreadyInFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
@@ -104,6 +104,7 @@ namespace GamingZoneApp.Controllers
             //Validate that the user is not the creator of the game using helper method from the game service. A user cannot add their own game to favorites.
             if (await gameService.IsUserCreatorAsync(gameId, userId))
             {
+                //If the user is the creator of the game, return the view with an error notification.
                 TempData[ErrorTempDataKey] = OwnGameCannotBeAddedToFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
@@ -114,10 +115,12 @@ namespace GamingZoneApp.Controllers
             //If the game is not added to favorites successfully, return the view with an error message.
             if (!isAddedToFavorites)
             {
+                //If the game is not added to favorites successfully, return the view with an error notification.
                 TempData[ErrorTempDataKey] = ErrorAddingGameToFavorites;
                 return RedirectToAction(nameof(GameDetails), new { id = gameId });
             }
 
+            //If the game is added to favorites successfully, redirect to the MyFavoriteGames action with a success notification.
             TempData[SuccessTempDataKey] = GameAddedToFavoritesSuccessfullyMessage;
             return RedirectToAction(nameof(MyFavoriteGames));
         }
@@ -141,11 +144,12 @@ namespace GamingZoneApp.Controllers
                 //Check if user is the creator. A user cannot remove their own game from favorites because they cannot add it in the first place.
                 if (await gameService.IsUserCreatorAsync(gameId, userId))
                 {
+                    //If the user is the creator of the game, return the view with an error notification.
                     TempData[ErrorTempDataKey] = OwnGameCannotbeRemovedFromFavoritesError;
                     return RedirectToAction(nameof(MyFavoriteGames));
                 }
 
-                //If the game is not in favorites, return the view with an error message.
+                //If the game is not in favorites, return the view with an error notification.
                 TempData[ErrorTempDataKey] = GameNotInFavoritesError;
                 return RedirectToAction(nameof(MyFavoriteGames));
             }
@@ -156,10 +160,12 @@ namespace GamingZoneApp.Controllers
             //If the game is not removed from favorites successfully, return the view with an error message.
             if (!isRemovedFromFavorites)
             {
+                //If the game is not removed from favorites successfully, return the view with an error notification.
                 TempData[ErrorTempDataKey] = ErrorRemovingGameFromFavorites;
                 return RedirectToAction(nameof(GameDetails), new { id = gameId });
             }
 
+            //If the game is removed from favorites successfully, redirect to the MyFavoriteGames action with a success notification.
             TempData[SuccessTempDataKey] = GameRemovedFromFavoritesSuccessfullyMessage;
             return RedirectToAction(nameof(MyFavoriteGames));
         }
@@ -228,6 +234,7 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
+            //If the game is added successfully, redirect to the MyGames action with a success notification.
             TempData[SuccessTempDataKey] = GameAddedSuccessfullyMessage;
             return RedirectToAction(nameof(MyGames));
         }
@@ -325,6 +332,7 @@ namespace GamingZoneApp.Controllers
                 return View(inputModel);
             }
 
+            //If the game is edited successfully, redirect to the Index action with a success notification.
             TempData[SuccessTempDataKey] = GameEditedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
@@ -380,6 +388,7 @@ namespace GamingZoneApp.Controllers
             }
 
             //Retrieve the game to be deleted.
+            //Note: Soft and hard delete can be interchaned here by simply switching the task from the game service. The view and the rest of the code will work with both approaches without any changes.
             bool gameIsDeleted = await gameService.SoftDeleteGameAsync(id, userId);
 
             //Checks if the game is deleted successfully. If not, return the view with an error message.
@@ -389,6 +398,7 @@ namespace GamingZoneApp.Controllers
                 return View(viewModel);
             }
 
+            //If the game is deleted successfully, redirect to the Index action with a success notification.
             TempData[SuccessTempDataKey] = GameDeletedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
