@@ -37,13 +37,14 @@ It demonstrates full CRUD functionality, relational data handling, and user-base
 
 ## 🛠️ Technologies Used
 
-| Technology            | Version  | Purpose                          |
-|-----------------------|----------|----------------------------------|
-| ASP.NET Core MVC      | 8.22     | Web framework                    |
-| Entity Framework Core | 8.22     | ORM / Database access            |
-| SQL Server / SQLite   | -        | Database                         |
-| Bootstrap             | 5.3      | Frontend styling                 |
-| Razor Pages / Views   | -        | Server-side HTML rendering       |
+| Technology            | Version     | Purpose                                  |
+|-----------------------|-------------|------------------------------------------|
+| ASP.NET Core MVC      | 8.22        | Web framework                            |
+| Entity Framework Core | 8.22        | ORM / Database access                    |
+| SQL Server            | 16.0.1145.1 | Database                                 |
+| Bootstrap             | 5.1.0       | Frontend styling                         |
+| Razor Pages / Views   | 8.22        | Server-side HTML rendering               |
+| Toastr                | 2.1.4       | Notifications library for toast messages |
 
 ---
 
