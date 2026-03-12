@@ -254,7 +254,7 @@ namespace GamingZoneApp.Controllers
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
                 ModelState.AddModelError(string.Empty, NotAuthorizedToEditGameError);
-                return RedirectToAction(nameof(NotAuthorizedError));
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             GameInputModel? gameInputModel = await gameService.GetGameForEditAsync(id, userId);            
@@ -288,7 +288,7 @@ namespace GamingZoneApp.Controllers
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
                 ModelState.AddModelError(string.Empty, NotAuthorizedToEditGameError);
-                return RedirectToAction(nameof(NotAuthorizedError));
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             //Validate the model state.
@@ -353,7 +353,7 @@ namespace GamingZoneApp.Controllers
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
                 ModelState.AddModelError(string.Empty, NotAuthorizedToDeleteGameError);
-                return RedirectToAction(nameof(NotAuthorizedError));
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             //Retrieve the game to be deleted using the game service and map it to the DeleteGameViewModel.         
@@ -384,7 +384,7 @@ namespace GamingZoneApp.Controllers
             if (!await gameService.IsUserCreatorAsync(id, userId))
             {
                 ModelState.AddModelError(string.Empty, NotAuthorizedToDeleteGameError);
-                return RedirectToAction(nameof(NotAuthorizedError));
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             //Retrieve the game to be deleted.
@@ -403,19 +403,6 @@ namespace GamingZoneApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //Visualize the Not Authorized error page when a user tries to edit or delete a game they did not create.
-        [HttpGet]
-        public async Task<IActionResult> NotAuthorizedError(Guid gameId, Guid userId)
-        {
-            //Used just to make Action async.
-            if (!await gameService.IsUserCreatorAsync(gameId, userId))
-            {
-                return View();
-            }
-            
-            return BadRequest();
-        }
-        
         //A helper method to populate the developers and publishers for the dropdowns in the Add and Edit views.
         private async Task PopulateDevelopersAndPublishersAsync(GameInputModel inputModel)
         {

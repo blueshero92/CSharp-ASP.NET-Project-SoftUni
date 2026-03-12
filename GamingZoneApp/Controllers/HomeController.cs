@@ -39,7 +39,12 @@ namespace GamingZoneApp.Controllers
                 return View("BadRequest");
             }
 
-            if(statusCode == StatusCodes.Status404NotFound)
+            if(statusCode == StatusCodes.Status403Forbidden)
+            {
+                return View("Forbidden");
+            }
+
+            if (statusCode == StatusCodes.Status404NotFound)
             {
                 return View("NotFound");
             }
