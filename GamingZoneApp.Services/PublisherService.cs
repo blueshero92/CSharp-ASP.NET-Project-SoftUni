@@ -1,4 +1,6 @@
 ﻿using GamingZoneApp.Data;
+using GamingZoneApp.Data.Repository;
+using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.ViewModels.Game;
 using GamingZoneApp.ViewModels.Publisher;
@@ -8,19 +10,19 @@ namespace GamingZoneApp.Services.Core
 {
     public class PublisherService : IPublisherService
     {
-        private readonly GamingZoneDbContext dbContext;
+        private readonly IPublisherRepository publisherRepository;
 
-        public PublisherService(GamingZoneDbContext dbContext)
+        public PublisherService(GamingZoneDbContext dbContext, IPublisherRepository publisherRepository)
         {
-            this.dbContext = dbContext;
+            this.publisherRepository = publisherRepository;
         }
 
         //Task for viewing all publishers with their info.
         public async Task<IEnumerable<AllPublishersViewModel>> GetAllPublishersWithInfoAsync()
         {
             // Retrieve all publishers from the database, including their published games, and project them into a list of AllPublishersViewModel.
-            IEnumerable<AllPublishersViewModel> publishers = await dbContext
-                                                                  .Publishers
+            IEnumerable<AllPublishersViewModel> publishers = await publisherRepository
+                                                                  .GetAllPublishersNoTracking()
                                                                   .Include(p => p.GamesPublished)
                                                                   .Select(p => new AllPublishersViewModel
                                                                   {
@@ -32,7 +34,6 @@ namespace GamingZoneApp.Services.Core
                                                                   })
                                                                   .OrderBy(p => p.Name)
                                                                   .ThenByDescending(p => p.GamesPublished)
-                                                                  .AsNoTracking()
                                                                   .ToListAsync();
 
             return publishers;
@@ -41,11 +42,8 @@ namespace GamingZoneApp.Services.Core
         public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByPublisherIdAsync(Guid publisherId)
         {
             // Retrieve all games from the database that are published by the specified publisher, including their developer and publisher information.
-            IEnumerable<AllGamesViewModel> gamesByPublisher = await dbContext
-                                                                   .Games
-                                                                   .Include(g => g.Developer)
-                                                                   .Include(g => g.Publisher)
-                                                                   .Where(g => g.PublisherId == publisherId)
+            IEnumerable<AllGamesViewModel> gamesByPublisher = await publisherRepository
+                                                                   .GetAllGamesByPublisherNoTracking(publisherId)
                                                                    .Select(g => new AllGamesViewModel
                                                                    {
                                                                        Id = g.Id,
@@ -64,9 +62,8 @@ namespace GamingZoneApp.Services.Core
         //Task for viewing all publishers in the dropdowns for forms.
         public async Task<IEnumerable<AddGamePublisherViewModel>> GetAllPublishersAsync()
         {
-            return await dbContext
-                        .Publishers
-                        .AsNoTracking()
+            return await publisherRepository
+                        .GetAllPublishersNoTracking()
                         .Select(p => new AddGamePublisherViewModel
                         {
                             Id = p.Id,
@@ -79,8 +76,7 @@ namespace GamingZoneApp.Services.Core
         //Task for checking if a publisher exists by its Id.
         public async Task<bool> PublisherExistsAsync(Guid publisherId)
         {
-            return await dbContext
-                        .Publishers.AnyAsync(p => p.Id == publisherId);
+            return await publisherRepository.CheckIfPublisherExistsAsync(publisherId);
         }
     }
 }

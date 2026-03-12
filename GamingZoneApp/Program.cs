@@ -23,8 +23,12 @@ namespace GamingZoneApp
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            //Registering custom services for dependency injection.
+            //Registering repositories for dependency injection.
             builder.Services.AddScoped<IGameRepository, GameRepository>();
+            builder.Services.AddScoped<IDeveloperRepository, DeveloperRepository>();
+            builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
+
+            //Registering custom services for dependency injection.
             builder.Services.AddScoped<IGameService, GameService>();
             builder.Services.AddScoped<IDeveloperService, DeveloperService>();
             builder.Services.AddScoped<IPublisherService, PublisherService>();
