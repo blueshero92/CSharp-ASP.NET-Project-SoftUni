@@ -1,6 +1,6 @@
-﻿using GamingZoneApp.Data;
-using GamingZoneApp.Data.Models;
+﻿using GamingZoneApp.Data.Models;
 using GamingZoneApp.Data.Models.Enums;
+using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.ViewModels.Game;
 
@@ -14,33 +14,30 @@ namespace GamingZoneApp.Services.Core
 {
     public class GameService : IGameService
     {
-        private readonly GamingZoneDbContext dbContext;
-        public GameService(GamingZoneDbContext dbContext)
+        private readonly IGameRepository gameRepository;
+
+        public GameService(IGameRepository gameRepository)
         {
-            this.dbContext = dbContext;
+            this.gameRepository = gameRepository;
         }
 
         //Task for viewing all games with their info.
         public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesAsync()
         {
-            //Retrieve all games from the database, including their developers.
-            IQueryable<Game> getAllGames = dbContext
-                                          .Games
-                                          .AsNoTracking();
 
-            //Project the retrieved games into a collection of AllGamesViewModel, ordered by title.
-            IEnumerable<AllGamesViewModel> getAllGamesViewModel = await getAllGames
-                                                                       .OrderBy(g => g.Title)
-                                                                       .Select(g => new AllGamesViewModel
-                                                                       {
-                                                                           Id = g.Id,
-                                                                           Title = g.Title,
-                                                                           ImageUrl = g.ImageUrl ?? null,
-                                                                           Genre = g.Genre.ToString(),
-                                                                           Developer = g.Developer.Name,
+            //Project the retrieved games into a collection of AllGamesViewModel, ordered by title using GameRepository.
+            IEnumerable<AllGamesViewModel> getAllGamesViewModel = await gameRepository.GetAllGamesNoTrackingAsync()
+                                                                                      .OrderBy(g => g.Title)
+                                                                                      .Select(g => new AllGamesViewModel
+                                                                                      {
+                                                                                          Id = g.Id,
+                                                                                          Title = g.Title,
+                                                                                          ImageUrl = g.ImageUrl ?? null,
+                                                                                          Genre = g.Genre.ToString(),
+                                                                                          Developer = g.Developer.Name,
 
-                                                                       })                                                                       
-                                                                       .ToListAsync();
+                                                                                      })
+                                                                                      .ToListAsync();
             //Return the collection of AllGamesViewModel.
             return getAllGamesViewModel;
         }
@@ -48,12 +45,9 @@ namespace GamingZoneApp.Services.Core
         //Task for viewing the details of a specific game by its Id.
         public async Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id)
         {
-            //Retrieve a game from the database by it's Id, including its developer and publisher.
-            GameViewModel? selectedGameViewModel = await dbContext
-                                                        .Games
-                                                        .Include(g => g.Developer)
-                                                        .Include(g => g.Publisher)
-                                                        .Where(g => g.Id == id)
+            //Retrieve a game from the database by it's Id, including its developer and publisher using GameRepository.
+            GameViewModel? selectedGameViewModel = await gameRepository
+                                                        .GetGameByIdNoTracking(id)
                                                         .Select(g => new GameViewModel
                                                         {
                                                             Id = g.Id,
@@ -69,7 +63,6 @@ namespace GamingZoneApp.Services.Core
                                                             PublisherLogoUrl = g.Publisher.ImageUrl ?? string.Empty
 
                                                         })
-                                                        .AsNoTracking()
                                                         .SingleOrDefaultAsync();
 
             //If no game is found with the provided Id, return null.
@@ -85,21 +78,15 @@ namespace GamingZoneApp.Services.Core
 
         //Task for adding a game to a user's favorites by the game's Id and the user's Id.
         public async Task<bool> AddGameToFavoritesAsync(Guid gameId, Guid userId)
-        {           
+        {
 
-            //Try to add the game to the user's favorites by creating a new ApplicationUserGame entity and saving it to the database.
+            //Try to add the game to the user's favorites by creating a new ApplicationUserGame entity and saving it to the database using GameRepository.
             try
             {
-                ApplicationUserGame gameToAdd = new ApplicationUserGame
-                {
-                    GameId = gameId,
-                    UserId = userId
-                };
-
-                await dbContext.ApplicationUsersGames.AddAsync(gameToAdd);
-                await dbContext.SaveChangesAsync();
+                await gameRepository.AddToFavoritesAsync(gameId, userId);
 
                 return true;
+
             }
             catch (Exception)
             {
@@ -110,36 +97,26 @@ namespace GamingZoneApp.Services.Core
         //Task for removing a game from a user's favorites by the game's Id and the user's Id.
         public async Task<bool> RemoveGameFromFavoritesAsync(Guid gameId, Guid userId)
         {
-            ApplicationUserGame? gameToRemove = dbContext
-                                                .ApplicationUsersGames
-                                                .SingleOrDefault(au => au.GameId == gameId && au.UserId == userId);
-
-            //If the game is not found in the user's favorites, return false to indicate that there is no game to remove.
-            if (gameToRemove == null)
-            {
-                return false;
-            }
-
-            //Try to remove the game from the user's favorites by deleting the corresponding ApplicationUserGame entity from the database.
             try
             {
-                dbContext.ApplicationUsersGames.Remove(gameToRemove);
-                await dbContext.SaveChangesAsync();
+                //Try to remove the game from the user's favorites by finding the corresponding ApplicationUserGame entity and removing it from the database using GameRepository.
+                await gameRepository.RemoveFromFavoritesAsync(gameId, userId);
 
                 return true;
             }
+
             catch (Exception)
             {
                 return false;
             }
+
         }
         //Task for viewing all games added by a specific user by the user's Id.
         public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByUserIdAsync(Guid userId)
         {
-            IEnumerable<AllGamesViewModel> getAllGamesByUserId = await dbContext
-                                                                      .Games
-                                                                      .Where(g => g.UserId == userId)
-                                                                      .AsNoTracking()
+            //Project the retrieved games added by the specific user into a collection of AllGamesViewModel, ordered by title using GameRepository.
+            IEnumerable<AllGamesViewModel> getAllGamesByUserId = await gameRepository
+                                                                      .GetGamesByUserIdNoTracking(userId)
                                                                       .Select(g => new AllGamesViewModel
                                                                       {
                                                                           Id = g.Id,
@@ -157,34 +134,31 @@ namespace GamingZoneApp.Services.Core
         //Task for viewing all games in a user's favorites by the user's Id.
         public async Task<IEnumerable<AllGamesViewModel>> GetFavoriteGamesByUserIdAsync(Guid userId)
         {
-                IEnumerable<AllGamesViewModel> favoriteGamesViewModel =  await dbContext
-                                                                              .Games
-                                                                              .Include(g => g.GamesUsers)
-                                                                              .OrderBy(g => g.Title)                                                               
-                                                                              .AsNoTracking()
-                                                                              .Where(g => g.GamesUsers
-                                                                                           .Any(gu => gu.UserId == userId))
-                                                                              .Select(g => new AllGamesViewModel
-                                                                              {
-                                                                                  Id = g.Id,
-                                                                                  Title = g.Title,
-                                                                                  ImageUrl = g.ImageUrl ?? null,
-                                                                                  Genre = g.Genre.ToString(),
-                                                                                  Developer = g.Developer.Name
-                                                                              })
-                                                                              .ToListAsync();
+            //Project the retrieved favorite games into a collection of AllGamesViewModel, ordered by title using GameRepository.
+            IEnumerable<AllGamesViewModel> favoriteGamesViewModel = await gameRepository
+                                                                          .GetFavoriteGamesByUserIdNoTracking(userId)
+                                                                          .OrderBy(g => g.Title)
+                                                                          .Select(g => new AllGamesViewModel
+                                                                          {
+                                                                              Id = g.Id,
+                                                                              Title = g.Title,
+                                                                              ImageUrl = g.ImageUrl ?? null,
+                                                                              Genre = g.Genre.ToString(),
+                                                                              Developer = g.Developer.Name
+                                                                          })
+                                                                          .ToListAsync();
 
-                return favoriteGamesViewModel;
+            return favoriteGamesViewModel;
 
         }
-        
+
         //Task for adding a new game to the database.
         public async Task<bool> AddGameAsync(GameInputModel inputModel, Guid userId)
-        {            
+        {
             //Create a new Game entity using the data from the provided GameInputModel.
             try
             {
-                if(!Enum.TryParse<Genre>(inputModel.Genre, out Genre genre))
+                if (!Enum.TryParse<Genre>(inputModel.Genre, out Genre genre))
                 {
                     return false;
                 }
@@ -201,8 +175,9 @@ namespace GamingZoneApp.Services.Core
                     UserId = userId
                 };
 
-                await dbContext.Games.AddAsync(newGame);
-                await dbContext.SaveChangesAsync();
+
+                //Try to add the new game to the database using GameRepository.
+                await gameRepository.CreateGameAsync(newGame);
 
                 return true;
             }
@@ -217,13 +192,8 @@ namespace GamingZoneApp.Services.Core
         //Task for retrieving a game by its Id and loading it into the form for editing.
         public async Task<GameInputModel?> GetGameForEditAsync(Guid gameId, Guid userId)
         {
-            //Retrieve the game from the database by its Id.
-            Game? gameToEdit = await dbContext
-                                        .Games
-                                        .Include(g => g.Developer)
-                                        .Include(g => g.Publisher)
-                                        .AsNoTracking()
-                                        .SingleOrDefaultAsync(g => g.Id == gameId);
+            //Retrieve the game from the database by its Id using GameRepository task.
+            Game? gameToEdit = await gameRepository.GetGameNoTrackingAsync(gameId);
 
             //Additional validation to ensure that the user attempting to edit the game is the creator of the game.
             if (gameToEdit?.UserId != userId)
@@ -236,7 +206,7 @@ namespace GamingZoneApp.Services.Core
             {
                 return null;
             }
-           
+
             //Project the retrieved game into a GameInputModel for editing.
             GameInputModel gameInputModel = new GameInputModel
             {
@@ -250,7 +220,7 @@ namespace GamingZoneApp.Services.Core
                 UserId = gameToEdit.UserId
 
             };
-            
+
             //Return the GameInputModel for editing.
             return gameInputModel;
         }
@@ -259,11 +229,7 @@ namespace GamingZoneApp.Services.Core
         public async Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel, Guid userId)
         {
             //Retrieve the game from the database by its Id.
-            Game? gameToEdit = await dbContext
-                                    .Games
-                                    .Include(g => g.Developer)
-                                    .Include(g => g.Publisher)
-                                    .SingleOrDefaultAsync(g => g.Id == gameId);
+            Game? gameToEdit = await gameRepository.GetGameNoTrackingAsync(gameId);
 
             //Additional validation to ensure that the user attempting to edit the game is the creator of the game.
             if (gameToEdit?.UserId != userId)
@@ -280,7 +246,7 @@ namespace GamingZoneApp.Services.Core
             //Try to update the retrieved game.
             try
             {
-                if(!Enum.TryParse<Genre>(inputModel?.Genre, out Genre genre))
+                if (!Enum.TryParse<Genre>(inputModel?.Genre, out Genre genre))
                 {
                     return false;
                 }
@@ -293,14 +259,14 @@ namespace GamingZoneApp.Services.Core
                 gameToEdit.DeveloperId = inputModel.DeveloperId;
                 gameToEdit.PublisherId = inputModel.PublisherId;
 
-                dbContext.Games.Update(gameToEdit);
-                await dbContext.SaveChangesAsync();
+                //Save the changes to the database using GameRepository task.
+                await gameRepository.EditSelectedGameAsync(gameToEdit);
 
                 return true;
             }
             //If any exception occurs during the process of updating the game in the database, catch the exception and return false.
             catch (Exception)
-            {                
+            {
                 return false;
             }
         }
@@ -308,13 +274,8 @@ namespace GamingZoneApp.Services.Core
         //Task for retrieving a game by its Id and projecting it into a DeleteGameViewModel for deletion confirmation.
         public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId)
         {
-            //Retrieve the game to be deleted.
-            Game? gameToDelete = await dbContext
-                                      .Games
-                                      .Include(g => g.Developer)
-                                      .Include(g => g.Publisher)
-                                      .AsNoTracking()
-                                      .SingleOrDefaultAsync(g => g.Id == gameId);
+            //Retrieve the game to be deleted using GameRepository task.
+            Game? gameToDelete = await gameRepository.GetGameNoTrackingAsync(gameId);
 
             //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
             if (gameToDelete?.UserId != userId)
@@ -339,11 +300,7 @@ namespace GamingZoneApp.Services.Core
         //Task for soft deleting a game from the application by setting it's IsDeleted property to true and saving the changes to the database.
         public async Task<bool> SoftDeleteGameAsync(Guid gameId, Guid userId)
         {
-            Game? gameToDelete = await dbContext
-                                      .Games
-                                      .Include(g => g.Developer)
-                                      .Include(g => g.Publisher)
-                                      .SingleOrDefaultAsync(g => g.Id == gameId);
+            Game? gameToDelete = await gameRepository.GetGameNoTrackingAsync(gameId);
 
             //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
             if (gameToDelete?.UserId != userId)
@@ -358,9 +315,8 @@ namespace GamingZoneApp.Services.Core
 
             try
             {
-                //Soft delete the game by setting its IsDeleted property to true and saving the changes to the database.
-                gameToDelete.IsDeleted = true;
-                await dbContext.SaveChangesAsync();
+                //Soft delete the game by setting its IsDeleted property to true and saving the changes to the database using GameRepository task.
+                await gameRepository.SoftDeleteAsync(gameToDelete);
 
                 return true;
             }
@@ -373,11 +329,7 @@ namespace GamingZoneApp.Services.Core
         //Task for deleting a game from the database by its Id.
         public async Task<bool> HardDeleteGameAsync(Guid gameId, Guid userId)
         {
-            Game? gameToDelete = await dbContext
-                                      .Games
-                                      .Include(g => g.Developer)
-                                      .Include(g => g.Publisher)
-                                      .SingleOrDefaultAsync(g => g.Id == gameId);
+            Game? gameToDelete = await gameRepository.GetGameNoTrackingAsync(gameId);
 
             //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
             if (gameToDelete?.UserId != userId)
@@ -392,8 +344,8 @@ namespace GamingZoneApp.Services.Core
 
             try
             {
-                dbContext.Games.Remove(gameToDelete);
-                await dbContext.SaveChangesAsync();
+                //Hard delete the game from the database using GameRepository task.
+                await gameRepository.HardDeleteSync(gameToDelete);
 
                 return true;
             }
@@ -403,30 +355,23 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        //Task for checking if a game exists in the database by its Id.
+        //Task for checking if a game exists in the database by its Id using GameRepository task.
         public async Task<bool> GameExistsAsync(Guid gameId)
         {
-            return await dbContext
-                        .Games
-                        .AnyAsync(g => g.Id == gameId);
+            return await gameRepository.CheckIfGameExistsAsync(gameId);
         }
 
-        //Helper task for checking if a user is the creator of a game by comparing the game's UserId with the provided userId.
+        //Helper task for checking if a user is the creator of a game by comparing the game's UserId with the provided userId using GameRepository task.
         public async Task<bool> IsUserCreatorAsync(Guid gameId, Guid userId)
         {
-            return await dbContext
-                        .Games
-                        .AnyAsync(g => g.Id == gameId && g.UserId == userId);
+            return await gameRepository.CheckIfUserIsCreatorAsync(gameId, userId);
         }
 
-        //Helper task for checking if a game is in a user's favorites.
+        //Helper task for checking if a game is in a user's favorites using GameRepository task.
         public async Task<bool> IsGameInFavoritesAsync(Guid gameId, Guid userId)
         {
-            return await dbContext
-                        .ApplicationUsersGames
-                        .AnyAsync(au => au.GameId == gameId && au.UserId == userId);
+            return await gameRepository.CheckIfGameIsInFavoritesAsync(gameId, userId);
+
         }
-
-
     }
 }

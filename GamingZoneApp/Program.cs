@@ -1,5 +1,7 @@
 using GamingZoneApp.Data;
 using GamingZoneApp.Data.Models;
+using GamingZoneApp.Data.Repository;
+using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core;
 using GamingZoneApp.Services.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +24,7 @@ namespace GamingZoneApp
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             //Registering custom services for dependency injection.
+            builder.Services.AddScoped<IGameRepository, GameRepository>();
             builder.Services.AddScoped<IGameService, GameService>();
             builder.Services.AddScoped<IDeveloperService, DeveloperService>();
             builder.Services.AddScoped<IPublisherService, PublisherService>();
