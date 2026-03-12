@@ -18,7 +18,7 @@ namespace GamingZoneApp.Data.Repository.Interfaces
 
         Task CreateGameAsync(Game game);
 
-        Task<Game?> GetGameNoTrackingAsync(Guid gameId);
+        Task<Game?> GetGameAsync(Guid gameId);
 
         Task EditSelectedGameAsync(Game game);
 

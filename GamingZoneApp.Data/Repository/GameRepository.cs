@@ -1,5 +1,4 @@
 ﻿using GamingZoneApp.Data.Models;
-using GamingZoneApp.Data.Models.Enums;
 using GamingZoneApp.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -96,13 +95,12 @@ namespace GamingZoneApp.Data.Repository
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<Game?> GetGameNoTrackingAsync(Guid gameId)
+        public async Task<Game?> GetGameAsync(Guid gameId)
         {
             Game? gameToEdit = await dbContext
                                         .Games
                                         .Include(g => g.Developer)
                                         .Include(g => g.Publisher)
-                                        .AsNoTracking()
                                         .SingleOrDefaultAsync(g => g.Id == gameId);
 
             return gameToEdit;

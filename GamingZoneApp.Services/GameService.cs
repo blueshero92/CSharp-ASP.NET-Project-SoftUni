@@ -193,7 +193,7 @@ namespace GamingZoneApp.Services.Core
         public async Task<GameInputModel?> GetGameForEditAsync(Guid gameId, Guid userId)
         {
             //Retrieve the game from the database by its Id using GameRepository task.
-            Game? gameToEdit = await gameRepository.GetGameNoTrackingAsync(gameId);
+            Game? gameToEdit = await gameRepository.GetGameAsync(gameId);
 
             //Additional validation to ensure that the user attempting to edit the game is the creator of the game.
             if (gameToEdit?.UserId != userId)
@@ -229,7 +229,7 @@ namespace GamingZoneApp.Services.Core
         public async Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel, Guid userId)
         {
             //Retrieve the game from the database by its Id.
-            Game? gameToEdit = await gameRepository.GetGameNoTrackingAsync(gameId);
+            Game? gameToEdit = await gameRepository.GetGameAsync(gameId);
 
             //Additional validation to ensure that the user attempting to edit the game is the creator of the game.
             if (gameToEdit?.UserId != userId)
@@ -275,7 +275,7 @@ namespace GamingZoneApp.Services.Core
         public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId)
         {
             //Retrieve the game to be deleted using GameRepository task.
-            Game? gameToDelete = await gameRepository.GetGameNoTrackingAsync(gameId);
+            Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
 
             //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
             if (gameToDelete?.UserId != userId)
@@ -300,7 +300,7 @@ namespace GamingZoneApp.Services.Core
         //Task for soft deleting a game from the application by setting it's IsDeleted property to true and saving the changes to the database.
         public async Task<bool> SoftDeleteGameAsync(Guid gameId, Guid userId)
         {
-            Game? gameToDelete = await gameRepository.GetGameNoTrackingAsync(gameId);
+            Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
 
             //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
             if (gameToDelete?.UserId != userId)
@@ -329,7 +329,7 @@ namespace GamingZoneApp.Services.Core
         //Task for deleting a game from the database by its Id.
         public async Task<bool> HardDeleteGameAsync(Guid gameId, Guid userId)
         {
-            Game? gameToDelete = await gameRepository.GetGameNoTrackingAsync(gameId);
+            Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
 
             //Additional validation to ensure that the user attempting to delete the game is the creator of the game.
             if (gameToDelete?.UserId != userId)
@@ -371,7 +371,6 @@ namespace GamingZoneApp.Services.Core
         public async Task<bool> IsGameInFavoritesAsync(Guid gameId, Guid userId)
         {
             return await gameRepository.CheckIfGameIsInFavoritesAsync(gameId, userId);
-
         }
     }
 }
