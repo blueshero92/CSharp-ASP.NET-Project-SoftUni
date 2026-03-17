@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using static GamingZoneApp.GCommon.Constants.OutputMessages.TempDataSuccessMessages;
 using static GamingZoneApp.GCommon.Constants.OutputMessages.GameControllerErrors;
 using static GamingZoneApp.GCommon.Constants.AppConstants;
+using GamingZoneApp.Services.Models.Game;
 
 namespace GamingZoneApp.Controllers
 {
@@ -28,10 +29,20 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            //Using the game service to retrieve all games using a DTO.
+            IEnumerable<GameAllDto> games = await gameService.GetAllGamesAsync();
+
             //Using the game service to retrieve all games and map them to the collection of AllGamesViewModel.
-            IEnumerable<AllGamesViewModel> allGames
-                = await gameService
-                       .GetAllGamesAsync();
+            IEnumerable<AllGamesViewModel> allGames = games
+                                                     .Select(g => new AllGamesViewModel
+                                                     {
+                                                         Id = g.Id,
+                                                         Title = g.Title,
+                                                         ImageUrl = g.ImageUrl ?? null,
+                                                         Genre = g.Genre,
+                                                         Developer = g.Developer
+                                                     });
+                                                           
 
             //Return the view with the collection of AllGamesViewModel.
             return View(allGames);
@@ -43,18 +54,34 @@ namespace GamingZoneApp.Controllers
         public async Task<IActionResult> GameDetails(Guid id)
         {
             //Using the game service to retrieve the game details by id.
-            GameViewModel? selectedGame = await gameService
+            GameDetailsDto? selectedGame = await gameService
                                             .GetGameDetailsByIdAsync(id);
+
+            //Mapping the retrieved game details DTO to the GameViewModel to be passed to the view.
+            GameViewModel? gameViewModel = new GameViewModel
+            {
+                Id = selectedGame!.Id,
+                Title = selectedGame.Title,
+                ReleaseDate = selectedGame.ReleaseDate,
+                Genre = selectedGame.Genre,
+                Description = selectedGame.Description,
+                Rating = selectedGame.Rating,
+                ImageUrl = selectedGame.ImageUrl ?? null,
+                Developer = selectedGame.Developer,
+                Publisher = selectedGame.Publisher,
+                DeveloperLogoUrl = selectedGame.DeveloperLogoUrl,
+                PublisherLogoUrl = selectedGame.PublisherLogoUrl
+            };
 
 
             //If the game is not found, return NotFound.
             //This is an addional validation to ensure the game exists even if we have already validated it in the GameService.
-            if (selectedGame == null)
+            if (gameViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(selectedGame);
+            return View(gameViewModel);
 
         }
 
@@ -64,8 +91,18 @@ namespace GamingZoneApp.Controllers
         {
             Guid userId = GetUserId();
 
-            IEnumerable<AllGamesViewModel> myGames = await gameService.GetAllGamesByUserIdAsync(userId); 
-            
+            IEnumerable<GameAllDto> allGamesDto = await gameService.GetAllGamesByUserIdAsync(userId);
+
+            IEnumerable<AllGamesViewModel> myGames = allGamesDto
+                                                     .Select(g => new AllGamesViewModel
+                                                     {
+                                                         Id = g.Id,
+                                                         Title = g.Title,
+                                                         ImageUrl = g.ImageUrl ?? null,
+                                                         Genre = g.Genre,
+                                                         Developer = g.Developer
+                                                     });
+
             return View(myGames);
         }
 
@@ -75,7 +112,17 @@ namespace GamingZoneApp.Controllers
         {
             Guid userId = GetUserId();
 
-            IEnumerable<AllGamesViewModel> myFavoriteGames = await gameService.GetFavoriteGamesByUserIdAsync(userId);
+            IEnumerable<GameAllDto> myFavoriteGamesDto = await gameService.GetFavoriteGamesByUserIdAsync(userId);
+
+            IEnumerable<AllGamesViewModel> myFavoriteGames = myFavoriteGamesDto
+                                                     .Select(g => new AllGamesViewModel
+                                                     {
+                                                         Id = g.Id,
+                                                         Title = g.Title,
+                                                         ImageUrl = g.ImageUrl ?? null,
+                                                         Genre = g.Genre,
+                                                         Developer = g.Developer
+                                                     });
 
             return View(myFavoriteGames);
         }
@@ -356,8 +403,13 @@ namespace GamingZoneApp.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            //Retrieve the game to be deleted using the game service and map it to the DeleteGameViewModel.         
-            DeleteGameViewModel? viewModel = await gameService.GetGameForDeleteAsync(id, userId);
+            //Retrieve the game to be deleted using the game service and map it to the DeleteGameDto.         
+            DeleteGameDto? deleteGameDto = await gameService.GetGameForDeleteAsync(id, userId);
+
+            DeleteGameViewModel? viewModel = new DeleteGameViewModel
+            {
+                Title = deleteGameDto?.Title
+            };
 
             //If the game is not found, return NotFound.
             if (viewModel == null)

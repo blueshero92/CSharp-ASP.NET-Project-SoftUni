@@ -1,14 +1,15 @@
-﻿using GamingZoneApp.ViewModels.Game;
+﻿using GamingZoneApp.Services.Models.Game;
+using GamingZoneApp.ViewModels.Game;
 
 namespace GamingZoneApp.Services.Core.Interfaces
 {
     public interface IGameService
     {
         //Task for viewing all games with their info.
-        Task<IEnumerable<AllGamesViewModel>> GetAllGamesAsync();
+        Task<IEnumerable<GameAllDto>> GetAllGamesAsync();
 
         //Task for viewing details of a specific game by it's Id.
-        Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id);
+        Task<GameDetailsDto?> GetGameDetailsByIdAsync(Guid id);
 
         //Task for adding a game to the favorites of a user by the game's Id and the user's Id.
         Task<bool> AddGameToFavoritesAsync(Guid gameId, Guid userId);
@@ -17,10 +18,10 @@ namespace GamingZoneApp.Services.Core.Interfaces
         Task<bool> RemoveGameFromFavoritesAsync(Guid gameId, Guid userId);
 
         //Task for viewing all games added by a specific user by the user's Id.
-        Task<IEnumerable<AllGamesViewModel>> GetAllGamesByUserIdAsync(Guid userId);
+        Task<IEnumerable<GameAllDto>> GetAllGamesByUserIdAsync(Guid userId);
 
         //Task for viewing all favorite games of a specific user by the user's Id.
-        Task<IEnumerable<AllGamesViewModel>> GetFavoriteGamesByUserIdAsync(Guid userId);
+        Task<IEnumerable<GameAllDto>> GetFavoriteGamesByUserIdAsync(Guid userId);
 
         //Task for adding a new game to the database.
         Task<bool> AddGameAsync(GameInputModel model, Guid userId);
@@ -32,7 +33,7 @@ namespace GamingZoneApp.Services.Core.Interfaces
         Task<bool> EditGameAsync(Guid gameId, GameInputModel inputModel, Guid userId);
 
         //Task for getting a game by it's Id and loading the DeleteGame form.
-        Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId);
+        Task<DeleteGameDto?> GetGameForDeleteAsync(Guid gameId, Guid userId);
 
         //Task for executing the soft deletion of a game from the application, by setting the IsDeleted property to true in the database.
         Task<bool> SoftDeleteGameAsync(Guid gameId, Guid userId);

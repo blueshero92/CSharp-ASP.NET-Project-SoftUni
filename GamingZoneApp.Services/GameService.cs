@@ -2,6 +2,7 @@
 using GamingZoneApp.Data.Models.Enums;
 using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
+using GamingZoneApp.Services.Models.Game;
 using GamingZoneApp.ViewModels.Game;
 
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +23,13 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for viewing all games with their info.
-        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesAsync()
+        public async Task<IEnumerable<GameAllDto>> GetAllGamesAsync()
         {
 
             //Project the retrieved games into a collection of AllGamesViewModel, ordered by title using GameRepository.
-            IEnumerable<AllGamesViewModel> getAllGamesViewModel = await gameRepository.GetAllGamesNoTrackingAsync()
+            IEnumerable<GameAllDto> getAllGamesDto = await gameRepository.GetAllGamesNoTrackingAsync()
                                                                                       .OrderBy(g => g.Title)
-                                                                                      .Select(g => new AllGamesViewModel
+                                                                                      .Select(g => new GameAllDto
                                                                                       {
                                                                                           Id = g.Id,
                                                                                           Title = g.Title,
@@ -39,16 +40,16 @@ namespace GamingZoneApp.Services.Core
                                                                                       })
                                                                                       .ToListAsync();
             //Return the collection of AllGamesViewModel.
-            return getAllGamesViewModel;
+            return getAllGamesDto;
         }
 
         //Task for viewing the details of a specific game by its Id.
-        public async Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id)
+        public async Task<GameDetailsDto?> GetGameDetailsByIdAsync(Guid id)
         {
             //Retrieve a game from the database by it's Id, including its developer and publisher using GameRepository.
-            GameViewModel? selectedGameViewModel = await gameRepository
+            GameDetailsDto? selectedGameDto = await gameRepository
                                                         .GetGameByIdNoTracking(id)
-                                                        .Select(g => new GameViewModel
+                                                        .Select(g => new GameDetailsDto
                                                         {
                                                             Id = g.Id,
                                                             Title = g.Title,
@@ -67,13 +68,13 @@ namespace GamingZoneApp.Services.Core
 
             //If no game is found with the provided Id, return null.
             //This check is necessary to prevent potential null reference exceptions.
-            if (selectedGameViewModel == null)
+            if (selectedGameDto == null)
             {
                 return null;
             }
 
             //Return the retrieved game projected as a GameViewModel.
-            return selectedGameViewModel;
+            return selectedGameDto;
         }
 
         //Task for adding a game to a user's favorites by the game's Id and the user's Id.
@@ -112,33 +113,33 @@ namespace GamingZoneApp.Services.Core
 
         }
         //Task for viewing all games added by a specific user by the user's Id.
-        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<GameAllDto>> GetAllGamesByUserIdAsync(Guid userId)
         {
             //Project the retrieved games added by the specific user into a collection of AllGamesViewModel, ordered by title using GameRepository.
-            IEnumerable<AllGamesViewModel> getAllGamesByUserId = await gameRepository
-                                                                      .GetGamesByUserIdNoTracking(userId)
-                                                                      .Select(g => new AllGamesViewModel
-                                                                      {
-                                                                          Id = g.Id,
-                                                                          Title = g.Title,
-                                                                          ImageUrl = g.ImageUrl ?? null,
-                                                                          Genre = g.Genre.ToString(),
-                                                                          Developer = g.Developer.Name,
-                                                                      })
-                                                                      .OrderBy(g => g.Title)
-                                                                      .ToListAsync();
+            IEnumerable<GameAllDto> getAllGamesByUserId = await gameRepository
+                                                               .GetGamesByUserIdNoTracking(userId)
+                                                               .Select(g => new GameAllDto
+                                                               {
+                                                                   Id = g.Id,
+                                                                   Title = g.Title,
+                                                                   ImageUrl = g.ImageUrl ?? null,
+                                                                   Genre = g.Genre.ToString(),
+                                                                   Developer = g.Developer.Name,
+                                                               })
+                                                               .OrderBy(g => g.Title)
+                                                               .ToListAsync();
 
             return getAllGamesByUserId;
         }
 
         //Task for viewing all games in a user's favorites by the user's Id.
-        public async Task<IEnumerable<AllGamesViewModel>> GetFavoriteGamesByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<GameAllDto>> GetFavoriteGamesByUserIdAsync(Guid userId)
         {
-            //Project the retrieved favorite games into a collection of AllGamesViewModel, ordered by title using GameRepository.
-            IEnumerable<AllGamesViewModel> favoriteGamesViewModel = await gameRepository
+            //Project the retrieved favorite games into a collection of GameAllDto, ordered by title using GameRepository.
+            IEnumerable<GameAllDto> favoriteGamesDto = await gameRepository
                                                                           .GetFavoriteGamesByUserIdNoTracking(userId)
                                                                           .OrderBy(g => g.Title)
-                                                                          .Select(g => new AllGamesViewModel
+                                                                          .Select(g => new GameAllDto
                                                                           {
                                                                               Id = g.Id,
                                                                               Title = g.Title,
@@ -148,7 +149,7 @@ namespace GamingZoneApp.Services.Core
                                                                           })
                                                                           .ToListAsync();
 
-            return favoriteGamesViewModel;
+            return favoriteGamesDto;
 
         }
 
@@ -271,8 +272,8 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        //Task for retrieving a game by its Id and projecting it into a DeleteGameViewModel for deletion confirmation.
-        public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId)
+        //Task for retrieving a game by its Id and projecting it into a DeleteGameDto for deletion confirmation.
+        public async Task<DeleteGameDto?> GetGameForDeleteAsync(Guid gameId, Guid userId)
         {
             //Retrieve the game to be deleted using GameRepository task.
             Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
@@ -288,12 +289,12 @@ namespace GamingZoneApp.Services.Core
                 return null;
             }
 
-            DeleteGameViewModel? deleteGameViewModel = new DeleteGameViewModel
+            DeleteGameDto? deleteGameDto = new DeleteGameDto
             {
                 Title = gameToDelete.Title
             };
 
-            return deleteGameViewModel;
+            return deleteGameDto;
 
         }
 
