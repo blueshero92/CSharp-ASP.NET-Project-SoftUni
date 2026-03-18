@@ -2,6 +2,9 @@ using GamingZoneApp.Data;
 using GamingZoneApp.Data.Models;
 using GamingZoneApp.Data.Repository;
 using GamingZoneApp.Data.Repository.Interfaces;
+using GamingZoneApp.Data.Seeding;
+using GamingZoneApp.Data.Seeding.Interfaces;
+using GamingZoneApp.Infrastructure;
 using GamingZoneApp.Services.Core;
 using GamingZoneApp.Services.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +36,9 @@ namespace GamingZoneApp
             builder.Services.AddScoped<IDeveloperService, DeveloperService>();
             builder.Services.AddScoped<IPublisherService, PublisherService>();
 
+            //Registering the IdentitySeeder for seeding roles and other identity related data.
+            builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
+
             //Configuring Identity services with custom options from appsettings.Development.json using a helper method.
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
             {
@@ -40,6 +46,7 @@ namespace GamingZoneApp
 
             })
                             .AddRoles<IdentityRole<Guid>>()
+                            .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
                             .AddEntityFrameworkStores<GamingZoneDbContext>();
 
             //Configuring application cookie settings for redirecting to login when user is not logged in.
@@ -79,6 +86,8 @@ namespace GamingZoneApp
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseRolesSeeder();
 
             app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 

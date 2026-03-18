@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GamingZoneApp.GCommon\GamingZoneApp.GCommon.csproj" />
+    <ProjectReference Include="..\GamingZoneApp.Infrastructure\GamingZoneApp.Infrastructure.csproj" />
     <ProjectReference Include="..\GamingZoneApp.Services\GamingZoneApp.Services.Core.csproj" />
     <ProjectReference Include="..\GamingZoneApp.ViewModels\GamingZoneApp.ViewModels.csproj" />
   </ItemGroup>

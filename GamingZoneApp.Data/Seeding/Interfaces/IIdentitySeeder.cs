@@ -1,0 +1,7 @@
+﻿namespace GamingZoneApp.Data.Seeding.Interfaces
+{
+    public interface IIdentitySeeder
+    {
+        Task SeedRolesAsync();
+    }
+}

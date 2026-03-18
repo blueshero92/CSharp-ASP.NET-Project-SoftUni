@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Services.Models", "GamingZoneApp.Services.Models\GamingZoneApp.Services.Models.csproj", "{A643B0A0-CDFF-4B6E-BF0D-7A0261B732EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Infrastructure", "GamingZoneApp.Infrastructure\GamingZoneApp.Infrastructure.csproj", "{2E26DD3A-DDDC-44C1-B2C2-AE57C3962C72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{A643B0A0-CDFF-4B6E-BF0D-7A0261B732EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A643B0A0-CDFF-4B6E-BF0D-7A0261B732EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A643B0A0-CDFF-4B6E-BF0D-7A0261B732EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E26DD3A-DDDC-44C1-B2C2-AE57C3962C72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E26DD3A-DDDC-44C1-B2C2-AE57C3962C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E26DD3A-DDDC-44C1-B2C2-AE57C3962C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E26DD3A-DDDC-44C1-B2C2-AE57C3962C72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{3BEE609F-0D68-45C7-9F94-C9EDDE81A645} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A0DE77EC-2AB6-4998-BE96-5E7DBA0919B9} = {DF662255-B946-44BA-BAAA-2E6A8CB11800}
 		{A643B0A0-CDFF-4B6E-BF0D-7A0261B732EC} = {EA1697AE-F54C-44CD-8E0E-A1242D76FAE3}
+		{2E26DD3A-DDDC-44C1-B2C2-AE57C3962C72} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4042AE11-6A9C-4040-B173-5808C61D5B85}
