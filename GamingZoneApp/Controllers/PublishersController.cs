@@ -1,4 +1,6 @@
 ﻿using GamingZoneApp.Services.Core.Interfaces;
+using GamingZoneApp.Services.Models.Game;
+using GamingZoneApp.Services.Models.Publisher;
 using GamingZoneApp.ViewModels.Game;
 using GamingZoneApp.ViewModels.Publisher;
 using Microsoft.AspNetCore.Authorization;
@@ -20,10 +22,20 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<AllPublishersViewModel> publishers 
+            IEnumerable<PublisherAllDto> publishers 
                 = await publisherService.GetAllPublishersWithInfoAsync();
 
-            return View(publishers);
+            IEnumerable<AllPublishersViewModel> publishersViewModel = publishers
+                .Select(p => new AllPublishersViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    GamesPublished = p.GamesPublished,
+                    ImageUrl = p.ImageUrl
+                });
+
+            return View(publishersViewModel);
         }
 
         //Visualize all games by a specific publisher using a view model.
@@ -32,10 +44,20 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async  Task<IActionResult> PublisherGames(Guid publisherId)
         {
-            IEnumerable<AllGamesViewModel> gamesByPublisher 
+            IEnumerable<GameAllDto> gamesByPublisher 
                 = await publisherService.GetAllGamesByPublisherIdAsync(publisherId);
 
-            return View(gamesByPublisher);
+            IEnumerable<AllGamesViewModel> gamesByPublisherViewModel = gamesByPublisher
+                .Select(g => new AllGamesViewModel
+                {
+                    Id = g.Id,
+                    Title = g.Title,
+                    Genre = g.Genre,
+                    Developer = g.Developer,
+                    ImageUrl = g.ImageUrl
+                });
+
+            return View(gamesByPublisherViewModel);
         }
     }
 }

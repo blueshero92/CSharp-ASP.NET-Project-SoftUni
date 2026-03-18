@@ -2,6 +2,8 @@
 using GamingZoneApp.Data.Repository;
 using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
+using GamingZoneApp.Services.Models.Game;
+using GamingZoneApp.Services.Models.Publisher;
 using GamingZoneApp.ViewModels.Game;
 using GamingZoneApp.ViewModels.Publisher;
 using Microsoft.EntityFrameworkCore;
@@ -18,42 +20,42 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for viewing all publishers with their info.
-        public async Task<IEnumerable<AllPublishersViewModel>> GetAllPublishersWithInfoAsync()
+        public async Task<IEnumerable<PublisherAllDto>> GetAllPublishersWithInfoAsync()
         {
-            // Retrieve all publishers from the database, including their published games, and project them into a list of AllPublishersViewModel.
-            IEnumerable<AllPublishersViewModel> publishers = await publisherRepository
-                                                                  .GetAllPublishersNoTracking()
-                                                                  .Include(p => p.GamesPublished)
-                                                                  .Select(p => new AllPublishersViewModel
-                                                                  {
-                                                                      Id = p.Id,
-                                                                      Name = p.Name,
-                                                                      Description = p.Description,
-                                                                      GamesPublished = p.GamesPublished.Count,
-                                                                      ImageUrl = p.ImageUrl ?? null,
-                                                                  })
-                                                                  .OrderBy(p => p.Name)
-                                                                  .ThenByDescending(p => p.GamesPublished)
-                                                                  .ToListAsync();
+            // Retrieve all publishers from the database, including their published games, and project them into a list of PublisherAllDto.
+            IEnumerable<PublisherAllDto> publishers = await publisherRepository
+                                                           .GetAllPublishersNoTracking()
+                                                           .Include(p => p.GamesPublished)
+                                                           .Select(p => new PublisherAllDto
+                                                           {
+                                                               Id = p.Id,
+                                                               Name = p.Name,
+                                                               Description = p.Description,
+                                                               GamesPublished = p.GamesPublished.Count,
+                                                               ImageUrl = p.ImageUrl ?? null,
+                                                           })
+                                                           .OrderBy(p => p.Name)
+                                                           .ThenByDescending(p => p.GamesPublished)
+                                                           .ToListAsync();
 
             return publishers;
         }
 
-        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByPublisherIdAsync(Guid publisherId)
+        public async Task<IEnumerable<GameAllDto>> GetAllGamesByPublisherIdAsync(Guid publisherId)
         {
             // Retrieve all games from the database that are published by the specified publisher, including their developer and publisher information.
-            IEnumerable<AllGamesViewModel> gamesByPublisher = await publisherRepository
-                                                                   .GetAllGamesByPublisherNoTracking(publisherId)
-                                                                   .Select(g => new AllGamesViewModel
-                                                                   {
-                                                                       Id = g.Id,
-                                                                       Title = g.Title,
-                                                                       ImageUrl = g.ImageUrl ?? null,
-                                                                       Genre = g.Genre.ToString(),
-                                                                       Developer = g.Developer.Name
-                                                                   })
-                                                                   .OrderBy(g => g.Title)
-                                                                   .AsNoTracking()
+            IEnumerable<GameAllDto> gamesByPublisher = await publisherRepository
+                                                            .GetAllGamesByPublisherNoTracking(publisherId)
+                                                            .Select(g => new GameAllDto
+                                                            {
+                                                                Id = g.Id,
+                                                                Title = g.Title,
+                                                                ImageUrl = g.ImageUrl ?? null,
+                                                                Genre = g.Genre.ToString(),
+                                                                Developer = g.Developer.Name
+                                                            })
+                                                            .OrderBy(g => g.Title)
+                                                            .AsNoTracking()
                                                                    .ToListAsync();
 
             return gamesByPublisher;

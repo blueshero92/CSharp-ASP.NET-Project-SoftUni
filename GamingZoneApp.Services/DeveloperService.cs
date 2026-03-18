@@ -1,6 +1,8 @@
 ﻿using GamingZoneApp.Data;
 using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
+using GamingZoneApp.Services.Models.Developer;
+using GamingZoneApp.Services.Models.Game;
 using GamingZoneApp.ViewModels.Developer;
 using GamingZoneApp.ViewModels.Game;
 
@@ -19,14 +21,14 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for viewing all developers with their info.
-        public async Task<IEnumerable<AllDevelopersViewModel>> GetAllDevelopersWithInfoAsync()
+        public async Task<IEnumerable<DeveloperAllDto>> GetAllDevelopersWithInfoAsync()
         {            
 
-            //Projecting the developers to the AllDevelopersViewModel, ordering by name and the count of games developed using DeveloperRepository method.
-            IEnumerable<AllDevelopersViewModel> developersViewModel = await developerRepository
+            //Projecting the developers to the DeveloperAllDto, ordering by name and the count of games developed using DeveloperRepository method.
+            IEnumerable<DeveloperAllDto> developersDto = await developerRepository
                                                                            .GetAllDevelopersNoTracking()
                                                                            .Include(d => d.GamesDeveloped)
-                                                                           .Select(d => new AllDevelopersViewModel
+                                                                           .Select(d => new DeveloperAllDto
                                                                            {
                                                                                Id = d.Id,
                                                                                Name = d.Name,
@@ -38,16 +40,16 @@ namespace GamingZoneApp.Services.Core
                                                                            .ThenByDescending(d => d.GamesDeveloped)
                                                                            .ToListAsync();
 
-            return developersViewModel;
+            return developersDto;
         }
 
         //Task for viewing all games by a specific developer.
-        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByDeveloperIdAsync(Guid developerId)
+        public async Task<IEnumerable<GameAllDto>> GetAllGamesByDeveloperIdAsync(Guid developerId)
         {
-            // Projecting the games to the AllGamesViewModel, ordering by title using DeveloperRepository method.
-            IEnumerable<AllGamesViewModel> gamesByDev = await developerRepository
+            // Projecting the games to the GameAllDto, ordering by title using DeveloperRepository method.
+            IEnumerable<GameAllDto> gamesByDev = await developerRepository
                                                              .GetAllGamesByDeveloperNoTracking(developerId)
-                                                             .Select(g => new AllGamesViewModel
+                                                             .Select(g => new GameAllDto
                                                              {
                                                                  Id = g.Id,
                                                                  Title = g.Title,
