@@ -2,6 +2,8 @@
 
 using static GamingZoneApp.GCommon.Constants.ExceptionMessages;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using GamingZoneApp.Data.Models;
 
 namespace GamingZoneApp.Data.Seeding
 {
@@ -15,12 +17,17 @@ namespace GamingZoneApp.Data.Seeding
         };
 
         private readonly RoleManager<IdentityRole<Guid>> roleManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IConfiguration configuration;
 
         //Injecting RoleManager for managing roles in the database.
-        public IdentitySeeder(RoleManager<IdentityRole<Guid>> roleManager)
+        public IdentitySeeder(RoleManager<IdentityRole<Guid>> roleManager, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             this.roleManager = roleManager;
+            this.userManager = userManager;
+            this.configuration = configuration;
         }
+
 
         // This method seeds the roles defined in the AppRoles array into the database if they do not already exist.
         public async Task SeedRolesAsync()
@@ -45,5 +52,50 @@ namespace GamingZoneApp.Data.Seeding
                 }
             }
         }
+
+        public async Task SeedAdminUserAsync()
+        {
+            string adminUsername = configuration["UserSeed:AdminUser:Username"]
+                ?? throw new InvalidOperationException(UsernameNotFoundInConfigurationExceptionMessage);
+
+            string adminEmail = configuration["UserSeed:AdminUser:Email"]
+                ?? throw new InvalidOperationException(EmailNotFoundInConfigurationExceptionMessage);
+
+            string adminPassword = configuration["UserSeed:AdminUser:Password"]
+                ?? throw new InvalidOperationException(PasswordNotFoundInConfigurationExceptionMessage);
+
+            ApplicationUser? adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+            if (adminUser == null)
+            {
+                adminUser = new ApplicationUser
+                {
+                    UserName = adminUsername,
+                    Email = adminEmail
+                };
+
+                IdentityResult result
+                    = await userManager.CreateAsync(adminUser, adminPassword);
+
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException(ErrorWhileTryingToSeedAdminUserExceptionMessage);
+                }
+            }
+
+            bool isInRole = await userManager.IsInRoleAsync(adminUser, AppRoles[0]);
+
+            if (!isInRole)
+            {
+                IdentityResult addToRoleResult
+                    = await userManager.AddToRoleAsync(adminUser, AppRoles[0]);
+
+                if (!addToRoleResult.Succeeded)
+                {
+                    throw new InvalidOperationException(ErrorWhileTryingToAddAdminUserToAdminRoleExceptionMessage);
+                }
+            }
+        }
     }
 }
+
