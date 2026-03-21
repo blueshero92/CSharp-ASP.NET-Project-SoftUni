@@ -11,5 +11,7 @@
         public string Genre { get; set; } = null!;
 
         public string Developer { get; set; } = null!;
+
+        public string Publisher { get; set; } = null!;
     }
 }

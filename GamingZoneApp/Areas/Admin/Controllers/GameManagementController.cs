@@ -38,7 +38,8 @@ namespace GamingZoneApp.Areas.Admin.Controllers
                     Title = g.Title,
                     ImageUrl = g.ImageUrl ?? null,
                     Genre = g.Genre,
-                    Developer = g.Developer
+                    Developer = g.Developer,
+                    Publisher = g.Publisher
                 });
 
             return View(allGames);

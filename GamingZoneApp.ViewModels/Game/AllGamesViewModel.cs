@@ -13,5 +13,7 @@
 
         public string Developer { get; set; } = null!;
 
+        public string Publisher { get; set; } = null!;
+
     }
 }

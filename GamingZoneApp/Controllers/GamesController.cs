@@ -40,7 +40,8 @@ namespace GamingZoneApp.Controllers
                                                          Title = g.Title,
                                                          ImageUrl = g.ImageUrl ?? null,
                                                          Genre = g.Genre,
-                                                         Developer = g.Developer
+                                                         Developer = g.Developer,
+                                                         Publisher = g.Publisher
                                                      });
                                                            
 
@@ -100,7 +101,8 @@ namespace GamingZoneApp.Controllers
                                                          Title = g.Title,
                                                          ImageUrl = g.ImageUrl ?? null,
                                                          Genre = g.Genre,
-                                                         Developer = g.Developer
+                                                         Developer = g.Developer,
+                                                         Publisher = g.Publisher
                                                      });
 
             return View(myGames);
@@ -121,7 +123,8 @@ namespace GamingZoneApp.Controllers
                                                          Title = g.Title,
                                                          ImageUrl = g.ImageUrl ?? null,
                                                          Genre = g.Genre,
-                                                         Developer = g.Developer
+                                                         Developer = g.Developer,
+                                                         Publisher = g.Publisher
                                                      });
 
             return View(myFavoriteGames);

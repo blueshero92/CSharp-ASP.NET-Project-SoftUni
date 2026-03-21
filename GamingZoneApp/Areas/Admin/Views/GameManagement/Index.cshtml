@@ -28,10 +28,11 @@
                 <thead class="table-dark">
                     <tr>
                         <th style="width: 60px;"></th>
-                        <th>Title</th>
-                        <th>Genre</th>
-                        <th>Developer</th>
-                        <th class="text-end" style="width: 200px;">Actions</th>
+                        <th class="text-md-start" style="width: 280px;">Title</th>
+                        <th class="text-md-start" style="width: 200px;">Genre</th>
+                        <th class="text-md-start" style="width: 260px;">Developer</th>
+                        <th class="text-md-start" style="width: 220px;">Publisher</th>
+                        <th class="text-md-center" style="width: 200px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,16 +52,23 @@
                             </td>
                             <td class="fw-semibold text-primary">@game.Title</td>
                             <td class="text-info fw-semibold">@game.Genre</td>
-                            <td class="text-info fw-semibold">@game.Developer</td>
-                            <td class="text-end">
-                                <a asp-area="Admin" asp-controller="GameManagement" asp-action="Edit" asp-route-id="@game.Id"
-                                   class="btn btn-warning btn-sm me-1">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <a asp-area="" asp-controller="Games" asp-action="DeleteGame" asp-route-id="@game.Id"
-                                   class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
+                            <td class="text-success fw-semibold">
+                                <i class="bi bi-person-fill-gear"></i> @game.Developer
+                            </td>
+                            <td class="text-warning fw-semibold">
+                                <i class="bi bi-person-lines-fill"></i> @game.Publisher
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a asp-area="Admin" asp-controller="GameManagement" asp-action="Edit" asp-route-id="@game.Id"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a asp-area="" asp-controller="Games" asp-action="DeleteGame" asp-route-id="@game.Id"
+                                       class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     }

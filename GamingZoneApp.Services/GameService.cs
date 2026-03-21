@@ -36,6 +36,7 @@ namespace GamingZoneApp.Services.Core
                                                                                           ImageUrl = g.ImageUrl ?? null,
                                                                                           Genre = g.Genre.ToString(),
                                                                                           Developer = g.Developer.Name,
+                                                                                          Publisher = g.Publisher.Name
 
                                                                                       })
                                                                                       .ToListAsync();
@@ -125,6 +126,7 @@ namespace GamingZoneApp.Services.Core
                                                                    ImageUrl = g.ImageUrl ?? null,
                                                                    Genre = g.Genre.ToString(),
                                                                    Developer = g.Developer.Name,
+                                                                   Publisher = g.Publisher.Name
                                                                })
                                                                .OrderBy(g => g.Title)
                                                                .ToListAsync();
@@ -145,7 +147,8 @@ namespace GamingZoneApp.Services.Core
                                                                               Title = g.Title,
                                                                               ImageUrl = g.ImageUrl ?? null,
                                                                               Genre = g.Genre.ToString(),
-                                                                              Developer = g.Developer.Name
+                                                                              Developer = g.Developer.Name,
+                                                                              Publisher = g.Publisher.Name
                                                                           })
                                                                           .ToListAsync();
 
