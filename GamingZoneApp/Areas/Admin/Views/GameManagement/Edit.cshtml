@@ -14,7 +14,7 @@
                     <h3 class="mb-0">@ViewData["Title"]</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="EditGame" method="post">
+                    <form asp-area="Admin" asp-controller="GameManagement" asp-action="Edit" method="post">
                         <div class="mb-3">
                             <label asp-for="Title" class="form-label"></label>
                             <input asp-for="Title" class="form-control" placeholder="Enter game title">
@@ -78,7 +78,7 @@
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a asp-action="Index" asp-controller="Games" class="btn btn-outline-secondary" onclick="history.back()">Cancel</a>
+                            <a asp-area="Admin" asp-controller="GameManagement" asp-action="Edit" class="btn btn-outline-secondary" onclick="history.back()">Cancel</a>
                             <button type="submit" class="btn btn-warning">Save Changes</button>
                         </div>
                     </form>

@@ -10,5 +10,7 @@ namespace GamingZoneApp.Services.Core.Interfaces
     public interface IGameManagementService
     {
         Task<GameInputModel?> GetEditAsync(Guid gameId);
+
+        Task<bool> PostEditAsync(Guid gameId, GameInputModel inputModel);
     }
 }
