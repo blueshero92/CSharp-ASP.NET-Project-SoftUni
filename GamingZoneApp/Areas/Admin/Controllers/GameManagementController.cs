@@ -29,8 +29,10 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            //Using the service method to get all games from the database.
             IEnumerable<GameAllDto> gameAllDto = await gameService.GetAllGamesAsync();
 
+            //Mapping the gameAllDto to a collection of AllGamesViewModel to display the necessary game details in the index view.
             IEnumerable<AllGamesViewModel> allGames = gameAllDto
                 .Select(g => new AllGamesViewModel
                 {
@@ -42,6 +44,7 @@ namespace GamingZoneApp.Areas.Admin.Controllers
                     Publisher = g.Publisher
                 });
 
+            //Passing the collection of AllGamesViewModel to the index view for display.
             return View(allGames);
         }
 
@@ -131,18 +134,22 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")] Guid gameId)
         {
+            //Using helper method from the game service(for reusability) to check if the game exists.   
             if (!await gameService.GameExistsAsync(gameId))
             {
                 return BadRequest();
             }
 
+            //Using the service method to get the game details for deletion.
             DeleteGameDto? deleteGameDto = await gameManagementService.GetDeleteAsync(gameId);
 
+            //Mapping the deleteGameDto to a DeleteGameViewModel to display the game details in the delete confirmation view.
             DeleteGameViewModel? deleteGameViewModel = new DeleteGameViewModel
             {
                 Title = deleteGameDto?.Title
             };
 
+            //If the game details are not found, return a NotFound result.
             if (deleteGameViewModel == null)
             {
                 return NotFound();
@@ -155,19 +162,23 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")] Guid gameId, DeleteGameDto deleteGameDto)
         {
+            //Using helper method from the game service(for reusability) to check if the game exists.
             if (!await gameService.GameExistsAsync(gameId))
             {
                 return BadRequest();
             }
 
+            //Using the service method to execute the deletion of the game in the database.
             bool deleteSuccessful = await gameManagementService.PostDeleteAsync(gameId, deleteGameDto);
 
+            //If the deletion was not successful, add a model error and return the view with the deleteGameDto to display the error message.
             if (!deleteSuccessful)
             {
                 ModelState.AddModelError(string.Empty, ErrorDeletingGame);
                 return View(deleteGameDto);
             }
 
+            //If the deletion was successful, set a success message in TempData and redirect to the index page.
             TempData[SuccessTempDataKey] = GameDeletedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
