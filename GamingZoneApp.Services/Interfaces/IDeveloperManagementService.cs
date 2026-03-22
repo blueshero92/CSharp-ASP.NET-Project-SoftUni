@@ -5,14 +5,16 @@ namespace GamingZoneApp.Services.Core.Interfaces
 {
     public interface IDeveloperManagementService
     {
-        public Task<bool> AddDeveloperAsync(DeveloperInputModel inputModel);
+        Task<bool> AddDeveloperAsync();
 
-        public Task<DeveloperInputModel?> GetDeveloperForEditAsync(Guid developerId);
+        Task<bool> AddDeveloperAsync(DeveloperInputModel inputModel);
 
-        public Task<bool> EditDeveloperAsync(Guid developerId, DeveloperInputModel inputModel);
+        Task<DeveloperInputModel?> GetDeveloperForEditAsync(Guid developerId);
 
-        public Task<DeleteDeveloperDto?> GetDeveloperForDeleteAsync(Guid developerId);
+        Task<bool> EditDeveloperAsync(Guid developerId, DeveloperInputModel inputModel);
 
-        public Task<bool> HardDeleteDeveloperAsync(Guid developerId);
+        Task<DeleteDeveloperDto?> GetDeveloperForDeleteAsync(Guid developerId);
+
+        Task<bool> HardDeleteDeveloperAsync(Guid developerId);
     }
 }

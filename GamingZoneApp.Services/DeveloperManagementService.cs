@@ -37,18 +37,16 @@ namespace GamingZoneApp.Services.Core
                 {
                     Name = developerInputModel.Name,
                     Description = developerInputModel.Description,
-                    ImageUrl = developerInputModel.ImageUrl
+                    ImageUrl = developerInputModel.ImageUrl ?? null
                 };
 
-                await dbContext.AddAsync(developer);
-                await dbContext.SaveChangesAsync();
+                return await Task.FromResult(true);
             }
             catch (Exception)
             {
-                return false;
+                return await Task.FromResult(false);
             }
 
-            return true;
         }
 
         [HttpPost]
