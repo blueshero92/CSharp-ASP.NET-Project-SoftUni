@@ -122,6 +122,11 @@
             public const int PublisherDescriptionMinLength = 256;
 
             /// <summary>
+            /// Image URL should be able to store text with length of at least 7 characters.
+            /// </summary>
+            public const int ImageUrlMinLength = 7;
+
+            /// <summary>
             /// Publisher description should be able to store text with length up to 2048 characters.
             /// </summary>
             public const int PublisherDescriptionMaxLength = 2048;
