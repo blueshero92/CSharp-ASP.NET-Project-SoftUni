@@ -46,7 +46,7 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit([FromRoute(Name = "id")]Guid gameId)
+        public async Task<IActionResult> Edit([FromRoute(Name = "id")] Guid gameId)
         {
             //Using helper method from the game service(for reusability) to check if the game exists.
             if (!await gameService.GameExistsAsync(gameId))
@@ -71,7 +71,7 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromRoute(Name = "id")]Guid gameId, GameInputModel inputModel)
+        public async Task<IActionResult> Edit([FromRoute(Name = "id")] Guid gameId, GameInputModel inputModel)
         {
             if (!await gameService.GameExistsAsync(gameId))
             {
@@ -128,6 +128,49 @@ namespace GamingZoneApp.Areas.Admin.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete([FromRoute(Name = "id")] Guid gameId)
+        {
+            if (!await gameService.GameExistsAsync(gameId))
+            {
+                return BadRequest();
+            }
+
+            DeleteGameDto? deleteGameDto = await gameManagementService.GetDeleteAsync(gameId);
+
+            DeleteGameViewModel? deleteGameViewModel = new DeleteGameViewModel
+            {
+                Title = deleteGameDto?.Title
+            };
+
+            if (deleteGameViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(deleteGameViewModel);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromRoute(Name = "id")] Guid gameId, DeleteGameDto deleteGameDto)
+        {
+            if (!await gameService.GameExistsAsync(gameId))
+            {
+                return BadRequest();
+            }
+
+            bool deleteSuccessful = await gameManagementService.PostDeleteAsync(gameId, deleteGameDto);
+
+            if (!deleteSuccessful)
+            {
+                ModelState.AddModelError(string.Empty, ErrorDeletingGame);
+                return View(deleteGameDto);
+            }
+
+            TempData[SuccessTempDataKey] = GameDeletedSuccessfullyMessage;
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
 

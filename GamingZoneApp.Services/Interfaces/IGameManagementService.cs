@@ -1,9 +1,6 @@
-﻿using GamingZoneApp.ViewModels.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GamingZoneApp.Services.Models.Game;
+using GamingZoneApp.ViewModels.Game;
+
 
 namespace GamingZoneApp.Services.Core.Interfaces
 {
@@ -12,5 +9,9 @@ namespace GamingZoneApp.Services.Core.Interfaces
         Task<GameInputModel?> GetEditAsync(Guid gameId);
 
         Task<bool> PostEditAsync(Guid gameId, GameInputModel inputModel);
+
+        Task<DeleteGameDto?> GetDeleteAsync(Guid gameId);
+
+        Task<bool> PostDeleteAsync(Guid gameId, DeleteGameDto deleteGameDto);
     }
 }

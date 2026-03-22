@@ -2,12 +2,9 @@
 using GamingZoneApp.Data.Models.Enums;
 using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
+using GamingZoneApp.Services.Models.Game;
 using GamingZoneApp.ViewModels.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace GamingZoneApp.Services.Core
 {
@@ -21,6 +18,8 @@ namespace GamingZoneApp.Services.Core
             this.gameRepository = gameRepository;
 
         }
+
+
         public async Task<GameInputModel?> GetEditAsync(Guid gameId)
         {
             Game? gameToEdit = await gameRepository.GetGameAsync(gameId);
@@ -78,6 +77,51 @@ namespace GamingZoneApp.Services.Core
                 return false;
             }
 
+        }
+
+        public async Task<DeleteGameDto?> GetDeleteAsync(Guid gameId)
+        {
+            //Get the game to delete from the database using the provided gameId.
+            Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
+
+            //If the game is not found, return null to indicate that the game does not exist.
+            if (gameToDelete == null)
+            {
+                return null;
+            }
+
+            //If the game is found, create a DeleteGameDto to return the necessary information for deletion.
+            DeleteGameDto deleteGameDto = new DeleteGameDto()
+            {
+                Title = gameToDelete.Title
+            };
+
+            return deleteGameDto;
+        }
+
+        public async Task<bool> PostDeleteAsync(Guid gameId, DeleteGameDto deleteGameDto)
+        {
+            //Get the game to delete from the database using the provided gameId.
+            Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
+
+            //If the game is not found, return false to indicate that the deletion was unsuccessful.
+            if (gameToDelete == null)
+            {
+                return false;
+            }
+
+            //If the game is found, attempt to soft delete it using the repository's SoftDeleteAsync method.
+            try
+            {
+                await gameRepository.SoftDeleteAsync(gameToDelete);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
     }
 }
