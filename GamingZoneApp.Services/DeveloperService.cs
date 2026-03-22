@@ -26,19 +26,19 @@ namespace GamingZoneApp.Services.Core
 
             //Projecting the developers to the DeveloperAllDto, ordering by name and the count of games developed using DeveloperRepository method.
             IEnumerable<DeveloperAllDto> developersDto = await developerRepository
-                                                                           .GetAllDevelopersNoTracking()
-                                                                           .Include(d => d.GamesDeveloped)
-                                                                           .Select(d => new DeveloperAllDto
-                                                                           {
-                                                                               Id = d.Id,
-                                                                               Name = d.Name,
-                                                                               GamesDeveloped = d.GamesDeveloped.Count,
-                                                                               Description = d.Description,
-                                                                               ImageUrl = d.ImageUrl ?? null,
-                                                                           })
-                                                                           .OrderBy(d => d.Name)
-                                                                           .ThenByDescending(d => d.GamesDeveloped)
-                                                                           .ToListAsync();
+                                                              .GetAllDevelopersNoTracking()
+                                                              .Include(d => d.GamesDeveloped)
+                                                              .Select(d => new DeveloperAllDto
+                                                              {
+                                                                  Id = d.Id,
+                                                                  Name = d.Name,
+                                                                  GamesDeveloped = d.GamesDeveloped.Count,
+                                                                  Description = d.Description,
+                                                                  ImageUrl = d.ImageUrl ?? null,
+                                                              })
+                                                              .OrderBy(d => d.Name)
+                                                              .ThenByDescending(d => d.GamesDeveloped)
+                                                              .ToListAsync();
 
             return developersDto;
         }
@@ -48,18 +48,18 @@ namespace GamingZoneApp.Services.Core
         {
             // Projecting the games to the GameAllDto, ordering by title using DeveloperRepository method.
             IEnumerable<GameAllDto> gamesByDev = await developerRepository
-                                                             .GetAllGamesByDeveloperNoTracking(developerId)
-                                                             .Select(g => new GameAllDto
-                                                             {
-                                                                 Id = g.Id,
-                                                                 Title = g.Title,
-                                                                 ImageUrl = g.ImageUrl ?? null,
-                                                                 Genre = g.Genre.ToString(),
-                                                                 Developer = g.Developer.Name,
-                                                             
-                                                             })
-                                                             .OrderBy(g => g.Title)
-                                                             .ToListAsync();
+                                                      .GetAllGamesByDeveloperNoTracking(developerId)
+                                                      .Select(g => new GameAllDto
+                                                      {
+                                                          Id = g.Id,
+                                                          Title = g.Title,
+                                                          ImageUrl = g.ImageUrl ?? null,
+                                                          Genre = g.Genre.ToString(),
+                                                          Developer = g.Developer.Name,
+                                                      
+                                                      })
+                                                      .OrderBy(g => g.Title)
+                                                      .ToListAsync();
 
             return gamesByDev;
         }
