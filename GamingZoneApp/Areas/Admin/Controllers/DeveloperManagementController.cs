@@ -129,5 +129,51 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteDeveloper([FromRoute(Name = "id")] Guid developerId)
+        {
+            // Check if the developer with the specified ID exists using the developerService. If not, return a NotFound result.
+            if (!await developerService.DeveloperExistsAsync(developerId))
+            {
+                return NotFound();
+            }
+
+            // Retrieve the developer information for deletion using the developerManagementService.
+            DeleteDeveloperDto? deleteDeveloperDto = await developerManagementService.GetDeveloperForDeleteAsync(developerId);
+
+            // If the developer information is not found, redirect to the Index action.
+            if (deleteDeveloperDto == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Return the view with the DeleteDeveloperDto to display the confirmation page for deleting the developer.
+            return View(deleteDeveloperDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteDeveloper([FromRoute(Name = "id")] Guid developerId, DeleteDeveloperDto deleteDeveloperDto)
+        {
+            // Check if the developer with the specified ID exists using the developerService. If not, return a NotFound result.
+            if (!await developerService.DeveloperExistsAsync(developerId))
+            {
+                return NotFound();
+            }
+
+            // Call the DeleteDeveloperAsync method of the developerManagementService to delete the developer using the provided developer ID.
+            bool deleteSuccessful = await developerManagementService.HardDeleteDeveloperAsync(developerId);
+
+            // If the delete operation was not successful, add a model error and return the view with the current DeleteDeveloperDto to display the error message.
+            if (!deleteSuccessful)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while deleting the developer. Please try again.");
+                return View(deleteDeveloperDto);
+            }
+
+            // If the delete operation was successful, set a success message in TempData and redirect to the Index action to display the list of developers.
+            TempData[SuccessTempDataKey] = "Developer deleted successfully!";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
