@@ -94,6 +94,11 @@
             public const int DevDescriptionMaxLength = 2048;
 
             /// <summary>
+            /// Image URL should be able to store text with length of at least 7 characters.
+            /// </summary>
+            public const int ImageUrlMinLength = 7;
+
+            /// <summary>
             /// Image URL should be able to store text with length up to 2048 characters.
             /// </summary>
             public const int ImageUrlMaxLength = 2048;

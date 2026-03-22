@@ -36,6 +36,7 @@ namespace GamingZoneApp
             builder.Services.AddScoped<IDeveloperService, DeveloperService>();
             builder.Services.AddScoped<IPublisherService, PublisherService>();
             builder.Services.AddScoped<IGameManagementService, GameManagementService>();
+            builder.Services.AddScoped<IDeveloperManagementService, DeveloperManagementService>();
 
             //Registering the IdentitySeeder for seeding roles and other identity related data.
             builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
