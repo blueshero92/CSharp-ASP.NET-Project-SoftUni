@@ -5,13 +5,16 @@ namespace GamingZoneApp.Services.Core.Interfaces
 {
     public interface IPublisherManagementService
     {
-        public Task<bool> AddPublisherAsync(PublisherInputModel inputModel);
+        Task<bool> AddPublisherAsync();
 
-        public Task<PublisherInputModel?> GetPublisherForEditAsync(Guid publisherId);
+        Task<bool> AddPublisherAsync(PublisherInputModel inputModel);
 
-        public Task<bool> EditPublisherAsync(Guid publisherId, PublisherInputModel inputModel);
-        public Task<DeletePublisherDto?> GetPublisherForDeleteAsync(Guid publisherId);
+        Task<PublisherInputModel?> GetPublisherForEditAsync(Guid publisherId);
 
-        public Task<bool> HardDeletePublisherAsync(Guid publisherId);
+        Task<bool> EditPublisherAsync(Guid publisherId, PublisherInputModel inputModel);
+
+        Task<DeletePublisherDto?> GetPublisherForDeleteAsync(Guid publisherId);
+
+        Task<bool> HardDeletePublisherAsync(Guid publisherId);
     }
 }

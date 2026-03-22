@@ -1,14 +1,67 @@
-﻿using GamingZoneApp.Services.Core.Interfaces;
+﻿using GamingZoneApp.Data;
+using GamingZoneApp.Data.Models;
+using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.Services.Models.Publisher;
+using GamingZoneApp.ViewModels.Developer;
 using GamingZoneApp.ViewModels.Publisher;
+using Microsoft.EntityFrameworkCore;
 
 namespace GamingZoneApp.Services.Core
 {
     public class PublisherManagementService : IPublisherManagementService
     {
-        public Task<bool> AddPublisherAsync(PublisherInputModel inputModel)
+        private readonly GamingZoneDbContext dbContext;
+
+        public PublisherManagementService(GamingZoneDbContext dbContext)
         {
-            throw new NotImplementedException();
+            this.dbContext = dbContext;
+        }
+
+        public async Task<bool> AddPublisherAsync()
+        {
+            PublisherInputModel? publisherInputModel = new PublisherInputModel();
+
+            if (publisherInputModel == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                Publisher publisher = new Publisher
+                {
+                    Name = publisherInputModel.Name,
+                    Description = publisherInputModel.Description,
+                    ImageUrl = publisherInputModel.ImageUrl ?? null
+                };
+
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
+        }
+        public async Task<bool> AddPublisherAsync(PublisherInputModel publisherInputModel)
+        {
+            try
+            {
+                Publisher publisher = new Publisher
+                {
+                    Name = publisherInputModel.Name,
+                    Description = publisherInputModel.Description,
+                    ImageUrl = publisherInputModel.ImageUrl ?? null
+                };
+
+                await dbContext.AddAsync(publisher);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public Task<bool> EditPublisherAsync(Guid publisherId, PublisherInputModel inputModel)

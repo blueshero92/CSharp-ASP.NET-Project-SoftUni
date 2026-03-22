@@ -1,9 +1,9 @@
 ﻿using GamingZoneApp.Data;
 using GamingZoneApp.Data.Models;
-using GamingZoneApp.Data.Repository;
+
 using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.Services.Models.Developer;
-using GamingZoneApp.Services.Models.Game;
+
 using GamingZoneApp.ViewModels.Developer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,6 @@ namespace GamingZoneApp.Services.Core
         public async Task<bool> AddDeveloperAsync()
         {
             DeveloperInputModel? developerInputModel = new DeveloperInputModel();
-
 
             if (developerInputModel == null)
             {
