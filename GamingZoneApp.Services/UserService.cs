@@ -120,27 +120,32 @@ namespace GamingZoneApp.Services.Core
 
         public async Task<bool> RemoveRoleAsync(Guid userId, string roleName)
         {
-
+            //Check if the role exists in the database using the provided roleName.
             IdentityRole<Guid>? role = await dbContext
                                             .Roles
                                             .SingleOrDefaultAsync(r => r.Name == roleName);
 
+            //If the role does not exist, return false to indicate that the role removal cannot proceed.
             if (role == null)
             {
                 return false;
             }
 
+            //Check if the user is assigned to the specified role by querying the UserRoles mapping table.
             IdentityUserRole<Guid>? userRole = await dbContext
                                                     .UserRoles
                                                     .SingleOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == role.Id);
 
+            //If the user is not in the role, return false to indicate that the role removal cannot proceed.
             if (userRole == null)
             {
                 return false;
             }
 
+
             try
             {
+                //If everything else passes, remove the role from the user by removing the UserRole mapping.
                 dbContext.UserRoles.Remove(userRole);
                 await dbContext.SaveChangesAsync();
 
@@ -152,9 +157,31 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        public Task<bool> DeleteUserAsync(Guid userId)
+        public async Task<bool> DeleteUserAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            //Check if the user exists in the database using the provided userId.
+            ApplicationUser? user = await dbContext
+                                         .Users
+                                         .SingleOrDefaultAsync(u => u.Id == userId);
+
+            //If the user does not exist, return false to indicate that the user deletion cannot proceed.
+            if (user == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                //If everything else passes, delete the user from the database.
+                dbContext.Users.Remove(user);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
     }
