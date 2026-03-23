@@ -128,6 +128,8 @@ namespace GamingZoneApp.Areas.Identity.Pages.Account
                 {
                     logger.LogInformation("User created a new account with password.");
 
+                    await userManager.AddToRoleAsync(user, "User");
+
                     if (userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
