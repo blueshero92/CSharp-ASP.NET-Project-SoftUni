@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "User Management";
+    IEnumerable<string> allRoles = ViewBag.AllRoles as IEnumerable<string> ?? Enumerable.Empty<string>();
 }
 
 <div class="container mt-5">
@@ -11,7 +12,7 @@
     </div>
 
     <div class="alert alert-info" role="alert">
-        <p class="mb-0">Manage all registered users. You can view user accounts and their assigned roles from this panel.</p>
+        <p class="mb-0">Manage all registered users. Assign or remove roles and delete user accounts from this panel.</p>
     </div>
 
     @if (!Model.Any())
@@ -26,12 +27,15 @@
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
-                        <th style="width: 250px;">Roles</th>
+                        <th style="width: 200px;">Current Roles</th>
+                        <th style="width: 380px;">Manage Roles</th>
+                        <th class="text-center" style="width: 120px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (UserViewModel user in Model)
                     {
+                        string dropdownId = $"roleSelect_{user.Id.ToString("N")}";
                         <tr>
                             <td class="fw-semibold text-primary">
                                 <i class="bi bi-person-circle"></i> @user.Username
@@ -50,6 +54,39 @@
                                     <span class="badge bg-secondary">No roles</span>
                                 }
                             </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <select id="@dropdownId" class="form-select form-select-sm">
+                                        <option value="">-- Select --</option>
+                                        @foreach (string role in allRoles)
+                                        {
+                                            <option value="@role">@role</option>
+                                        }
+                                    </select>
+                                    <form asp-area="Admin" asp-controller="UserManagement" asp-action="AssignRole" method="post">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <input type="hidden" name="selectedRole" value="" data-source="@dropdownId" />
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi bi-plus-circle"></i> Assign
+                                        </button>
+                                    </form>
+                                    <form asp-area="Admin" asp-controller="UserManagement" asp-action="RemoveRole" method="post">
+                                        <input type="hidden" name="selectedRole" value="" data-source="@dropdownId" />
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="bi bi-dash-circle"></i> Remove
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <form asp-area="Admin" asp-controller="UserManagement" asp-action="DeleteUser" method="post">
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -63,3 +100,20 @@
         </a>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('form').forEach(function (form) {
+            form.addEventListener('submit', function () {
+                var hiddenInput = form.querySelector('input[data-source]');
+                if (hiddenInput) {
+                    var selectId = hiddenInput.getAttribute('data-source');
+                    var select = document.getElementById(selectId);
+                    if (select) {
+                        hiddenInput.value = select.value;
+                    }
+                }
+            });
+        });
+    </script>
+}
