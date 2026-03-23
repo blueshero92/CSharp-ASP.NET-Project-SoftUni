@@ -69,7 +69,54 @@ namespace GamingZoneApp.Areas.Admin.Controllers
                 return View(publisherInputModel);
             }
 
+            // If the publisher was added successfully, set a success message in TempData and redirect to the Index action to display the list of publishers.
             TempData[SuccessTempDataKey] = "Publisher added successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditPublisher([FromRoute(Name = "id")] Guid publisherId)
+        {
+            // Check if the publisher with the provided publisherId exists using the publisherService method. If not, return a NotFound result.
+            if (!await publisherService.PublisherExistsAsync(publisherId))
+            {
+                return NotFound();
+            }
+
+            // Use the publisherManagementService method to retrieve the publisher information for editing based on the provided publisherId.
+            PublisherInputModel? publisherInputModel = await publisherManagementService.GetPublisherForEditAsync(publisherId);
+
+            // If the publisher information is not found, redirect to the Index action to display the list of publishers.
+            if (publisherInputModel == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Return the view with the PublisherInputModel to display the form for editing the publisher information.
+            return View(publisherInputModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPublisher([FromRoute(Name = "id")] Guid publisherId, PublisherInputModel publisherInputModel)
+        {
+            //Check if the publisher exists using the publisherService method. If not, return a NotFound result.
+            if (!await publisherService.PublisherExistsAsync(publisherId))
+            {
+                return NotFound();
+            }
+
+            //Try to edit the publisher information using the publisherManagementService method with the provided publisherId and PublisherInputModel. 
+            bool isEdited = await publisherManagementService.EditPublisherAsync(publisherId, publisherInputModel);
+
+            //If the edit operation fails, return the view with the current PublisherInputModel to display an error message.
+            if (!isEdited)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while editing the publisher. Please try again.");
+                return View(publisherInputModel);
+            }
+
+            //If the edit operation is successful, set a success message in TempData and redirect to the Index action to display the list of publishers.
+            TempData[SuccessTempDataKey] = "Publisher edited successfully.";
             return RedirectToAction(nameof(Index));
         }
     }

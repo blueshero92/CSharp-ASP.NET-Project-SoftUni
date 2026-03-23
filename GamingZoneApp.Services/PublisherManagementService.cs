@@ -2,9 +2,11 @@
 using GamingZoneApp.Data.Models;
 using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.Services.Models.Publisher;
-using GamingZoneApp.ViewModels.Developer;
+
 using GamingZoneApp.ViewModels.Publisher;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace GamingZoneApp.Services.Core
 {
@@ -17,15 +19,19 @@ namespace GamingZoneApp.Services.Core
             this.dbContext = dbContext;
         }
 
+        [HttpGet]
         public async Task<bool> AddPublisherAsync()
         {
+            //An input model is created to hold the data for the new publisher.
             PublisherInputModel? publisherInputModel = new PublisherInputModel();
 
+            //If the input model is null, return false.
             if (publisherInputModel == null)
             {
                 return false;
             }
 
+            //If the input model is not null, attempt to create a new publisher object and populate its properties with the values from the input model.
             try
             {
                 Publisher publisher = new Publisher
@@ -42,8 +48,11 @@ namespace GamingZoneApp.Services.Core
                 return await Task.FromResult(false);
             }
         }
+
+        [HttpPost]
         public async Task<bool> AddPublisherAsync(PublisherInputModel publisherInputModel)
         {
+            //Try to create a new publisher object and populate its properties with the values from the input model. 
             try
             {
                 Publisher publisher = new Publisher
@@ -53,6 +62,7 @@ namespace GamingZoneApp.Services.Core
                     ImageUrl = publisherInputModel.ImageUrl ?? null
                 };
 
+                //If the publisher object is successfully created, add it to the database and save the changes.
                 await dbContext.AddAsync(publisher);
                 await dbContext.SaveChangesAsync();
 
@@ -64,17 +74,63 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        public Task<bool> EditPublisherAsync(Guid publisherId, PublisherInputModel inputModel)
+        public async Task<PublisherInputModel?> GetPublisherForEditAsync(Guid publisherId)
         {
-            throw new NotImplementedException();
+            //Check if the publisher exists.
+            Publisher? publisher = await dbContext
+                                        .Publishers
+                                        .SingleOrDefaultAsync(p => p.Id == publisherId);
+
+            //If the publisher doesn't exist, return null.
+            if (publisher == null)
+            {
+                return null;
+            }
+
+            //If the publisher exists, create a new input model and populate its properties with the values from the publisher object, then return the input model.
+            PublisherInputModel publisherInputModel = new()
+            {
+                Name = publisher.Name,
+                Description = publisher.Description,
+                ImageUrl = publisher.ImageUrl
+            };
+
+            return publisherInputModel;
+        }
+        public async Task<bool> EditPublisherAsync(Guid publisherId, PublisherInputModel inputModel)
+        {
+            //Check if the publisher exists.
+            Publisher? publisher = await dbContext
+                                        .Publishers
+                                        .SingleOrDefaultAsync(p => p.Id == publisherId);
+
+            //If the publisher doesn't exist, return false.
+            if (publisher == null)
+            {
+                return false;
+            }
+
+            //Update the publisher's properties with the new values from the input model.
+            try
+            {
+
+                publisher.Name = inputModel.Name;
+                publisher.Description = inputModel.Description;
+                publisher.ImageUrl = inputModel.ImageUrl ?? null;
+
+                //If the publisher exists, update it in the database and save the changes.
+                dbContext.Update(publisher);
+                dbContext.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public Task<DeletePublisherDto?> GetPublisherForDeleteAsync(Guid publisherId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<PublisherInputModel?> GetPublisherForEditAsync(Guid publisherId)
         {
             throw new NotImplementedException();
         }
