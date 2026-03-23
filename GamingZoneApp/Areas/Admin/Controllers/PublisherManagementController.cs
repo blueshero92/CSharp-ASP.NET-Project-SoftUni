@@ -119,5 +119,50 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             TempData[SuccessTempDataKey] = "Publisher edited successfully.";
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeletePublisher([FromRoute(Name = "id")] Guid publisherId)
+        {
+            //Check if the publisher exists using the publisherService method. If not, return a NotFound result.
+            if (!await publisherService.PublisherExistsAsync(publisherId))
+            {
+                return NotFound();
+            }
+
+            //Use the publisherManagementService method to retrieve the publisher information for deletion based on the provided publisherId.
+            DeletePublisherDto? deletePublisherDto = await publisherManagementService.GetPublisherForDeleteAsync(publisherId);
+
+            //If the publisher information is not found, redirect to the Index action to display the list of publishers.
+            if (deletePublisherDto == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(deletePublisherDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePublisher([FromRoute(Name = "id")] Guid publisherId, DeletePublisherDto deletePublisherDto)
+        {
+            //Check if the publisher exists using the publisherService method. If not, return a NotFound result.
+            if (!await publisherService.PublisherExistsAsync(publisherId))
+            {
+                return NotFound();
+            }
+
+            //Try to delete the publisher using the publisherManagementService method with the provided publisherId.
+            bool isDeleted = await publisherManagementService.HardDeletePublisherAsync(publisherId);
+
+            //If the delete operation fails, return the view with the current DeletePublisherDto to display an error message.
+            if (!isDeleted)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while deleting the publisher. Please try again.");
+                return View(deletePublisherDto);
+            }
+
+            //If the delete operation is successful, set a success message in TempData and redirect to the Index action to display the list of publishers.
+            TempData[SuccessTempDataKey] = "Publisher deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

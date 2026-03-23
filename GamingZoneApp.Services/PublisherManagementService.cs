@@ -130,14 +130,53 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        public Task<DeletePublisherDto?> GetPublisherForDeleteAsync(Guid publisherId)
+        public async Task<DeletePublisherDto?> GetPublisherForDeleteAsync(Guid publisherId)
         {
-            throw new NotImplementedException();
+            //Getting the publisher to delete by its Id.
+            Publisher? publisherToDelete = await dbContext
+                                                 .Publishers
+                                                 .SingleOrDefaultAsync(p => p.Id == publisherId);
+
+            //If the publisher doesn't exist, return null.
+            if (publisherToDelete == null)
+            {
+                return null;
+            }
+
+            //If the publisher exists, create a new delete DTO and populate its properties with the values from the publisher object, then return the delete DTO.
+            DeletePublisherDto deletePublisherDto = new()
+            {
+                Name = publisherToDelete.Name
+            };
+
+            return deletePublisherDto;
         }
 
-        public Task<bool> HardDeletePublisherAsync(Guid publisherId)
+        public async Task<bool> HardDeletePublisherAsync(Guid publisherId)
         {
-            throw new NotImplementedException();
+            //Getting the publisher to delete by its Id.
+            Publisher? publisherToDelete = await dbContext
+                                                .Publishers
+                                                .SingleOrDefaultAsync(p => p.Id == publisherId);
+
+            //If the publisher doesn't exist, return false.
+            if (publisherToDelete == null)
+            {
+                return false;
+            }
+
+            //If the publisher exists, remove it from the database and save the changes.
+            try
+            {
+                dbContext.Publishers.Remove(publisherToDelete);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
