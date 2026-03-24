@@ -12,6 +12,8 @@ namespace GamingZoneApp.Services.Core.Interfaces
 
         Task<bool> RemoveRoleAsync(Guid userId, string roleName);
 
+        Task<DeleteUserViewModel?> GetUserForDeletionAsync(Guid userId);
+
         Task<bool> DeleteUserAsync(Guid userId);
     }
 }

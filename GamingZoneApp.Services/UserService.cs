@@ -157,6 +157,28 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
+
+        public async Task<DeleteUserViewModel?> GetUserForDeletionAsync(Guid userId)
+        {
+            ApplicationUser? userToDelete = await dbContext
+                                                 .Users
+                                                 .SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (userToDelete == null)
+            {
+                return null;
+            }
+
+            DeleteUserViewModel userForDeletionVm = new DeleteUserViewModel
+            {
+                Username = userToDelete.UserName!,
+                Email = userToDelete.Email!
+            };
+
+            return userForDeletionVm;
+        }
+
+
         public async Task<bool> DeleteUserAsync(Guid userId)
         {
             //Check if the user exists in the database using the provided userId.

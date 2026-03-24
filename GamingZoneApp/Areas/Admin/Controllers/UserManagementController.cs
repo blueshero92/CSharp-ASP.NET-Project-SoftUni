@@ -86,8 +86,25 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> DeleteUser(Guid userId)
+        {
+            // Call the GetUserForDeletionAsync method of the user service to retrieve the user details for confirmation before deletion.
+            DeleteUserViewModel? userForDeletion = await userService.GetUserForDeletionAsync(userId);
+
+            // If the user was not found, set an error message in TempData and redirect back to the Index action.
+            if (userForDeletion == null)
+            {
+                TempData[ErrorTempDataKey] = "User not found. Please ensure the user exists and try again.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Pass the user details to the view for confirmation before deletion.
+            return View(userForDeletion);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(Guid userId, DeleteUserViewModel model)
         {
             // Call the DeleteUserAsync method of the user service to delete the specified user from the system.
             bool isDeleted = await userService.DeleteUserAsync(userId);
