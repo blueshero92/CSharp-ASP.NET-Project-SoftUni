@@ -12,6 +12,14 @@ namespace GamingZoneApp.Data.Configuration
         public void Configure(EntityTypeBuilder<Game> entity)
         {
             entity.HasQueryFilter(g => !g.IsDeleted);
+
+            //Set the relationship between Game and User to Resrict to avoid multiple cascade delete paths when deleting a user.
+            //The UserService will handle the deletion of the user's games when a user is deleted.
+            entity.HasOne(g => g.User)
+                .WithMany(u => u.MyGames)
+                .HasForeignKey(g => g.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             entity.HasData(games);
         }
 

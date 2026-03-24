@@ -195,6 +195,18 @@ namespace GamingZoneApp.Services.Core
 
             try
             {
+
+                //Remove all games created by the user you want to delete.
+                //Ignore global query filter to include soft-deleted games in the deletion process.
+                IEnumerable<Game> gamesByUser = await dbContext
+                                                     .Games
+                                                     .IgnoreQueryFilters()
+                                                     .Where(g => g.UserId == userId)
+                                                     .ToListAsync();
+
+                dbContext.Games.RemoveRange(gamesByUser);
+
+
                 //If everything else passes, delete the user from the database.
                 dbContext.Users.Remove(user);
                 await dbContext.SaveChangesAsync();
