@@ -171,6 +171,7 @@ namespace GamingZoneApp.Services.Core
 
             DeleteUserViewModel userForDeletionVm = new DeleteUserViewModel
             {
+                Id = userToDelete.Id,
                 Username = userToDelete.UserName!,
                 Email = userToDelete.Email!
             };

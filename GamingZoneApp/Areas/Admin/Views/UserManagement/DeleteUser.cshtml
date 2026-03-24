@@ -32,6 +32,7 @@
                 </div>
 
                 <form asp-area="Admin" asp-controller="UserManagement" asp-action="DeleteUser" method="post">
+                    <input type="hidden" asp-for="Id" name="userId" />
                     <div class="d-flex gap-2 justify-content-end">
                         <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index"
                            class="btn btn-outline-secondary">
