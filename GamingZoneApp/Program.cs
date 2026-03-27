@@ -30,6 +30,7 @@ namespace GamingZoneApp
             builder.Services.AddScoped<IGameRepository, GameRepository>();
             builder.Services.AddScoped<IDeveloperRepository, DeveloperRepository>();
             builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             //Registering custom services for dependency injection.
             builder.Services.AddScoped<IGameService, GameService>();
