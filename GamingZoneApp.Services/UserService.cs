@@ -79,6 +79,12 @@ namespace GamingZoneApp.Services.Core
             // Retrieve the user details for deletion using the repository method.
             DeleteUserDto? userToDelete = await userRepository.GetDeleteUserAsync(userId);
 
+            //If the user does not exist, return null to indicate that the user was not found.
+            if (userToDelete == null)
+            {
+                return null;
+            }
+
             //Map the retrieved user details to a DeleteUserViewModel, which will be used in the view for confirmation before deletion.
             DeleteUserViewModel userForDeletionVm = new DeleteUserViewModel
             {

@@ -15,13 +15,13 @@ namespace GamingZoneApp.Services.Core
     {
         private readonly IDeveloperRepository developerRepository;
 
-        public DeveloperService(GamingZoneDbContext dbContext, IDeveloperRepository developerRepository)
+        public DeveloperService(IDeveloperRepository developerRepository)
         {
             this.developerRepository = developerRepository;
         }
 
         //Task for viewing all developers with their info.
-        public async Task<IEnumerable<DeveloperAllDto>> GetAllDevelopersWithInfoAsync()
+        public async Task<IEnumerable<AllDevelopersViewModel>> GetAllDevelopersWithInfoAsync()
         {            
 
             //Projecting the developers to the DeveloperAllDto, ordering by name and the count of games developed using DeveloperRepository method.
@@ -40,11 +40,21 @@ namespace GamingZoneApp.Services.Core
                                                               .ThenByDescending(d => d.GamesDeveloped)
                                                               .ToListAsync();
 
-            return developersDto;
+            // Projecting the DeveloperAllDto to the AllDevelopersViewModel.
+            IEnumerable<AllDevelopersViewModel> allDevelopersViewModel = developersDto.Select(d => new AllDevelopersViewModel
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Description = d.Description,
+                GamesDeveloped = d.GamesDeveloped,
+                ImageUrl = d.ImageUrl
+            });
+
+            return allDevelopersViewModel;
         }
 
         //Task for viewing all games by a specific developer.
-        public async Task<IEnumerable<GameAllDto>> GetAllGamesByDeveloperIdAsync(Guid developerId)
+        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByDeveloperIdAsync(Guid developerId)
         {
             // Projecting the games to the GameAllDto, ordering by title using DeveloperRepository method.
             IEnumerable<GameAllDto> gamesByDev = await developerRepository
@@ -61,7 +71,16 @@ namespace GamingZoneApp.Services.Core
                                                       .OrderBy(g => g.Title)
                                                       .ToListAsync();
 
-            return gamesByDev;
+            IEnumerable<AllGamesViewModel> allGamesByDev = gamesByDev.Select(g => new AllGamesViewModel
+            {
+                Id = g.Id,
+                Title = g.Title,
+                ImageUrl = g.ImageUrl,
+                Genre = g.Genre,
+                Developer = g.Developer
+            });
+
+            return allGamesByDev;
         }
 
         //Task for viewing all developers for dropdowns in forms.

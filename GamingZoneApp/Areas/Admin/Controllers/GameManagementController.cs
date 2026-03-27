@@ -1,5 +1,4 @@
 ﻿using GamingZoneApp.Services.Core.Interfaces;
-using GamingZoneApp.Services.Models.Game;
 using GamingZoneApp.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
 using static GamingZoneApp.GCommon.Constants.AppConstants;
@@ -29,20 +28,8 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //Using the service method to get all games from the database.
-            IEnumerable<GameAllDto> gameAllDto = await gameService.GetAllGamesAsync();
-
-            //Mapping the gameAllDto to a collection of AllGamesViewModel to display the necessary game details in the index view.
-            IEnumerable<AllGamesViewModel> allGames = gameAllDto
-                .Select(g => new AllGamesViewModel
-                {
-                    Id = g.Id,
-                    Title = g.Title,
-                    ImageUrl = g.ImageUrl ?? null,
-                    Genre = g.Genre,
-                    Developer = g.Developer,
-                    Publisher = g.Publisher
-                });
+            //Using the service method to get all games and map them to a collection of AllGamesViewModel for display in the index view.
+            IEnumerable<AllGamesViewModel> allGames =  await gameService.GetAllGamesAsync();
 
             //Passing the collection of AllGamesViewModel to the index view for display.
             return View(allGames);
@@ -140,14 +127,8 @@ namespace GamingZoneApp.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            //Using the service method to get the game details for deletion.
-            DeleteGameDto? deleteGameDto = await gameManagementService.GetDeleteAsync(gameId);
-
-            //Mapping the deleteGameDto to a DeleteGameViewModel to display the game details in the delete confirmation view.
-            DeleteGameViewModel? deleteGameViewModel = new DeleteGameViewModel
-            {
-                Title = deleteGameDto?.Title
-            };
+            //Using DeleteGameViewModel to display the game details in the delete confirmation view.
+            DeleteGameViewModel? deleteGameViewModel = await gameManagementService.GetDeleteAsync(gameId);
 
             //If the game details are not found, return a NotFound result.
             if (deleteGameViewModel == null)
@@ -160,7 +141,7 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromRoute(Name = "id")] Guid gameId, DeleteGameDto deleteGameDto)
+        public async Task<IActionResult> Delete([FromRoute(Name = "id")] Guid gameId, DeleteGameViewModel deleteGameViewModel)
         {
             //Using helper method from the game service(for reusability) to check if the game exists.
             if (!await gameService.GameExistsAsync(gameId))
@@ -169,13 +150,13 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             }
 
             //Using the service method to execute the deletion of the game in the database.
-            bool deleteSuccessful = await gameManagementService.PostDeleteAsync(gameId, deleteGameDto);
+            bool deleteSuccessful = await gameManagementService.PostDeleteAsync(gameId, deleteGameViewModel);
 
-            //If the deletion was not successful, add a model error and return the view with the deleteGameDto to display the error message.
+            //If the deletion was not successful, add a model error and return the view with the deleteGameViewModel to display the error message.
             if (!deleteSuccessful)
             {
                 ModelState.AddModelError(string.Empty, ErrorDeletingGame);
-                return View(deleteGameDto);
+                return View(deleteGameViewModel);
             }
 
             //If the deletion was successful, set a success message in TempData and redirect to the index page.

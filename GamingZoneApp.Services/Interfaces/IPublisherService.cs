@@ -8,10 +8,10 @@ namespace GamingZoneApp.Services.Core.Interfaces
     public interface IPublisherService
     {
         // Task to view all publishers with their info, including the count of games published.
-        Task<IEnumerable<PublisherAllDto>> GetAllPublishersWithInfoAsync();
+        Task<IEnumerable<AllPublishersViewModel>> GetAllPublishersWithInfoAsync();
 
         // Task to view all games published by a specific publisher by publisher ID.
-        Task<IEnumerable<GameAllDto>> GetAllGamesByPublisherIdAsync(Guid publisherId);
+        Task<IEnumerable<AllGamesViewModel>> GetAllGamesByPublisherIdAsync(Guid publisherId);
 
         //Helper method to get all publishers for dropdowns or selection lists.
         Task<IEnumerable<AddGamePublisherViewModel>> GetAllPublishersAsync();

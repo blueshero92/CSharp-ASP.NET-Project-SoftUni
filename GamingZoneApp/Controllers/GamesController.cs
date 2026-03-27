@@ -29,21 +29,8 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            //Using the game service to retrieve all games using a DTO.
-            IEnumerable<GameAllDto> games = await gameService.GetAllGamesAsync();
-
             //Using the game service to retrieve all games and map them to the collection of AllGamesViewModel.
-            IEnumerable<AllGamesViewModel> allGames = games
-                                                     .Select(g => new AllGamesViewModel
-                                                     {
-                                                         Id = g.Id,
-                                                         Title = g.Title,
-                                                         ImageUrl = g.ImageUrl ?? null,
-                                                         Genre = g.Genre,
-                                                         Developer = g.Developer,
-                                                         Publisher = g.Publisher
-                                                     });
-                                                           
+            IEnumerable<AllGamesViewModel> allGames = await gameService.GetAllGamesAsync();
 
             //Return the view with the collection of AllGamesViewModel.
             return View(allGames);
@@ -54,25 +41,9 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GameDetails(Guid id)
         {
-            //Using the game service to retrieve the game details by id.
-            GameDetailsDto? selectedGame = await gameService
-                                            .GetGameDetailsByIdAsync(id);
 
-            //Mapping the retrieved game details DTO to the GameViewModel to be passed to the view.
-            GameViewModel? gameViewModel = new GameViewModel
-            {
-                Id = selectedGame!.Id,
-                Title = selectedGame.Title,
-                ReleaseDate = selectedGame.ReleaseDate,
-                Genre = selectedGame.Genre,
-                Description = selectedGame.Description,
-                Rating = selectedGame.Rating,
-                ImageUrl = selectedGame.ImageUrl ?? null,
-                Developer = selectedGame.Developer,
-                Publisher = selectedGame.Publisher,
-                DeveloperLogoUrl = selectedGame.DeveloperLogoUrl,
-                PublisherLogoUrl = selectedGame.PublisherLogoUrl
-            };
+            //Using the game service to retrieve the game details by the game's Id and map it to the GameViewModel.
+            GameViewModel? gameViewModel = await gameService.GetGameDetailsByIdAsync(id);
 
 
             //If the game is not found, return NotFound.
@@ -90,21 +61,13 @@ namespace GamingZoneApp.Controllers
         [HttpGet]
         public async Task<IActionResult> MyGames()
         {
+            //Using helper method from the BaseController to get the current user's id.
             Guid userId = GetUserId();
 
-            IEnumerable<GameAllDto> allGamesDto = await gameService.GetAllGamesByUserIdAsync(userId);
+            //Using the game service to retrieve all games added by the current user and map them to the collection of AllGamesViewModel.
+            IEnumerable<AllGamesViewModel> myGames = await gameService.GetAllGamesByUserIdAsync(userId);
 
-            IEnumerable<AllGamesViewModel> myGames = allGamesDto
-                                                     .Select(g => new AllGamesViewModel
-                                                     {
-                                                         Id = g.Id,
-                                                         Title = g.Title,
-                                                         ImageUrl = g.ImageUrl ?? null,
-                                                         Genre = g.Genre,
-                                                         Developer = g.Developer,
-                                                         Publisher = g.Publisher
-                                                     });
-
+            //Return the view with the collection of AllGamesViewModel.
             return View(myGames);
         }
 
@@ -112,21 +75,13 @@ namespace GamingZoneApp.Controllers
         [HttpGet]
         public async Task<IActionResult> MyFavoriteGames()
         {
+            //Using helper method from the BaseController to get the current user's id.
             Guid userId = GetUserId();
 
-            IEnumerable<GameAllDto> myFavoriteGamesDto = await gameService.GetFavoriteGamesByUserIdAsync(userId);
+            //Using the game service to retrieve all games added to favorites by the current user and map them to the collection of AllGamesViewModel.
+            IEnumerable<AllGamesViewModel> myFavoriteGames = await gameService.GetFavoriteGamesByUserIdAsync(userId);
 
-            IEnumerable<AllGamesViewModel> myFavoriteGames = myFavoriteGamesDto
-                                                     .Select(g => new AllGamesViewModel
-                                                     {
-                                                         Id = g.Id,
-                                                         Title = g.Title,
-                                                         ImageUrl = g.ImageUrl ?? null,
-                                                         Genre = g.Genre,
-                                                         Developer = g.Developer,
-                                                         Publisher = g.Publisher
-                                                     });
-
+            //Return the view with the collection of AllGamesViewModel.
             return View(myFavoriteGames);
         }
 
@@ -406,13 +361,8 @@ namespace GamingZoneApp.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            //Retrieve the game to be deleted using the game service and map it to the DeleteGameDto.         
-            DeleteGameDto? deleteGameDto = await gameService.GetGameForDeleteAsync(id, userId);
-
-            DeleteGameViewModel? viewModel = new DeleteGameViewModel
-            {
-                Title = deleteGameDto?.Title
-            };
+            //Retrieve the game to be deleted and map it to the DeleteGameViewModel to be passed to the view.
+            DeleteGameViewModel? viewModel = await gameService.GetGameForDeleteAsync(id, userId);
 
             //If the game is not found, return NotFound.
             if (viewModel == null)

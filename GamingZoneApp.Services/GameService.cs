@@ -23,7 +23,7 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for viewing all games with their info.
-        public async Task<IEnumerable<GameAllDto>> GetAllGamesAsync()
+        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesAsync()
         {
 
             //Project the retrieved games into a collection of AllGamesViewModel, ordered by title using GameRepository.
@@ -40,12 +40,23 @@ namespace GamingZoneApp.Services.Core
 
                                                                                       })
                                                                                       .ToListAsync();
+
+            IEnumerable<AllGamesViewModel> allGamesViewModel = getAllGamesDto.Select(g => new AllGamesViewModel
+            {
+                Id = g.Id,
+                Title = g.Title,
+                ImageUrl = g.ImageUrl ?? null,
+                Genre = g.Genre,
+                Developer = g.Developer,
+                Publisher = g.Publisher
+            });
+
             //Return the collection of AllGamesViewModel.
-            return getAllGamesDto;
+            return allGamesViewModel;
         }
 
         //Task for viewing the details of a specific game by its Id.
-        public async Task<GameDetailsDto?> GetGameDetailsByIdAsync(Guid id)
+        public async Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id)
         {
             //Retrieve a game from the database by it's Id, including its developer and publisher using GameRepository.
             GameDetailsDto? selectedGameDto = await gameRepository
@@ -74,8 +85,24 @@ namespace GamingZoneApp.Services.Core
                 return null;
             }
 
+            //Map the retrieved GameDetailsDto to a GameViewModel for presentation in the view.
+            GameViewModel gameViewModel = new GameViewModel
+            {
+                Id = selectedGameDto.Id,
+                Title = selectedGameDto.Title,
+                ReleaseDate = selectedGameDto.ReleaseDate,
+                Genre = selectedGameDto.Genre,
+                Description = selectedGameDto.Description,
+                Rating = selectedGameDto.Rating,
+                ImageUrl = selectedGameDto.ImageUrl ?? null,
+                Developer = selectedGameDto.Developer,
+                Publisher = selectedGameDto.Publisher,
+                DeveloperLogoUrl = selectedGameDto.DeveloperLogoUrl ?? string.Empty,
+                PublisherLogoUrl = selectedGameDto.PublisherLogoUrl ?? string.Empty
+            };
+
             //Return the retrieved game projected as a GameViewModel.
-            return selectedGameDto;
+            return gameViewModel;
         }
 
         //Task for adding a game to a user's favorites by the game's Id and the user's Id.
@@ -114,7 +141,7 @@ namespace GamingZoneApp.Services.Core
 
         }
         //Task for viewing all games added by a specific user by the user's Id.
-        public async Task<IEnumerable<GameAllDto>> GetAllGamesByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<AllGamesViewModel>> GetAllGamesByUserIdAsync(Guid userId)
         {
             //Project the retrieved games added by the specific user into a collection of AllGamesViewModel, ordered by title using GameRepository.
             IEnumerable<GameAllDto> getAllGamesByUserId = await gameRepository
@@ -131,11 +158,21 @@ namespace GamingZoneApp.Services.Core
                                                                .OrderBy(g => g.Title)
                                                                .ToListAsync();
 
-            return getAllGamesByUserId;
+            IEnumerable<AllGamesViewModel> allGamesByUserId = getAllGamesByUserId.Select(g => new AllGamesViewModel
+            {
+                Id = g.Id,
+                Title = g.Title,
+                ImageUrl = g.ImageUrl ?? null,
+                Genre = g.Genre,
+                Developer = g.Developer,
+                Publisher = g.Publisher
+            });
+
+            return allGamesByUserId;
         }
 
         //Task for viewing all games in a user's favorites by the user's Id.
-        public async Task<IEnumerable<GameAllDto>> GetFavoriteGamesByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<AllGamesViewModel>> GetFavoriteGamesByUserIdAsync(Guid userId)
         {
             //Project the retrieved favorite games into a collection of GameAllDto, ordered by title using GameRepository.
             IEnumerable<GameAllDto> favoriteGamesDto = await gameRepository
@@ -152,7 +189,17 @@ namespace GamingZoneApp.Services.Core
                                                                           })
                                                                           .ToListAsync();
 
-            return favoriteGamesDto;
+            IEnumerable<AllGamesViewModel> favoriteGamesViewModel = favoriteGamesDto.Select(g => new AllGamesViewModel
+            {
+                Id = g.Id,
+                Title = g.Title,
+                ImageUrl = g.ImageUrl ?? null,
+                Genre = g.Genre,
+                Developer = g.Developer,
+                Publisher = g.Publisher
+            });
+
+            return favoriteGamesViewModel;
 
         }
 
@@ -276,7 +323,7 @@ namespace GamingZoneApp.Services.Core
         }
 
         //Task for retrieving a game by its Id and projecting it into a DeleteGameDto for deletion confirmation.
-        public async Task<DeleteGameDto?> GetGameForDeleteAsync(Guid gameId, Guid userId)
+        public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId)
         {
             //Retrieve the game to be deleted using GameRepository task.
             Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
@@ -292,12 +339,13 @@ namespace GamingZoneApp.Services.Core
                 return null;
             }
 
-            DeleteGameDto? deleteGameDto = new DeleteGameDto
+
+            DeleteGameViewModel? deleteGameViewModel = new DeleteGameViewModel
             {
                 Title = gameToDelete.Title
             };
 
-            return deleteGameDto;
+            return deleteGameViewModel;
 
         }
 

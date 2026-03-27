@@ -1,6 +1,4 @@
 ﻿using GamingZoneApp.Services.Core.Interfaces;
-using GamingZoneApp.Services.Models.Developer;
-using GamingZoneApp.Services.Models.Game;
 using GamingZoneApp.ViewModels.Developer;
 using GamingZoneApp.ViewModels.Game;
 using Microsoft.AspNetCore.Authorization;
@@ -24,18 +22,7 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<DeveloperAllDto> developers
-                = await developerService.GetAllDevelopersWithInfoAsync();
-
-            IEnumerable<AllDevelopersViewModel> developersViewModel = developers
-                .Select(d => new AllDevelopersViewModel
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Description = d.Description,
-                    GamesDeveloped = d.GamesDeveloped,
-                    ImageUrl = d.ImageUrl
-                });
+            IEnumerable<AllDevelopersViewModel> developersViewModel = await developerService.GetAllDevelopersWithInfoAsync();                                                              
 
             return View(developersViewModel);
         }
@@ -46,19 +33,9 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> DeveloperGames(Guid developerId)
         {
-            IEnumerable<GameAllDto> gamesByDev 
-                = await developerService.GetAllGamesByDeveloperIdAsync(developerId);
 
-            IEnumerable<AllGamesViewModel> gamesByDevViewModel = gamesByDev
-                                                                .Select(g => new AllGamesViewModel
-                                                                {
-                                                                    Id = g.Id,
-                                                                    Title = g.Title,
-                                                                    ImageUrl = g.ImageUrl,
-                                                                    Genre = g.Genre,
-                                                                    Developer = g.Developer
-                                                                });
-
+            IEnumerable<AllGamesViewModel> gamesByDevViewModel = await developerService.GetAllGamesByDeveloperIdAsync(developerId);
+                
             return View(gamesByDevViewModel);
 
         }

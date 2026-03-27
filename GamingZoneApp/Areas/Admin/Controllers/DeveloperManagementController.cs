@@ -21,20 +21,8 @@ namespace GamingZoneApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // Get all developers with their information using the developerService method.
-            IEnumerable<DeveloperAllDto> developerAllDto = await developerService.GetAllDevelopersWithInfoAsync();
-
             // Map the retrieved data to a collection of AllDevelopersViewModel to be used in the view.
-            IEnumerable<AllDevelopersViewModel> allDevelopersViewModel = developerAllDto
-                                                                         .Select(d => new AllDevelopersViewModel
-                                                                         {
-                                                                             Id = d.Id,
-                                                                             Name = d.Name,
-                                                                             Description = d.Description,
-                                                                             GamesDeveloped = d.GamesDeveloped,
-                                                                             ImageUrl = d.ImageUrl
-                                                                         });
-
+            IEnumerable<AllDevelopersViewModel> allDevelopersViewModel = await developerService.GetAllDevelopersWithInfoAsync();
 
             return View(allDevelopersViewModel);
         }

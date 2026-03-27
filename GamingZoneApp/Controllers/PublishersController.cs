@@ -1,6 +1,4 @@
 ﻿using GamingZoneApp.Services.Core.Interfaces;
-using GamingZoneApp.Services.Models.Game;
-using GamingZoneApp.Services.Models.Publisher;
 using GamingZoneApp.ViewModels.Game;
 using GamingZoneApp.ViewModels.Publisher;
 using Microsoft.AspNetCore.Authorization;
@@ -22,19 +20,9 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<PublisherAllDto> publishers 
-                = await publisherService.GetAllPublishersWithInfoAsync();
-
-            IEnumerable<AllPublishersViewModel> publishersViewModel = publishers
-                .Select(p => new AllPublishersViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Description = p.Description,
-                    GamesPublished = p.GamesPublished,
-                    ImageUrl = p.ImageUrl
-                });
-
+            //Get all publishers with their info using the service and map them to the view model.
+            IEnumerable<AllPublishersViewModel> publishersViewModel = await publisherService.GetAllPublishersWithInfoAsync();
+                
             return View(publishersViewModel);
         }
 
@@ -44,18 +32,8 @@ namespace GamingZoneApp.Controllers
         [AllowAnonymous]
         public async  Task<IActionResult> PublisherGames(Guid publisherId)
         {
-            IEnumerable<GameAllDto> gamesByPublisher 
-                = await publisherService.GetAllGamesByPublisherIdAsync(publisherId);
-
-            IEnumerable<AllGamesViewModel> gamesByPublisherViewModel = gamesByPublisher
-                .Select(g => new AllGamesViewModel
-                {
-                    Id = g.Id,
-                    Title = g.Title,
-                    Genre = g.Genre,
-                    Developer = g.Developer,
-                    ImageUrl = g.ImageUrl
-                });
+            //Get all games by the publisher's id using the service and map them to the view model.
+            IEnumerable<AllGamesViewModel> gamesByPublisherViewModel = await publisherService.GetAllGamesByPublisherIdAsync(publisherId);
 
             return View(gamesByPublisherViewModel);
         }

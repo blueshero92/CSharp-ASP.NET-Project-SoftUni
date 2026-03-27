@@ -10,8 +10,8 @@ namespace GamingZoneApp.Services.Core.Interfaces
 
         Task<bool> PostEditAsync(Guid gameId, GameInputModel inputModel);
 
-        Task<DeleteGameDto?> GetDeleteAsync(Guid gameId);
+        Task<DeleteGameViewModel?> GetDeleteAsync(Guid gameId);
 
-        Task<bool> PostDeleteAsync(Guid gameId, DeleteGameDto deleteGameDto);
+        Task<bool> PostDeleteAsync(Guid gameId, DeleteGameViewModel deleteGameViewModel);
     }
 }

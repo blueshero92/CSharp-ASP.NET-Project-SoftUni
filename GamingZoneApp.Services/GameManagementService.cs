@@ -2,7 +2,7 @@
 using GamingZoneApp.Data.Models.Enums;
 using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
-using GamingZoneApp.Services.Models.Game;
+
 using GamingZoneApp.ViewModels.Game;
 
 
@@ -79,7 +79,7 @@ namespace GamingZoneApp.Services.Core
 
         }
 
-        public async Task<DeleteGameDto?> GetDeleteAsync(Guid gameId)
+        public async Task<DeleteGameViewModel?> GetDeleteAsync(Guid gameId)
         {
             //Get the game to delete from the database using the provided gameId.
             Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
@@ -90,16 +90,16 @@ namespace GamingZoneApp.Services.Core
                 return null;
             }
 
-            //If the game is found, create a DeleteGameDto to return the necessary information for deletion.
-            DeleteGameDto deleteGameDto = new DeleteGameDto()
+            //If the game is found, create a DeleteGameViewModel to return the necessary information for deletion.
+            DeleteGameViewModel deleteGameViewModel = new DeleteGameViewModel()
             {
                 Title = gameToDelete.Title
             };
 
-            return deleteGameDto;
+            return deleteGameViewModel;
         }
 
-        public async Task<bool> PostDeleteAsync(Guid gameId, DeleteGameDto deleteGameDto)
+        public async Task<bool> PostDeleteAsync(Guid gameId, DeleteGameViewModel deleteGameViewModel)
         {
             //Get the game to delete from the database using the provided gameId.
             Game? gameToDelete = await gameRepository.GetGameAsync(gameId);
