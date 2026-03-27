@@ -39,5 +39,30 @@ namespace GamingZoneApp.Data.Repository
             return dbContext.Publishers
                             .AnyAsync(p => p.Id == publisherId);
         }
+
+        public async Task<Publisher?> GetPublisherByIdAsync(Guid publisherId)
+        {
+            return await dbContext.Publishers
+                                  .FirstOrDefaultAsync(p => p.Id == publisherId);
+        }
+
+        public async Task CreatePublisherAsync(Publisher publisher)
+        {
+            dbContext.Publishers.Add(publisher);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdatePublisherAsync(Publisher publisher)
+        {
+            dbContext.Publishers.Update(publisher);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeletePublisherAsync(Publisher publisher)
+        {
+            dbContext.Publishers.Remove(publisher);
+            await dbContext.SaveChangesAsync();
+
+        }
     }
 }

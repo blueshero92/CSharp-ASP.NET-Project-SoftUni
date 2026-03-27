@@ -40,5 +40,29 @@ namespace GamingZoneApp.Data.Repository
                         .Developers.AnyAsync(d => d.Id == developerId);
         }
 
+        public async Task<Developer?> GetDeveloperByIdAsync(Guid developerId)
+        {
+            return await dbContext
+                    .Developers
+                    .FirstOrDefaultAsync(d => d.Id == developerId);
+        }
+
+        public async Task CreateDeveloperAsync(Developer developer)
+        {
+            await dbContext.Developers.AddAsync(developer);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateDeveloperAsync(Developer developer)
+        {
+            dbContext.Developers.Update(developer);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteDeveloperAsync(Developer developer)
+        {
+            dbContext.Developers.Remove(developer);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

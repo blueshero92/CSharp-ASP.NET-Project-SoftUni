@@ -1,6 +1,7 @@
 ﻿using GamingZoneApp.Services.Core.Interfaces;
-using GamingZoneApp.Services.Models.Developer;
+using GamingZoneApp.ViewModels.Admin.Developer;
 using GamingZoneApp.ViewModels.Developer;
+
 using Microsoft.AspNetCore.Mvc;
 
 using static GamingZoneApp.GCommon.Constants.AppConstants;
@@ -128,20 +129,20 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             }
 
             // Retrieve the developer information for deletion using the developerManagementService.
-            DeleteDeveloperDto? deleteDeveloperDto = await developerManagementService.GetDeveloperForDeleteAsync(developerId);
+            DeleteDeveloperViewModel? deleteDeveloperViewModel = await developerManagementService.GetDeveloperForDeleteAsync(developerId);
 
             // If the developer information is not found, redirect to the Index action.
-            if (deleteDeveloperDto == null)
+            if (deleteDeveloperViewModel == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            // Return the view with the DeleteDeveloperDto to display the confirmation page for deleting the developer.
-            return View(deleteDeveloperDto);
+            // Return the view with the DeleteDeveloperViewModel to display the confirmation page for deleting the developer.
+            return View(deleteDeveloperViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteDeveloper([FromRoute(Name = "id")] Guid developerId, DeleteDeveloperDto deleteDeveloperDto)
+        public async Task<IActionResult> DeleteDeveloper([FromRoute(Name = "id")] Guid developerId, DeleteDeveloperViewModel deleteDeveloperViewModel)
         {
             // Check if the developer with the specified ID exists using the developerService. If not, return a NotFound result.
             if (!await developerService.DeveloperExistsAsync(developerId))
@@ -152,11 +153,11 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // Call the DeleteDeveloperAsync method of the developerManagementService to delete the developer using the provided developer ID.
             bool deleteSuccessful = await developerManagementService.HardDeleteDeveloperAsync(developerId);
 
-            // If the delete operation was not successful, add a model error and return the view with the current DeleteDeveloperDto to display the error message.
+            // If the delete operation was not successful, add a model error and return the view with the current DeleteDeveloperViewModel to display the error message.
             if (!deleteSuccessful)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while deleting the developer. Please try again.");
-                return View(deleteDeveloperDto);
+                return View(deleteDeveloperViewModel);
             }
 
             // If the delete operation was successful, set a success message in TempData and redirect to the Index action to display the list of developers.

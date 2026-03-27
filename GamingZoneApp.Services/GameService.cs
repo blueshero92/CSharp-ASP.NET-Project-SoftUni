@@ -322,7 +322,7 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        //Task for retrieving a game by its Id and projecting it into a DeleteGameDto for deletion confirmation.
+        //Task for retrieving a game by its Id and projecting it into a DeleteGameViewModel for deletion confirmation.
         public async Task<DeleteGameViewModel?> GetGameForDeleteAsync(Guid gameId, Guid userId)
         {
             //Retrieve the game to be deleted using GameRepository task.

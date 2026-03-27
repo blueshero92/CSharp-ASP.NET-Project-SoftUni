@@ -4,10 +4,18 @@ namespace GamingZoneApp.Data.Repository.Interfaces
 {
     public interface IPublisherRepository
     {
-            IQueryable<Publisher> GetAllPublishersNoTracking();
-    
-            IQueryable<Game> GetAllGamesByPublisherNoTracking(Guid publisherId);
-    
-            Task<bool> CheckIfPublisherExistsAsync(Guid publisherId);
+        IQueryable<Publisher> GetAllPublishersNoTracking();
+
+        IQueryable<Game> GetAllGamesByPublisherNoTracking(Guid publisherId);
+
+        Task<bool> CheckIfPublisherExistsAsync(Guid publisherId);
+
+        Task<Publisher?> GetPublisherByIdAsync(Guid publisherId);
+
+        Task CreatePublisherAsync(Publisher publisher);
+
+        Task UpdatePublisherAsync(Publisher publisher);
+
+        Task DeletePublisherAsync(Publisher publisher);
     }
 }

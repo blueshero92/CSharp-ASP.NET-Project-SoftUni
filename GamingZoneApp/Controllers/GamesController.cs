@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using static GamingZoneApp.GCommon.Constants.OutputMessages.TempDataSuccessMessages;
 using static GamingZoneApp.GCommon.Constants.OutputMessages.GameControllerErrors;
 using static GamingZoneApp.GCommon.Constants.AppConstants;
-using GamingZoneApp.Services.Models.Game;
+
 
 namespace GamingZoneApp.Controllers
 {

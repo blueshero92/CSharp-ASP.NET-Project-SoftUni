@@ -1,6 +1,7 @@
 ﻿using GamingZoneApp.Services.Core.Interfaces;
-using GamingZoneApp.Services.Models.Publisher;
+using GamingZoneApp.ViewModels.Admin.Publisher;
 using GamingZoneApp.ViewModels.Publisher;
+
 using Microsoft.AspNetCore.Mvc;
 
 using static GamingZoneApp.GCommon.Constants.AppConstants;
@@ -17,12 +18,12 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             this.publisherService = publisherService;
             this.publisherManagementService = publisherManagementService;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-
             // Map the retrieved data to a collection of AllPublishersViewModel to be used in the view.
             IEnumerable<AllPublishersViewModel> allPublishersViewModel = await publisherService.GetAllPublishersWithInfoAsync();
-
 
             return View(allPublishersViewModel);
         }
@@ -120,19 +121,19 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             }
 
             //Use the publisherManagementService method to retrieve the publisher information for deletion based on the provided publisherId.
-            DeletePublisherDto? deletePublisherDto = await publisherManagementService.GetPublisherForDeleteAsync(publisherId);
+            DeletePublisherViewModel? deletePublisherViewModel = await publisherManagementService.GetPublisherForDeleteAsync(publisherId);
 
             //If the publisher information is not found, redirect to the Index action to display the list of publishers.
-            if (deletePublisherDto == null)
+            if (deletePublisherViewModel == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(deletePublisherDto);
+            return View(deletePublisherViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeletePublisher([FromRoute(Name = "id")] Guid publisherId, DeletePublisherDto deletePublisherDto)
+        public async Task<IActionResult> DeletePublisher([FromRoute(Name = "id")] Guid publisherId, DeletePublisherViewModel deletePublisherViewModel)
         {
             //Check if the publisher exists using the publisherService method. If not, return a NotFound result.
             if (!await publisherService.PublisherExistsAsync(publisherId))
@@ -143,11 +144,11 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             //Try to delete the publisher using the publisherManagementService method with the provided publisherId.
             bool isDeleted = await publisherManagementService.HardDeletePublisherAsync(publisherId);
 
-            //If the delete operation fails, return the view with the current DeletePublisherDto to display an error message.
+            //If the delete operation fails, return the view with the current DeletePublisherViewModel to display an error message.
             if (!isDeleted)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while deleting the publisher. Please try again.");
-                return View(deletePublisherDto);
+                return View(deletePublisherViewModel);
             }
 
             //If the delete operation is successful, set a success message in TempData and redirect to the Index action to display the list of publishers.

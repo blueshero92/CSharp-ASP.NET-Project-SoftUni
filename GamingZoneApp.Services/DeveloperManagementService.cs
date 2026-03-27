@@ -1,58 +1,21 @@
-﻿using GamingZoneApp.Data;
-using GamingZoneApp.Data.Models;
-
+﻿using GamingZoneApp.Data.Models;
+using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
-using GamingZoneApp.Services.Models.Developer;
-
+using GamingZoneApp.ViewModels.Admin.Developer;
 using GamingZoneApp.ViewModels.Developer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace GamingZoneApp.Services.Core
 {
     public class DeveloperManagementService : IDeveloperManagementService
     {
-        private readonly GamingZoneDbContext dbContext;
+        private readonly IDeveloperRepository developerRepository;
 
-        public DeveloperManagementService(GamingZoneDbContext dbContext)
+        public DeveloperManagementService(IDeveloperRepository developerRepository)
         {
-            this.dbContext = dbContext;
+            this.developerRepository = developerRepository;
         }
-
-        [HttpGet]
-        public async Task<bool> AddDeveloperAsync()
-        {
-            //An input model is created to hold the data for the new developer.
-            DeveloperInputModel? developerInputModel = new DeveloperInputModel();
-
-            //If the input model is null, return false to indicate that the developer cannot be added.
-            if (developerInputModel == null)
-            {
-                return false;
-            }
-
-            //If the input model is not null, attempt to create a new Developer entity using the data from the input model.
-            try
-            {
-                //If the developer is successfully created, return true to indicate that the developer can be added; otherwise, return false.
-                Developer developer = new Developer
-                {
-                    Name = developerInputModel.Name,
-                    Description = developerInputModel.Description,
-                    ImageUrl = developerInputModel.ImageUrl ?? null
-                };
-
-                return await Task.FromResult(true);
-            }
-            catch (Exception)
-            {
-                return await Task.FromResult(false);
-            }
-
-        }
-
-        [HttpPost]
+     
         public async Task<bool> AddDeveloperAsync(DeveloperInputModel developerInputModel)
         {
             //Try to create a new Developer entity using the data from the input model and add it to the database. If successful, return true; otherwise, return false.
@@ -66,8 +29,7 @@ namespace GamingZoneApp.Services.Core
                 };
 
                 //Add the new developer to the database context and save changes to persist it in the database.
-                await dbContext.AddAsync(developer);
-                await dbContext.SaveChangesAsync();
+                await developerRepository.CreateDeveloperAsync(developer);
 
                 return true;
             }
@@ -77,13 +39,10 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-
         public async Task<DeveloperInputModel?> GetDeveloperForEditAsync(Guid developerId)
         {
             //Get the developer to edit from the database using the provided developerId.
-            Developer ? developer = await dbContext
-                                        .Developers
-                                        .SingleOrDefaultAsync(d => d.Id == developerId);
+            Developer ? developer = await developerRepository.GetDeveloperByIdAsync(developerId);
 
             //If the developer is not found, return null to indicate that the developer does not exist.
             if (developer == null)
@@ -105,9 +64,7 @@ namespace GamingZoneApp.Services.Core
         public async Task<bool> EditDeveloperAsync(Guid developerId, DeveloperInputModel inputModel)
         {
             //Get the developer to edit from the database using the provided developerId.
-            Developer? developer = await dbContext
-                                        .Developers
-                                        .SingleOrDefaultAsync(d => d.Id == developerId);
+            Developer? developer = await developerRepository.GetDeveloperByIdAsync(developerId);
 
             //If the developer is not found, return false to indicate that the edit cannot proceed.
             if (developer == null)
@@ -123,8 +80,7 @@ namespace GamingZoneApp.Services.Core
                 developer.Description = inputModel.Description;
                 developer.ImageUrl = inputModel.ImageUrl;
 
-                dbContext.Update(developer);
-                await dbContext.SaveChangesAsync();
+                await developerRepository.UpdateDeveloperAsync(developer);
 
                 return true;
             }
@@ -134,12 +90,10 @@ namespace GamingZoneApp.Services.Core
             }
         }
 
-        public async Task<DeleteDeveloperDto?> GetDeveloperForDeleteAsync(Guid developerId)
+        public async Task<DeleteDeveloperViewModel?> GetDeveloperForDeleteAsync(Guid developerId)
         {
             //Get the developer to delete from the database using the provided developerId.
-            Developer? devToDelete = await dbContext
-                                        .Developers
-                                        .SingleOrDefaultAsync(d => d.Id == developerId);
+            Developer? devToDelete = await developerRepository.GetDeveloperByIdAsync(developerId);
 
             //If the developer is not found, return null to indicate that the developer does not exist.
             if (devToDelete == null)
@@ -147,22 +101,20 @@ namespace GamingZoneApp.Services.Core
                 return null;
             }
 
-            //If the developer is found, create a DeleteDeveloperDto to return the necessary information for deletion.
-            DeleteDeveloperDto deleteDeveloperDto = new DeleteDeveloperDto()
+            //If the developer is found, create a DeleteDeveloperViewModel to return the necessary information for deletion.
+            DeleteDeveloperViewModel deleteDeveloperViewModel = new DeleteDeveloperViewModel()
             {
                 Name = devToDelete.Name
             };
 
-            return deleteDeveloperDto;
+            return deleteDeveloperViewModel;
         }
 
 
         public async Task<bool> HardDeleteDeveloperAsync(Guid developerId)
         {
             //Get the developer to delete from the database using the provided developerId.
-            Developer? devToDelete = await dbContext
-                                          .Developers
-                                          .SingleOrDefaultAsync(d => d.Id == developerId);
+            Developer? devToDelete = await developerRepository.GetDeveloperByIdAsync(developerId);
 
             //If the developer is not found, return false to indicate that the deletion cannot proceed.
             if (devToDelete == null)
@@ -173,8 +125,7 @@ namespace GamingZoneApp.Services.Core
             //If the developer is found, attempt to remove it from the database and save changes. If successful, return true; otherwise, return false.
             try
             {
-                dbContext.Remove(devToDelete);
-                await dbContext.SaveChangesAsync();
+                await developerRepository.DeleteDeveloperAsync(devToDelete);
 
                 return true;
             }
