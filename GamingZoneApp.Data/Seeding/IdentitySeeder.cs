@@ -13,6 +13,7 @@ namespace GamingZoneApp.Data.Seeding
         private readonly string[] AppRoles = new string[]
         {
             "Admin",
+            "Moderator",
             "User"
         };
 

@@ -44,9 +44,9 @@
                             <td>
                                 @if (user.Roles.Any())
                                 {
-                                    @foreach (string role in user.Roles)
+                                    @foreach (string role in user.Roles.OrderBy(r => r))
                                     {
-                                        <span class="badge @(role == "Admin" ? "bg-success" : "bg-secondary") me-1">@role</span>
+                                        <span class="badge @(role == "Admin" ? "bg-success" : role == "Moderator" ? "bg-primary" : "bg-secondary") me-1">@role</span>
                                     }
                                 }
                                 else
@@ -58,7 +58,7 @@
                                 <div class="d-flex gap-1">
                                     <select id="@dropdownId" class="form-select form-select-sm">
                                         <option value="">-- Select --</option>
-                                        @foreach (string role in allRoles)
+                                        @foreach (string role in allRoles.OrderBy(r => r))
                                         {
                                             <option value="@role">@role</option>
                                         }
