@@ -60,7 +60,10 @@
                                         <option value="">-- Select --</option>
                                         @foreach (string role in allRoles.OrderBy(r => r))
                                         {
-                                            <option value="@role">@role</option>
+                                            if(role != "User")
+                                            {
+												<option value= "@role">@role</option>
+                                            }
                                         }
                                     </select>
                                     <form asp-area="Admin" asp-controller="UserManagement" asp-action="AssignRole" method="post">

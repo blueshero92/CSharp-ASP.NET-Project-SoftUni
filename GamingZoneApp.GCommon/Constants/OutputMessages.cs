@@ -53,7 +53,7 @@ namespace GamingZoneApp.GCommon.Constants
         public class UserManagementControllerErrors
         {
             public const string ErrorRoleNotSelected = "Please select a role to assign.";
-            public const string ErrorAssigningRole = "An error occurred while assigning the role. Please ensure the user and role exist and try again.";
+            public const string ErrorAssigningRole = "Role already assigned to user.";
             public const string ErrorRetrievingUsers = "An error occurred while retrieving users. Please try again.";
             public const string ErrorRetrievingRoles = "An error occurred while retrieving roles. Please try again.";
 

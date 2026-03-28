@@ -58,6 +58,12 @@ namespace GamingZoneApp.Data.Repository
 
         public async Task<bool> AssignRoleToUserAsync(Guid userId, string roleName)
         {
+            // Prevent assigning the "User" role to any user, as it is the default role for all users and should not be manually assigned or removed.
+            if (roleName.Equals("User", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
             // Check if the user exists in the database using the provided userId.
             ApplicationUser? user = await dbContext
                                          .Users
@@ -116,6 +122,12 @@ namespace GamingZoneApp.Data.Repository
 
         public async Task<bool> RemoveRoleFromUserAsync(Guid userId, string roleName)
         {
+            // Prevent removing the "User" role from any user, as it is the default role for all users and should not be manually assigned or removed.
+            if (roleName.Equals("User", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
             //Check if the role exists in the database using the provided roleName.
             IdentityRole<Guid>? role = await dbContext
                                             .Roles

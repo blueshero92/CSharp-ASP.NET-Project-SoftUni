@@ -47,6 +47,13 @@ namespace GamingZoneApp.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            //Check if the selected role is "User", which is a default role assigned to all users and cannot be assigned.
+            if (selectedRole.Equals("User", StringComparison.OrdinalIgnoreCase))
+            {
+                TempData[ErrorTempDataKey] = "The 'User' role is a default role and is already assigned to all users.";
+                return RedirectToAction(nameof(Index));
+            }
+
             // Call the AssignRoleAsync method of the user service to assign the selected role to the specified user.
             bool isAssigned = await userService.AssignRoleAsync(userId, selectedRole);
 
@@ -71,6 +78,13 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(selectedRole))
             {
                 TempData[ErrorTempDataKey] = ErrorRoleNotSelectedForRemoval;
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Check if the selected role is "User", which is a default role assigned to all users and cannot be removed.
+            if (selectedRole.Equals("User", StringComparison.OrdinalIgnoreCase))
+            {
+                TempData[ErrorTempDataKey] = "The 'User' role is a default role and cannot be removed.";
                 return RedirectToAction(nameof(Index));
             }
 
