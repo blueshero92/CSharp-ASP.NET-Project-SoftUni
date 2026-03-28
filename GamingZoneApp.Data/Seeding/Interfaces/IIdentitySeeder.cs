@@ -5,5 +5,7 @@
         Task SeedRolesAsync();
 
         Task SeedAdminUserAsync();
+
+        Task SeedModeratorUserAsync();
     }
 }

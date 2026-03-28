@@ -57,13 +57,13 @@ namespace GamingZoneApp.Data.Seeding
         public async Task SeedAdminUserAsync()
         {
             string adminUsername = configuration["UserSeed:AdminUser:Username"]
-                ?? throw new InvalidOperationException(UsernameNotFoundInConfigurationExceptionMessage);
+                ?? throw new InvalidOperationException(AdminUsernameNotFoundInConfigurationExceptionMessage);
 
             string adminEmail = configuration["UserSeed:AdminUser:Email"]
-                ?? throw new InvalidOperationException(EmailNotFoundInConfigurationExceptionMessage);
+                ?? throw new InvalidOperationException(AdminEmailNotFoundInConfigurationExceptionMessage);
 
             string adminPassword = configuration["UserSeed:AdminUser:Password"]
-                ?? throw new InvalidOperationException(PasswordNotFoundInConfigurationExceptionMessage);
+                ?? throw new InvalidOperationException(AdminPasswordNotFoundInConfigurationExceptionMessage);
 
             ApplicationUser? adminUser = await userManager.FindByEmailAsync(adminEmail);
 
@@ -94,6 +94,48 @@ namespace GamingZoneApp.Data.Seeding
                 if (!addToRoleResult.Succeeded)
                 {
                     throw new InvalidOperationException(ErrorWhileTryingToAddAdminUserToAdminRoleExceptionMessage);
+                }
+            }
+        }
+
+        public async Task SeedModeratorUserAsync()
+        {
+            string moderatorUsername = configuration["UserSeed:ModeratorUser:Username"]
+                ?? throw new InvalidOperationException(ModeratorUsernameNotFoundInConfigurationExceptionMessage);
+
+            string moderatorEmail = configuration["UserSeed:ModeratorUser:Email"]
+                ?? throw new InvalidOperationException(ModeratorEmailNotFoundInConfigurationExceptionMessage);
+
+            string moderatorPassword = configuration["UserSeed:ModeratorUser:Password"]
+                ?? throw new InvalidOperationException(ModeratorPasswordNotFoundInConfigurationExceptionMessage);
+
+            ApplicationUser? moderatorUser = await userManager.FindByEmailAsync(moderatorEmail);
+            if (moderatorUser == null)
+            {
+                moderatorUser = new ApplicationUser
+                {
+                    UserName = moderatorUsername,
+                    Email = moderatorEmail
+                };
+
+                IdentityResult result
+                    = await userManager.CreateAsync(moderatorUser, moderatorPassword);
+
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException(string.Format(ErrorWhileTryingToSeedModeratorUserExceptionMessage, moderatorEmail));
+                }
+            }
+            bool isInRole = await userManager.IsInRoleAsync(moderatorUser, AppRoles[1]);
+
+            if (!isInRole)
+            {
+                IdentityResult addToRoleResult
+                    = await userManager.AddToRoleAsync(moderatorUser, AppRoles[1]);
+
+                if (!addToRoleResult.Succeeded)
+                {
+                    throw new InvalidOperationException(string.Format(ErrorWhileTryingToAddModeratorUserToModeratorRoleExceptionMessage, moderatorEmail));
                 }
             }
         }

@@ -93,6 +93,7 @@ namespace GamingZoneApp
             app.UseAuthorization();
 
             app.UseRolesSeeder();
+            app.UseModeratorUserSeeder();
             app.UseAdminUserSeeder();
 
             app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");

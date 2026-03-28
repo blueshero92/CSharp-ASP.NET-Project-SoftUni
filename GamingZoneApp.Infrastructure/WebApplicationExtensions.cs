@@ -41,5 +41,23 @@ namespace GamingZoneApp.Infrastructure
 
             return applicationBuilder;
         }
+
+        public static IApplicationBuilder UseModeratorUserSeeder(this IApplicationBuilder applicationBuilder)
+        {
+            // Create a new scope to resolve the IIdentitySeeder service.
+            using IServiceScope serviceScope
+                = applicationBuilder.ApplicationServices.CreateScope();
+
+            // Resolve the IIdentitySeeder service from the application's service provider.
+            IIdentitySeeder identitiySeeder
+                = serviceScope.ServiceProvider.GetRequiredService<IIdentitySeeder>();
+
+            // Call the SeedModeratorUserAsync method to seed the moderator user. Since this is an asynchronous method, we use GetAwaiter().GetResult() to wait for it to complete.
+            identitiySeeder.SeedModeratorUserAsync()
+                           .GetAwaiter()
+                           .GetResult();
+
+            return applicationBuilder;
+        }
     }
 }
