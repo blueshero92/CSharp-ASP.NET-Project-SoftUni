@@ -2,7 +2,10 @@
 using GamingZoneApp.ViewModels.Admin.User;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+
 using static GamingZoneApp.GCommon.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.UserManagementControllerErrors;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.UserManagementControllerSuccessMessages;
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
@@ -40,7 +43,7 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // Validate that a role was selected before attempting to assign it to the user.
             if (string.IsNullOrEmpty(selectedRole))
             {
-                TempData[ErrorTempDataKey] = "Please select a role to assign.";
+                TempData[ErrorTempDataKey] = ErrorRoleNotSelected;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -50,13 +53,13 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // If the role assignment was not successful, set an error message in TempData and redirect back to the Index action.
             if (!isAssigned)
             {
-                TempData[ErrorTempDataKey] = "An error occurred while assigning the role. Please ensure the user and role exist and try again.";
+                TempData[ErrorTempDataKey] = ErrorAssigningRole;
 
                 return RedirectToAction(nameof(Index));
             }
 
             // If the role assignment was successful, set a success message in TempData and redirect back to the Index action.
-            TempData[SuccessTempDataKey] = "Role assigned successfully!";
+            TempData[SuccessTempDataKey] = RoleAssignedSuccessfullyMessage;
 
             return RedirectToAction(nameof(Index));
         }
@@ -67,7 +70,7 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // Validate that a role was selected before attempting to remove it from the user.
             if (string.IsNullOrEmpty(selectedRole))
             {
-                TempData[ErrorTempDataKey] = "Please select a role to remove.";
+                TempData[ErrorTempDataKey] = ErrorRoleNotSelectedForRemoval;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -77,12 +80,12 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // If the role removal was not successful, set an error message in TempData and redirect back to the Index action.
             if (!isRemoved)
             {
-                TempData[ErrorTempDataKey] = "An error occurred while removing the role. Please ensure the user and role exist and try again.";
+                TempData[ErrorTempDataKey] = ErrorRemovingRole;
                 return RedirectToAction(nameof(Index));
             }
 
             // If the role removal was successful, set a success message in TempData and redirect back to the Index action.
-            TempData[SuccessTempDataKey] = "Role removed successfully!";
+            TempData[SuccessTempDataKey] = RoleRemovedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
 
@@ -95,7 +98,7 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // If the user was not found, set an error message in TempData and redirect back to the Index action.
             if (userForDeletion == null)
             {
-                TempData[ErrorTempDataKey] = "User not found. Please ensure the user exists and try again.";
+                TempData[ErrorTempDataKey] = UserNotFoundError;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -112,12 +115,12 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // If the user deletion was not successful, set an error message in TempData and redirect back to the Index action.
             if (!isDeleted)
             {
-                TempData[ErrorTempDataKey] = "An error occurred while deleting the user. Please ensure the user exists and try again.";
+                TempData[ErrorTempDataKey] = ErrorDeletingUser;
                 return RedirectToAction(nameof(Index));
             }
 
             // If the user deletion was successful, set a success message in TempData and redirect back to the Index action.
-            TempData[SuccessTempDataKey] = "User deleted successfully!";
+            TempData[SuccessTempDataKey] = UserDeletedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
     }

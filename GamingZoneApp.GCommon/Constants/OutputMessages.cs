@@ -50,6 +50,59 @@ namespace GamingZoneApp.GCommon.Constants
 
         }
 
+        public class UserManagementControllerErrors
+        {
+            public const string ErrorRoleNotSelected = "Please select a role to assign.";
+            public const string ErrorAssigningRole = "An error occurred while assigning the role. Please ensure the user and role exist and try again.";
+            public const string ErrorRetrievingUsers = "An error occurred while retrieving users. Please try again.";
+            public const string ErrorRetrievingRoles = "An error occurred while retrieving roles. Please try again.";
+
+            public const string ErrorRoleNotSelectedForRemoval = "Please select a role to remove.";
+            public const string ErrorRemovingRole = "An error occurred while removing the role. Please ensure the user and role exist and try again.";
+
+            public const string ErrorDeletingUser = "An error occurred while deleting the user. Please ensure the user exists and try again.";
+
+            public const string UserNotFoundError = "User not found. Please ensure the user exists and try again.";
+
+        }
+
+        public class UserManagementControllerSuccessMessages
+        {
+            public const string RoleAssignedSuccessfullyMessage = "Role assigned successfully!";
+            public const string RoleRemovedSuccessfullyMessage = "Role removed successfully!";
+            public const string UserDeletedSuccessfullyMessage = "User deleted successfully!";
+        }
+
+        public class DeveloperManagementControllerErrors
+        {
+            public const string ErrorAddingDeveloper = "An error occurred while adding the developer. Please try again.";
+            public const string ErrorEditingDeveloperForm = "Please correct the errors in the form.";
+            public const string ErrorEditingDeveloper = "An error occurred while editing the developer. Please try again.";
+            public const string ErrorDeletingDeveloper = "An error occurred while deleting the developer. Please try again.";
+        }
+
+        public class DeveloperManagemntControllerSuccessMessages
+        {
+            public const string DeveloperAddedSuccessfullyMessage = "Developer added successfully!";
+            public const string DeveloperEditedSuccessfullyMessage = "Developer edited successfully!";
+            public const string DeveloperDeletedSuccessfullyMessage = "Developer deleted successfully!";
+        }
+
+        public class PublisherManagementControllerErrors
+        {
+            public const string ErrorAddingPublisher = "An error occurred while adding the publisher. Please try again.";
+            public const string ErrorEditingPublisherForm = "Please correct the errors in the form.";
+            public const string ErrorEditingPublisher = "An error occurred while editing the publisher. Please try again.";
+            public const string ErrorDeletingPublisher = "An error occurred while deleting the publisher. Please try again.";
+        }
+
+        public class PublisherManagementControllerSuccessMessages
+        {
+            public const string PublisherAddedSuccessfullyMessage = "Publisher added successfully!";
+            public const string PublisherEditedSuccessfullyMessage = "Publisher edited successfully!";
+            public const string PublisherDeletedSuccessfullyMessage = "Publisher deleted successfully!";
+        }
+
         public class RegisterErrors
         {
             public const string UsernameLengthError = "The {0} must be at least {2} and at max {1} characters long.";

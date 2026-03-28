@@ -5,6 +5,8 @@ using GamingZoneApp.ViewModels.Publisher;
 using Microsoft.AspNetCore.Mvc;
 
 using static GamingZoneApp.GCommon.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.PublisherManagementControllerErrors;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.PublisherManagementControllerSuccessMessages;
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
@@ -56,12 +58,12 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // If the publisher was not added successfully, return the view with the current PublisherInputModel to display an error message.
             if (!isAdded)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while adding the publisher. Please try again.");
+                TempData[ErrorTempDataKey] = ErrorAddingPublisher;
                 return View(publisherInputModel);
             }
 
             // If the publisher was added successfully, set a success message in TempData and redirect to the Index action to display the list of publishers.
-            TempData[SuccessTempDataKey] = "Publisher added successfully.";
+            TempData[SuccessTempDataKey] = PublisherAddedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
 
@@ -102,12 +104,12 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             //If the edit operation fails, return the view with the current PublisherInputModel to display an error message.
             if (!isEdited)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while editing the publisher. Please try again.");
+                TempData[ErrorTempDataKey] = ErrorEditingPublisher;
                 return View(publisherInputModel);
             }
 
             //If the edit operation is successful, set a success message in TempData and redirect to the Index action to display the list of publishers.
-            TempData[SuccessTempDataKey] = "Publisher edited successfully.";
+            TempData[SuccessTempDataKey] = PublisherEditedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
 
@@ -144,15 +146,15 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             //Try to delete the publisher using the publisherManagementService method with the provided publisherId.
             bool isDeleted = await publisherManagementService.HardDeletePublisherAsync(publisherId);
 
-            //If the delete operation fails, return the view with the current DeletePublisherViewModel to display an error message.
+            //If the delete operation fails, return the view with the current DeletePublisherViewModel and display an error message.
             if (!isDeleted)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while deleting the publisher. Please try again.");
+                TempData[ErrorTempDataKey] = ErrorDeletingPublisher;
                 return View(deletePublisherViewModel);
             }
 
             //If the delete operation is successful, set a success message in TempData and redirect to the Index action to display the list of publishers.
-            TempData[SuccessTempDataKey] = "Publisher deleted successfully.";
+            TempData[SuccessTempDataKey] = PublisherDeletedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
     }

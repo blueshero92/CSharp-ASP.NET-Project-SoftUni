@@ -5,6 +5,8 @@ using GamingZoneApp.ViewModels.Developer;
 using Microsoft.AspNetCore.Mvc;
 
 using static GamingZoneApp.GCommon.Constants.AppConstants;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.DeveloperManagementControllerErrors;
+using static GamingZoneApp.GCommon.Constants.OutputMessages.DeveloperManagemntControllerSuccessMessages;
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
@@ -56,12 +58,12 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // If the developer was not added successfully, add a model error and return the view with the current DeveloperInputModel to display the error message.
             if (!isAdded)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while adding the developer. Please try again.");
+                TempData[ErrorTempDataKey] = ErrorAddingDeveloper;
                 return View(developerInputModel);
             }
 
             // If the developer was added successfully, set a success message in TempData and redirect to the Index action to display the list of developers.
-            TempData[SuccessTempDataKey] = "Developer added successfully!";
+            TempData[SuccessTempDataKey] = DeveloperAddedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
 
@@ -96,25 +98,25 @@ namespace GamingZoneApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // Check if the model state is valid. If not, add a model error and return the view with the current DeveloperInputModel to display validation errors.
+            // Check if the model state is valid. If not, add an error and return the view with the current DeveloperInputModel to display validation errors.
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Please correct the errors in the form.");
+                TempData[ErrorTempDataKey] = ErrorEditingDeveloperForm;
                 return View(developerInputModel);
             }
 
             // Call the EditDeveloperAsync method of the developerManagementService to edit the developer information using the provided DeveloperInputModel and developer ID.
             bool editSuccessful = await developerManagementService.EditDeveloperAsync(developerId, developerInputModel);
 
-            // If the edit operation was not successful, add a model error and return the view with the current DeveloperInputModel to display the error message.
+            // If the edit operation was not successful, add an error and return the view with the current DeveloperInputModel to display the error message.
             if (!editSuccessful)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while editing the developer. Please try again.");
+                TempData[ErrorTempDataKey] = ErrorEditingDeveloper;
                 return View(developerInputModel);
             }
 
             // If the edit operation was successful, set a success message in TempData and redirect to the Index action to display the list of developers.
-            TempData[SuccessTempDataKey] = "Developer edited successfully!";
+            TempData[SuccessTempDataKey] = DeveloperEditedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
 
         }
@@ -153,15 +155,15 @@ namespace GamingZoneApp.Areas.Admin.Controllers
             // Call the DeleteDeveloperAsync method of the developerManagementService to delete the developer using the provided developer ID.
             bool deleteSuccessful = await developerManagementService.HardDeleteDeveloperAsync(developerId);
 
-            // If the delete operation was not successful, add a model error and return the view with the current DeleteDeveloperViewModel to display the error message.
+            // If the delete operation was not successful, add an error and return the view with the current DeleteDeveloperViewModel to display the error message.
             if (!deleteSuccessful)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred while deleting the developer. Please try again.");
+                TempData[ErrorTempDataKey] = ErrorDeletingDeveloper;
                 return View(deleteDeveloperViewModel);
             }
 
             // If the delete operation was successful, set a success message in TempData and redirect to the Index action to display the list of developers.
-            TempData[SuccessTempDataKey] = "Developer deleted successfully!";
+            TempData[SuccessTempDataKey] = DeveloperDeletedSuccessfullyMessage;
             return RedirectToAction(nameof(Index));
         }
     }
