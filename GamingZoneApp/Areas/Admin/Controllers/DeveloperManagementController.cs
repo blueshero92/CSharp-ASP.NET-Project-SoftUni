@@ -8,7 +8,7 @@ using static GamingZoneApp.GCommon.Constants.AppConstants;
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
-    public class DeveloperManagementController : BaseController
+    public class DeveloperManagementController : BaseAdminController
     {
         private readonly IDeveloperService developerService;
         private readonly IDeveloperManagementService developerManagementService;

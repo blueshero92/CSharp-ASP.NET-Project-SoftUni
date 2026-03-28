@@ -8,7 +8,7 @@ using static GamingZoneApp.GCommon.Constants.OutputMessages.GameControllerErrors
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
-    public class GameManagementController : BaseController
+    public class GameManagementController : BaseAdminController
     {
         private readonly IGameService gameService;
         private readonly IGameManagementService gameManagementService;

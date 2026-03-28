@@ -6,7 +6,7 @@ using static GamingZoneApp.GCommon.Constants.AppConstants;
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
-    public class UserManagementController : BaseController
+    public class UserManagementController : BaseAdminController
     {
         private readonly IUserService userService;
 

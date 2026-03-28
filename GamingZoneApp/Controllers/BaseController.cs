@@ -7,6 +7,7 @@ using static GamingZoneApp.GCommon.Constants.OutputMessages.BaseControllerErrors
 namespace GamingZoneApp.Controllers
 {
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class BaseController : Controller
     {
        

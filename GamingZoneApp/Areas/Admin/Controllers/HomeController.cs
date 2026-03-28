@@ -2,7 +2,7 @@
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : BaseAdminController
     {
         public IActionResult Index()
         {

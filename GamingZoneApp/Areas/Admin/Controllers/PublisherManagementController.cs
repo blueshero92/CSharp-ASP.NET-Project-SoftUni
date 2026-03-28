@@ -8,7 +8,7 @@ using static GamingZoneApp.GCommon.Constants.AppConstants;
 
 namespace GamingZoneApp.Areas.Admin.Controllers
 {
-    public class PublisherManagementController : BaseController
+    public class PublisherManagementController : BaseAdminController
     {
         private readonly IPublisherService publisherService;
         private readonly IPublisherManagementService publisherManagementService;

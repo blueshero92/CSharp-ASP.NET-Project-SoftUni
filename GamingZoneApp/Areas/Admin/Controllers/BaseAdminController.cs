@@ -5,7 +5,8 @@ namespace GamingZoneApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public abstract class BaseController : Controller
+    [AutoValidateAntiforgeryToken]
+    public abstract class BaseAdminController : Controller
     {
     }
 }
