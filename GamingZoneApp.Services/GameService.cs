@@ -28,18 +28,18 @@ namespace GamingZoneApp.Services.Core
 
             //Project the retrieved games into a collection of AllGamesViewModel, ordered by title using GameRepository.
             IEnumerable<GameAllDto> getAllGamesDto = await gameRepository.GetAllGamesNoTrackingAsync()
-                                                                                      .OrderBy(g => g.Title)
-                                                                                      .Select(g => new GameAllDto
-                                                                                      {
-                                                                                          Id = g.Id,
-                                                                                          Title = g.Title,
-                                                                                          ImageUrl = g.ImageUrl ?? null,
-                                                                                          Genre = g.Genre.ToString(),
-                                                                                          Developer = g.Developer.Name,
-                                                                                          Publisher = g.Publisher.Name
+                                                                         .OrderBy(g => g.Title)
+                                                                         .Select(g => new GameAllDto
+                                                                         {
+                                                                             Id = g.Id,
+                                                                             Title = g.Title,
+                                                                             ImageUrl = g.ImageUrl ?? null,
+                                                                             Genre = g.Genre.ToString(),
+                                                                             Developer = g.Developer.Name,
+                                                                             Publisher = g.Publisher.Name
 
-                                                                                      })
-                                                                                      .ToListAsync();
+                                                                         })
+                                                                         .ToListAsync();
 
             IEnumerable<AllGamesViewModel> allGamesViewModel = getAllGamesDto.Select(g => new AllGamesViewModel
             {
@@ -53,6 +53,52 @@ namespace GamingZoneApp.Services.Core
 
             //Return the collection of AllGamesViewModel.
             return allGamesViewModel;
+        }
+
+        //Task for searching games by title, genre, developer, or publisher using a search query string.
+        public async Task<IEnumerable<AllGamesViewModel>> SearchGamesAsync(string searchQuery)
+        {
+            //Try to match the search query against the Genre enum values.
+            Genre? matchedGenre = Enum.GetValues<Genre>()
+                                      .Cast<Genre>()
+                                      .FirstOrDefault(g => g.ToString().ToLower().Contains(searchQuery.ToLower()));
+
+
+            bool doesGenreMatch = Enum.GetValues<Genre>()
+                                      .Cast<Genre>()
+                                      .Any(g => g.ToString().ToLower().Contains(searchQuery.ToLower()));
+
+            //Project the retrieved games that match the search query into a collection of GameAllDto, ordered by title using GameRepository.
+            IEnumerable <GameAllDto> searchedGameDto = await gameRepository
+                                                        .GetAllGamesNoTrackingAsync()
+                                                        .Where(g => g.Title.ToLower().Contains(searchQuery.ToLower()) ||
+                                                                    (doesGenreMatch && g.Genre == matchedGenre) ||
+                                                                    g.Developer.Name.Contains(searchQuery) ||
+                                                                    g.Publisher.Name.Contains(searchQuery))
+                                                        .OrderBy(g => g.Title)
+                                                        .Select(g => new GameAllDto
+                                                        {
+                                                            Id = g.Id,
+                                                            Title = g.Title,
+                                                            ImageUrl = g.ImageUrl ?? null,
+                                                            Genre = g.Genre.ToString(),
+                                                            Developer = g.Developer.Name,
+                                                            Publisher = g.Publisher.Name
+                                                        })
+                                                        .ToListAsync();
+
+            //Project the retrieved GameAllDto into a collection of AllGamesViewModel for presentation in the view.
+            IEnumerable<AllGamesViewModel> searchedGamesViewModel = searchedGameDto.Select(g => new AllGamesViewModel
+            {
+                Id = g.Id,
+                Title = g.Title,
+                ImageUrl = g.ImageUrl ?? null,
+                Genre = g.Genre,
+                Developer = g.Developer,
+                Publisher = g.Publisher
+            });
+
+            return searchedGamesViewModel;
         }
 
         //Task for viewing the details of a specific game by its Id.
@@ -424,5 +470,6 @@ namespace GamingZoneApp.Services.Core
         {
             return await gameRepository.CheckIfGameIsInFavoritesAsync(gameId, userId);
         }
+
     }
 }

@@ -8,6 +8,9 @@ namespace GamingZoneApp.Services.Core.Interfaces
         //Task for viewing all games with their info.
         Task<IEnumerable<AllGamesViewModel>> GetAllGamesAsync();
 
+        //Task for searching games by genre and viewing their info.
+        Task<IEnumerable<AllGamesViewModel>> SearchGamesAsync(string searchQuery);
+
         //Task for viewing details of a specific game by it's Id.
         Task<GameViewModel?> GetGameDetailsByIdAsync(Guid id);
 

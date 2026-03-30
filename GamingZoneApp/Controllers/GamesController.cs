@@ -27,10 +27,24 @@ namespace GamingZoneApp.Controllers
         //Visualize all games using a view model.
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchQuery)
         {
             //Using the game service to retrieve all games and map them to the collection of AllGamesViewModel.
-            IEnumerable<AllGamesViewModel> allGames = await gameService.GetAllGamesAsync();
+            IEnumerable<AllGamesViewModel> allGames;
+
+            //If there is no search query, retrieve all games as usual.
+            //If there is a search query, use the game service to search for games by the search query.
+            if (string.IsNullOrWhiteSpace(searchQuery))
+            {
+                allGames = await gameService.GetAllGamesAsync();
+            }
+            else
+            {
+                allGames = await gameService.SearchGamesAsync(searchQuery);
+            }
+
+            //Passing the search query to the view through ViewData to be able to display it in the search box after the search is performed.
+            ViewData["SearchQuery"] = searchQuery?.Trim();
 
             //Return the view with the collection of AllGamesViewModel.
             return View(allGames);
