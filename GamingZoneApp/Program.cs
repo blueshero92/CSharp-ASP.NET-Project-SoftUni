@@ -4,7 +4,9 @@ using GamingZoneApp.Data.Repository;
 using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Data.Seeding;
 using GamingZoneApp.Data.Seeding.Interfaces;
-using GamingZoneApp.Infrastructure;
+using GamingZoneApp.Infrastructure.Extensions;
+using GamingZoneApp.Infrastructure.Utilities;
+using GamingZoneApp.Infrastructure.Utilities.Interfaces;
 using GamingZoneApp.Services.Core;
 using GamingZoneApp.Services.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -43,6 +45,9 @@ namespace GamingZoneApp
 
             //Registering the IdentitySeeder for seeding roles and other identity related data.
             builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
+
+            //Registering the SlugGenerator for generating slugs for game titles, developer names, and publisher names.
+            builder.Services.AddSingleton<ISlugGenerator, SlugGenerator>();
 
             //Configuring Identity services with custom options from appsettings.Development.json using a helper method.
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -107,8 +112,13 @@ namespace GamingZoneApp
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
+                name: "slugRoute",
+                pattern: "{controller=Home}/{action=Index}/{id?}/{slug:required}");
+
+            app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.MapRazorPages();
 
             app.Run();

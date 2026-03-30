@@ -1,5 +1,5 @@
-﻿@using GamingZoneApp.ViewModels.Game
-@model IEnumerable<AllGamesViewModel>
+﻿@model IEnumerable<AllGamesViewModel>
+@inject ISlugGenerator SlugGenerator;
 
 @if (!Model.Any())
 {
@@ -21,7 +21,7 @@ else
                             Publisher: <strong>@game.Publisher</strong><br>
                         </p>
                         <div class="mt-auto d-flex flex-column gap-2 w-100">
-                            <a asp-controller="Games" asp-action="GameDetails" asp-route-id="@game.Id"
+							<a asp-controller="Games" asp-action="GameDetails" asp-route-id="@game.Id" asp-route-slug="@SlugGenerator.GenerateSlug(game.Title)"
                                class="btn btn-primary btn-sm w-100">
 								<i class="bi bi-info-circle"></i>
                                 Details
