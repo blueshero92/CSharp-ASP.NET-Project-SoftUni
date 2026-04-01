@@ -19,8 +19,6 @@
 
     @if (Model.Any())
     {
-		<partial name="_PaginationPartial" model="@Model" />
-
         <div class="row">
             @foreach (var developer in Model)
             {

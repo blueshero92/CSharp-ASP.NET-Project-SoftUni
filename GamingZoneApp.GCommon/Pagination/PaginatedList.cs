@@ -1,5 +1,6 @@
 ﻿namespace GamingZoneApp.GCommon.Pagination
 {
+    //Paginated list is made generic to be able to use it for any type of data we want to paginate, such as developers, publishers or games.
     public class PaginatedList<T> : List<T>
     {
         // The current page index (1-based).
