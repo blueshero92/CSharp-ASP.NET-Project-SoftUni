@@ -28,5 +28,8 @@
         public const string InfoTempDataKey = "InfoMessage";
         public const string FavoritesErrorTempDataKey = "FavoritesError";
 
+        //The number of items to display per page in paginated views.
+        public const int PageSize = 6;
+
     }
 }

@@ -1,12 +1,15 @@
 ﻿using GamingZoneApp.ViewModels.Game;
-
+using GamingZoneApp.GCommon.Pagination;
 using GamingZoneApp.Services.Core.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 
 using static GamingZoneApp.GCommon.Constants.OutputMessages.TempDataSuccessMessages;
 using static GamingZoneApp.GCommon.Constants.OutputMessages.GameControllerErrors;
 using static GamingZoneApp.GCommon.Constants.AppConstants;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 
 namespace GamingZoneApp.Controllers
@@ -27,7 +30,7 @@ namespace GamingZoneApp.Controllers
         //Visualize all games using a view model.
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string? searchQuery)
+        public async Task<IActionResult> Index(string? searchQuery, int? pageNumber)
         {
             //Using the game service to retrieve all games and map them to the collection of AllGamesViewModel.
             IEnumerable<AllGamesViewModel> allGames;
@@ -46,8 +49,11 @@ namespace GamingZoneApp.Controllers
             //Passing the search query to the view through ViewData to be able to display it in the search box after the search is performed.
             ViewData["SearchQuery"] = searchQuery?.Trim();
 
+            // Number of games to display per page.
+            int pageSize = PageSize;
+
             //Return the view with the collection of AllGamesViewModel.
-            return View(allGames);
+            return View(await PaginatedList<AllGamesViewModel>.CreateAsync(allGames, pageNumber ?? 1, pageSize));
         }
 
         //Visualize game details for an individual game using a view model.
@@ -73,7 +79,7 @@ namespace GamingZoneApp.Controllers
 
         //Visualize all games added by the current user using a view model.
         [HttpGet]
-        public async Task<IActionResult> MyGames()
+        public async Task<IActionResult> MyGames(int? pageNumber)
         {
             //Using helper method from the BaseController to get the current user's id.
             Guid userId = GetUserId();
@@ -81,13 +87,16 @@ namespace GamingZoneApp.Controllers
             //Using the game service to retrieve all games added by the current user and map them to the collection of AllGamesViewModel.
             IEnumerable<AllGamesViewModel> myGames = await gameService.GetAllGamesByUserIdAsync(userId);
 
+            // Number of games to display per page.
+            int pageSize = PageSize;
+
             //Return the view with the collection of AllGamesViewModel.
-            return View(myGames);
+            return View(await PaginatedList<AllGamesViewModel>.CreateAsync(myGames, pageNumber ?? 1, pageSize));
         }
 
         //Visualize all games added to favorites by the current user using a view model.
         [HttpGet]
-        public async Task<IActionResult> MyFavoriteGames()
+        public async Task<IActionResult> MyFavoriteGames(int? pageNumber)
         {
             //Using helper method from the BaseController to get the current user's id.
             Guid userId = GetUserId();
@@ -95,8 +104,11 @@ namespace GamingZoneApp.Controllers
             //Using the game service to retrieve all games added to favorites by the current user and map them to the collection of AllGamesViewModel.
             IEnumerable<AllGamesViewModel> myFavoriteGames = await gameService.GetFavoriteGamesByUserIdAsync(userId);
 
+            // Number of games to display per page.
+            int pageSize = PageSize;
+
             //Return the view with the collection of AllGamesViewModel.
-            return View(myFavoriteGames);
+            return View(await PaginatedList<AllGamesViewModel>.CreateAsync(myFavoriteGames, pageNumber ?? 1, pageSize));
         }
 
         //Add a game to the favorites of the current user by the game's Id.

@@ -1,0 +1,30 @@
+﻿@{
+	var previousDisabled = !Model.HasPreviousPage ? "disabled" : "";
+	var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+	var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+	var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+	var currentArea = ViewContext.RouteData.Values["area"]?.ToString();
+}
+
+<div class="d-flex justify-content-center align-items-center gap-2 mb-4">
+	<a asp-action="@currentAction"
+	   asp-controller = "@currentController"
+	   asp-area="@currentArea"
+	   asp-route-pageNumber="@(Model.PageIndex - 1)"
+	   asp-route-searchQuery="@ViewData["SearchQuery"]"
+	   class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center @previousDisabled" style="min-width: 100px;">
+		<i class="bi bi-chevron-left me-1"></i> Previous
+	</a>
+	<span class="badge rounded-pill bg-gradient px-3 py-2">
+		Page @Model.PageIndex of @Model.TotalPages
+	</span>
+	<a asp-action="@currentAction"
+	   asp-controller ="@currentController"
+	   asp-area="@currentArea"
+	   asp-route-pageNumber="@(Model.PageIndex + 1)"
+	   asp-route-searchQuery="@ViewData["SearchQuery"]"
+	   class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center @nextDisabled" style="min-width: 100px;">
+		Next <i class="bi bi-chevron-right ms-1"></i>
+	</a>
+</div>

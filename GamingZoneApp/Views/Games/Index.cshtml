@@ -1,5 +1,7 @@
 ﻿@using GamingZoneApp.ViewModels.Game
-@model IEnumerable<AllGamesViewModel>
+@using GamingZoneApp.GCommon.Pagination
+
+@model PaginatedList<AllGamesViewModel>
 
 @{
 	ViewData["Title"] = "All Games";
@@ -37,6 +39,12 @@
 		</div>
 	</form>
 
+	<partial name="_PaginationPartial" model="@Model" />
+
 	<partial name="_AllGamesPartial" model="@Model" />
+
+	<p></p>
+
+	<partial name="_PaginationPartial" model="@Model" />
 </div>
 
