@@ -24,7 +24,7 @@ namespace GamingZoneApp.Data.Repository.Interfaces
 
         Task SoftDeleteAsync(Game gameToDelete);
 
-        Task HardDeleteSync (Game gameToDelete);
+        Task HardDeleteAsync (Game gameToDelete);
 
         Task<bool> CheckIfGameExistsAsync(Guid gameId);
 

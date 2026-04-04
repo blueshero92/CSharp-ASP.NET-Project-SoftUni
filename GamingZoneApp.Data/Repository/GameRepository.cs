@@ -120,7 +120,7 @@ namespace GamingZoneApp.Data.Repository
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task HardDeleteSync(Game gameToDelete)
+        public async Task HardDeleteAsync(Game gameToDelete)
         {
             dbContext.Games.Remove(gameToDelete);
             await dbContext.SaveChangesAsync();

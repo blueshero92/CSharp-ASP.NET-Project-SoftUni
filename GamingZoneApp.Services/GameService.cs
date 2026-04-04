@@ -443,7 +443,7 @@ namespace GamingZoneApp.Services.Core
             try
             {
                 //Hard delete the game from the database using GameRepository task.
-                await gameRepository.HardDeleteSync(gameToDelete);
+                await gameRepository.HardDeleteAsync(gameToDelete);
 
                 return true;
             }
