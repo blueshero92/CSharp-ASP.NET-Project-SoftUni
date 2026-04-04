@@ -1,5 +1,4 @@
-﻿using GamingZoneApp.Data;
-using GamingZoneApp.Data.Repository.Interfaces;
+﻿using GamingZoneApp.Data.Repository.Interfaces;
 using GamingZoneApp.Services.Core.Interfaces;
 using GamingZoneApp.Services.Models.Developer;
 using GamingZoneApp.Services.Models.Game;
