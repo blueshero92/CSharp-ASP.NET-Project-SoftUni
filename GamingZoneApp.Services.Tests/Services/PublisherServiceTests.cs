@@ -10,7 +10,7 @@ using MockQueryable;
 using Moq;
 using NUnit.Framework;
 
-namespace GamingZoneApp.Services.Tests
+namespace GamingZoneApp.Services.Tests.Services
 {
     [TestFixture]
     public class PublisherServiceTests
