@@ -23,6 +23,7 @@
     <ProjectReference Include="..\GamingZoneApp.GCommon\GamingZoneApp.GCommon.csproj" />
     <ProjectReference Include="..\GamingZoneApp.Services.Models\GamingZoneApp.Services.Models.csproj" />
     <ProjectReference Include="..\GamingZoneApp.Services\GamingZoneApp.Services.Core.csproj" />
+    <ProjectReference Include="..\GamingZoneApp\GamingZoneApp.csproj" />
   </ItemGroup>
 
 </Project>
