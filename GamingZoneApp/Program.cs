@@ -22,7 +22,7 @@ namespace GamingZoneApp
 
             // Add services to the container.
             string? connectionString 
-                = builder.Configuration.GetConnectionString("GamingZoneDbConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                = builder.Configuration.GetConnectionString("GamingZoneDbConnection") ?? throw new InvalidOperationException("Connection string 'GamingZoneDbConnection' not found.");
             
             builder.Services.AddDbContext<GamingZoneDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -60,7 +60,7 @@ namespace GamingZoneApp
                             .AddEntityFrameworkStores<GamingZoneDbContext>();
 
             //Configuring application cookie settings for redirecting to login when user is not logged in.
-            //This is necesarry because custom ApplicationUser is used instead of the default IdentityUser.
+            //This is necessary because custom ApplicationUser is used instead of the default IdentityUser.
             //Also, AddIdentity does not add the services required for the Identity UI as AddDefaultIdentity does.
             builder.Services.ConfigureApplicationCookie(options =>
             {

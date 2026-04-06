@@ -30,13 +30,10 @@ namespace GamingZoneApp.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddDeveloper()
+        public IActionResult AddDeveloper()
         {
             // Create an instance of DeveloperInputModel to be used in the view for adding a new developer.
             DeveloperInputModel developerInputModel = new DeveloperInputModel();
-
-            //Initialize the DeveloperInputModel.
-            await developerManagementService.AddDeveloperAsync(developerInputModel);
 
             // Return the view with the DeveloperInputModel to display the form for adding a new developer.
             return View(developerInputModel);

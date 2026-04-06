@@ -419,7 +419,7 @@ namespace GamingZoneApp.Controllers
             }
 
             //Retrieve the game to be deleted.
-            //Note: Soft and hard delete can be interchaned here by simply switching the task from the game service. The view and the rest of the code will work with both approaches without any changes.
+            //Note: Soft and hard delete can be interchanged here by simply switching the task from the game service. The view and the rest of the code will work with both approaches without any changes.
             bool gameIsDeleted = await gameService.SoftDeleteGameAsync(id, userId);
 
             //Checks if the game is deleted successfully. If not, return the view with an error message.

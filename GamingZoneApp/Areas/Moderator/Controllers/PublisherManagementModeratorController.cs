@@ -30,13 +30,10 @@ namespace GamingZoneApp.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddPublisher()
+        public IActionResult AddPublisher()
         {
             // Create an instance of PublisherInputModel to be used in the view for adding a new publisher.
             PublisherInputModel publisherInputModel = new PublisherInputModel();
-
-            //Initialize the PublisherInputModel.
-            await publisherManagementService.AddPublisherAsync(publisherInputModel);
 
             // Return the view with the PublisherInputModel to display the form for adding a new publisher.
             return View(publisherInputModel);

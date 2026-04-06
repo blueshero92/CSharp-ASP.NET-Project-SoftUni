@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace GamingZoneApp.GCommon.Constants
+﻿namespace GamingZoneApp.GCommon.Constants
 {
     public static class OutputMessages
     {
