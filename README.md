@@ -127,7 +127,7 @@ The app will be available at `https://localhost:7038`
 ├══════════════════════════════════════════════════════════
 │
 ├── 🌐 GamingZoneApp/                            # ASP.NET Core MVC (Startup Project)
-│   ├── GamingZoneApp.csproj                     # .NET 8 Web პროექტი
+│   ├── GamingZoneApp.csproj                     # .NET 8 Web
 │   ├── Program.cs                               # Entry point (DI, middleware, routing, seeding)
 │   ├── appsettings.json                         # Production config
 │   ├── appsettings.Development.json             # Development config
@@ -534,8 +534,10 @@ Key settings in `appsettings.Development.json`:
       }
    }
 }
+```
 
-> ⚠️ **Never commit sensitive data** (passwords, API keys) to source control. Use `appsettings.Development.json`, User Secrets, or environment variables for local secrets.
+> ⚠️ **Never commit sensitive data** (passwords, API keys) to source control.
+> Use `appsettings.Development.json`, User Secrets, or environment variables for local secrets.
 
 ---
 
