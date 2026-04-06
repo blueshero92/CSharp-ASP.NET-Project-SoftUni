@@ -65,14 +65,10 @@ namespace GamingZoneApp.Services.Tests.Controllers
         }
 
         [Test]
-        public async Task AddPublisher_Get_ReturnsView()
+        public void AddPublisher_Get_ReturnsView()
         {
-            // Arrange
-            publisherManagementServiceMock.Setup(pms => pms.AddPublisherAsync(It.IsAny<PublisherInputModel>()))
-                                          .ReturnsAsync(true);
-
             // Act
-            IActionResult result = await controller.AddPublisher();
+            IActionResult result = controller.AddPublisher();
 
             // Assert
             Assert.That(result, Is.TypeOf<ViewResult>());

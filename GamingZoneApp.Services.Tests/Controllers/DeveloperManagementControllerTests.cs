@@ -66,14 +66,10 @@ namespace GamingZoneApp.Services.Tests.Controllers
         }
 
         [Test]
-        public async Task AddDeveloper_Get_ReturnsView()
+        public void AddDeveloper_Get_ReturnsView()
         {
-            // Arrange
-            developerManagementServiceMock.Setup(dms => dms.AddDeveloperAsync(It.IsAny<DeveloperInputModel>()))
-                                          .ReturnsAsync(true);
-
             // Act
-            IActionResult result = await controller.AddDeveloper();
+            IActionResult result = controller.AddDeveloper();
 
             // Assert
             Assert.That(result, Is.TypeOf<ViewResult>());
