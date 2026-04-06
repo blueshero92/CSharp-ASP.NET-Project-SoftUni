@@ -4,6 +4,7 @@ using GamingZoneApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamingZoneApp.Data.Migrations
 {
     [DbContext(typeof(GamingZoneDbContext))]
-    partial class GamingZoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260406112808_UpdatedImagesForGames")]
+    partial class UpdatedImagesForGames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,42 +147,42 @@ namespace GamingZoneApp.Data.Migrations
                         {
                             Id = new Guid("f75ee60f-4615-4bca-8a21-be507c6d3a49"),
                             Description = "European video game developer known for creating atmospheric psychological horror experiences with cutting-edge graphics and immersive storytelling.",
-                            ImageUrl = "/images/logos/nightshade.png",
+                            ImageUrl = "/images/developer.png",
                             Name = "Nightshade Studios"
                         },
                         new
                         {
                             Id = new Guid("d7197d8b-d7f4-49ba-b24c-87b2152c6440"),
                             Description = "Renowned video game developer celebrated for crafting challenging and immersive gameplay experiences with intricate level design and compelling boss battles.",
-                            ImageUrl = "/images/logos/ironTempest.png",
+                            ImageUrl = "/images/developer.png",
                             Name = "Iron Tempest Games"
                         },
                         new
                         {
                             Id = new Guid("0b4120ce-a6f9-4b1d-b8d8-de31e4173f7e"),
                             Description = "Veteran video game developer and publisher known for creating legendary franchises and survival horror masterpieces with intense action gameplay.",
-                            ImageUrl = "/images/logos/phoenixRising.png",
+                            ImageUrl = "/images/developer.png",
                             Name = "Phoenix Rising Interactive"
                         },
                         new
                         {
                             Id = new Guid("c0d88616-83ce-416a-a034-11264b776cc1"),
                             Description = "Independent video game developer known for creating meticulously crafted indie games with exceptional art direction and challenging gameplay.",
-                            ImageUrl = "/images/logos/pixelHollow.png",
+                            ImageUrl = "/images/developer.png",
                             Name = "Pixel Hollow Studios"
                         },
                         new
                         {
                             Id = new Guid("7010a2f8-1545-48d8-bb52-86ea0995c45e"),
                             Description = "Boutique video game developer founded by industry veterans, known for creating innovative action RPGs with unique artistic vision and creative gameplay.",
-                            ImageUrl = "/images/logos/prismVoyage.png",
+                            ImageUrl = "/images/developer.png",
                             Name = "Prism Voyage Studios"
                         },
                         new
                         {
                             Id = new Guid("166ff532-b1c1-40ad-b6ef-85a73d049d1e"),
                             Description = "Dynamic video game developer known for creating fast-paced action games with intense gameplay and large-scale multiplayer experiences.",
-                            ImageUrl = "/images/logos/titanForge.png",
+                            ImageUrl = "/images/developer.png",
                             Name = "Titan Forge Games"
                         });
                 });
@@ -372,42 +375,42 @@ namespace GamingZoneApp.Data.Migrations
                         {
                             Id = new Guid("a0529584-8eb3-4880-8674-c4e5cc67b487"),
                             Description = "International video game publisher recognized for creating atmospheric and psychologically intense horror games that push the boundaries of interactive storytelling.",
-                            ImageUrl = "/images/logos/phantomGate.png",
+                            ImageUrl = "/images/publisher.png",
                             Name = "Phantom Gate Publishing"
                         },
                         new
                         {
                             Id = new Guid("8baa78a8-4139-409e-b8ab-78aac5b5fc48"),
                             Description = "Major video game publisher specializing in action-packed games and collaborations with renowned developers to create premium gaming experiences.",
-                            ImageUrl = "/images/logos/dragonCrown.png",
+                            ImageUrl = "/images/publisher.png",
                             Name = "Dragon Crown Entertainment"
                         },
                         new
                         {
                             Id = new Guid("e23228f4-77a4-448c-b816-ccb1826eed36"),
                             Description = "Established video game publisher known for creating legendary survival horror franchises and action games with exceptional design and storytelling.",
-                            ImageUrl = "/images/logos/phoenixRising.png",
+                            ImageUrl = "/images/publisher.png",
                             Name = "Phoenix Rising Publishing"
                         },
                         new
                         {
                             Id = new Guid("b037a40e-b701-4bdc-a5c0-96b0fdd92619"),
                             Description = "Independent publisher known for releasing meticulously crafted indie games with exceptional artistic vision and challenging gameplay.",
-                            ImageUrl = "/images/logos/pixelHollow.png",
+                            ImageUrl = "/images/publisher.png",
                             Name = "Pixel Hollow Publishing"
                         },
                         new
                         {
                             Id = new Guid("556474fc-388b-48a7-9bd2-c45528b09bb1"),
                             Description = "Independent video game publisher known for supporting innovative action RPGs and artistic games from talented developers with unique creative vision.",
-                            ImageUrl = "/images/logos/prismVoyage.png",
+                            ImageUrl = "/images/publisher.png",
                             Name = "Prism Voyage Publishing"
                         },
                         new
                         {
                             Id = new Guid("ed820b54-96c2-4fbf-a533-09b193c08028"),
                             Description = "International video game publisher known for publishing action-packed games and supporting diverse game genres from independent to AAA studios.",
-                            ImageUrl = "/images/logos/titanForge.png",
+                            ImageUrl = "/images/publisher.png",
                             Name = "Titan Forge Publishing"
                         });
                 });
