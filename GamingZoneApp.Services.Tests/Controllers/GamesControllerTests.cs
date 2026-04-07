@@ -595,5 +595,236 @@ namespace GamingZoneApp.Services.Tests.Controllers
             // Assert
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
+
+
+        [Test]
+        public async Task MyGames_ReturnsViewWithPaginatedGames()
+        {
+            // Arrange
+            gameServiceMock.Setup(gs => gs.GetAllGamesByUserIdAsync(TestUserId))
+                           .ReturnsAsync(new List<AllGamesViewModel>());
+
+            // Act
+            IActionResult result = await controller.MyGames(null);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+            gameServiceMock.Verify(gs => gs.GetAllGamesByUserIdAsync(TestUserId), Times.Once);
+        }
+
+        [Test]
+        public async Task MyGames_WithPageNumber_ReturnsViewResult()
+        {
+            // Arrange
+            gameServiceMock.Setup(gs => gs.GetAllGamesByUserIdAsync(TestUserId))
+                           .ReturnsAsync(new List<AllGamesViewModel>());
+
+            // Act
+            IActionResult result = await controller.MyGames(2);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        // ===== MyFavoriteGames =====
+
+        [Test]
+        public async Task MyFavoriteGames_ReturnsViewWithPaginatedGames()
+        {
+            // Arrange
+            gameServiceMock.Setup(gs => gs.GetFavoriteGamesByUserIdAsync(TestUserId))
+                           .ReturnsAsync(new List<AllGamesViewModel>());
+
+            // Act
+            IActionResult result = await controller.MyFavoriteGames(null);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+            gameServiceMock.Verify(gs => gs.GetFavoriteGamesByUserIdAsync(TestUserId), Times.Once);
+        }
+
+        [Test]
+        public async Task MyFavoriteGames_WithPageNumber_ReturnsViewResult()
+        {
+            // Arrange
+            gameServiceMock.Setup(gs => gs.GetFavoriteGamesByUserIdAsync(TestUserId))
+                           .ReturnsAsync(new List<AllGamesViewModel>());
+
+            // Act
+            IActionResult result = await controller.MyFavoriteGames(2);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        // ===== RemoveFromFavorites – service fails =====
+
+        [Test]
+        public async Task RemoveFromFavorites_ServiceFails_RedirectsToGameDetails()
+        {
+            // Arrange
+            gameServiceMock.Setup(gs => gs.GameExistsAsync(TestGameId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.IsGameInFavoritesAsync(TestGameId, TestUserId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.RemoveGameFromFavoritesAsync(TestGameId, TestUserId)).ReturnsAsync(false);
+
+            // Act
+            IActionResult result = await controller.RemoveFromFavorites(TestGameId);
+
+            // Assert
+            RedirectToActionResult redirect = result as RedirectToActionResult;
+            Assert.That(redirect, Is.Not.Null);
+            Assert.That(redirect!.ActionName, Is.EqualTo("GameDetails"));
+        }
+
+        // ===== AddGame POST – service fails =====
+
+        [Test]
+        public async Task AddGame_Post_ServiceFails_ReturnsView()
+        {
+            // Arrange
+            GameInputModel inputModel = new GameInputModel
+            {
+                Title = "TestGame",
+                Genre = "Adventure",
+                Description = "Desc",
+                DeveloperId = Guid.NewGuid(),
+                PublisherId = Guid.NewGuid()
+            };
+
+            developerServiceMock.Setup(ds => ds.DeveloperExistsAsync(inputModel.DeveloperId)).ReturnsAsync(true);
+            publisherServiceMock.Setup(ps => ps.PublisherExistsAsync(inputModel.PublisherId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.AddGameAsync(inputModel, TestUserId)).ReturnsAsync(false);
+
+            // Act
+            IActionResult result = await controller.AddGame(inputModel);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        // ===== EditGame GET – service returns null =====
+
+        [Test]
+        public async Task EditGame_Get_ServiceReturnsNull_RedirectsToEditGame()
+        {
+            // Arrange
+            gameServiceMock.Setup(gs => gs.GameExistsAsync(TestGameId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.IsUserCreatorAsync(TestGameId, TestUserId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.GetGameForEditAsync(TestGameId, TestUserId))
+                           .ReturnsAsync((GameInputModel?)null);
+
+            // Act
+            IActionResult result = await controller.EditGame(TestGameId);
+
+            // Assert
+            RedirectToActionResult redirect = result as RedirectToActionResult;
+            Assert.That(redirect, Is.Not.Null);
+            Assert.That(redirect!.ActionName, Is.EqualTo("EditGame"));
+        }
+
+        // ===== EditGame POST – invalid model =====
+
+        [Test]
+        public async Task EditGame_Post_InvalidModel_ReturnsView()
+        {
+            // Arrange
+            gameServiceMock.Setup(gs => gs.GameExistsAsync(TestGameId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.IsUserCreatorAsync(TestGameId, TestUserId)).ReturnsAsync(true);
+            controller.ModelState.AddModelError("Title", "Required");
+
+            developerServiceMock.Setup(ds => ds.GetAllDevelopersAsync()).ReturnsAsync(new List<AddGameDeveloperViewModel>());
+            publisherServiceMock.Setup(ps => ps.GetAllPublishersAsync()).ReturnsAsync(new List<AddGamePublisherViewModel>());
+
+            // Act
+            IActionResult result = await controller.EditGame(TestGameId, new GameInputModel());
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        // ===== EditGame POST – developer doesn't exist =====
+
+        [Test]
+        public async Task EditGame_Post_DeveloperDoesNotExist_ReturnsView()
+        {
+            // Arrange
+            GameInputModel inputModel = new GameInputModel
+            {
+                Title = "TestGame",
+                Genre = "Adventure",
+                Description = "Desc",
+                DeveloperId = Guid.NewGuid(),
+                PublisherId = Guid.NewGuid()
+            };
+
+            gameServiceMock.Setup(gs => gs.GameExistsAsync(TestGameId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.IsUserCreatorAsync(TestGameId, TestUserId)).ReturnsAsync(true);
+            developerServiceMock.Setup(ds => ds.DeveloperExistsAsync(inputModel.DeveloperId)).ReturnsAsync(false);
+            developerServiceMock.Setup(ds => ds.GetAllDevelopersAsync()).ReturnsAsync(new List<AddGameDeveloperViewModel>());
+            publisherServiceMock.Setup(ps => ps.GetAllPublishersAsync()).ReturnsAsync(new List<AddGamePublisherViewModel>());
+
+            // Act
+            IActionResult result = await controller.EditGame(TestGameId, inputModel);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        // ===== EditGame POST – publisher doesn't exist =====
+
+        [Test]
+        public async Task EditGame_Post_PublisherDoesNotExist_ReturnsView()
+        {
+            // Arrange
+            GameInputModel inputModel = new GameInputModel
+            {
+                Title = "TestGame",
+                Genre = "Adventure",
+                Description = "Desc",
+                DeveloperId = Guid.NewGuid(),
+                PublisherId = Guid.NewGuid()
+            };
+
+            gameServiceMock.Setup(gs => gs.GameExistsAsync(TestGameId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.IsUserCreatorAsync(TestGameId, TestUserId)).ReturnsAsync(true);
+            developerServiceMock.Setup(ds => ds.DeveloperExistsAsync(inputModel.DeveloperId)).ReturnsAsync(true);
+            publisherServiceMock.Setup(ps => ps.PublisherExistsAsync(inputModel.PublisherId)).ReturnsAsync(false);
+            developerServiceMock.Setup(ds => ds.GetAllDevelopersAsync()).ReturnsAsync(new List<AddGameDeveloperViewModel>());
+            publisherServiceMock.Setup(ps => ps.GetAllPublishersAsync()).ReturnsAsync(new List<AddGamePublisherViewModel>());
+
+            // Act
+            IActionResult result = await controller.EditGame(TestGameId, inputModel);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        // ===== EditGame POST – service fails =====
+
+        [Test]
+        public async Task EditGame_Post_ServiceFails_ReturnsView()
+        {
+            // Arrange
+            GameInputModel inputModel = new GameInputModel
+            {
+                Title = "TestGame",
+                Genre = "Adventure",
+                Description = "Desc",
+                DeveloperId = Guid.NewGuid(),
+                PublisherId = Guid.NewGuid()
+            };
+
+            gameServiceMock.Setup(gs => gs.GameExistsAsync(TestGameId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.IsUserCreatorAsync(TestGameId, TestUserId)).ReturnsAsync(true);
+            developerServiceMock.Setup(ds => ds.DeveloperExistsAsync(inputModel.DeveloperId)).ReturnsAsync(true);
+            publisherServiceMock.Setup(ps => ps.PublisherExistsAsync(inputModel.PublisherId)).ReturnsAsync(true);
+            gameServiceMock.Setup(gs => gs.EditGameAsync(TestGameId, inputModel, TestUserId)).ReturnsAsync(false);
+
+            // Act
+            IActionResult result = await controller.EditGame(TestGameId, inputModel);
+
+            // Assert
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
     }
 }
