@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36623.8
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11626.88 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp", "GamingZoneApp\GamingZoneApp.csproj", "{019770A3-B490-4D69-80F0-ABFC444BD146}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C2F87DB3-5C95-48E7-9B98-FFF80F810D6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.Services.Tests", "GamingZoneApp.Services.Tests\GamingZoneApp.Services.Tests.csproj", "{7727F18C-0ACC-404E-BFCE-408AF073DA1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamingZoneApp.IntegrationTests", "GamingZoneApp.IntegrationTests\GamingZoneApp.IntegrationTests.csproj", "{9F0AC25A-99CC-4857-A025-09AA004EFC9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{7727F18C-0ACC-404E-BFCE-408AF073DA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7727F18C-0ACC-404E-BFCE-408AF073DA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7727F18C-0ACC-404E-BFCE-408AF073DA1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F0AC25A-99CC-4857-A025-09AA004EFC9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F0AC25A-99CC-4857-A025-09AA004EFC9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F0AC25A-99CC-4857-A025-09AA004EFC9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F0AC25A-99CC-4857-A025-09AA004EFC9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{A643B0A0-CDFF-4B6E-BF0D-7A0261B732EC} = {EA1697AE-F54C-44CD-8E0E-A1242D76FAE3}
 		{2E26DD3A-DDDC-44C1-B2C2-AE57C3962C72} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{7727F18C-0ACC-404E-BFCE-408AF073DA1D} = {C2F87DB3-5C95-48E7-9B98-FFF80F810D6F}
+		{9F0AC25A-99CC-4857-A025-09AA004EFC9B} = {C2F87DB3-5C95-48E7-9B98-FFF80F810D6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4042AE11-6A9C-4040-B173-5808C61D5B85}
